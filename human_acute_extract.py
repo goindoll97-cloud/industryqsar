@@ -115,7 +115,7 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
         w.writeheader()
         for row in rows:
             # Protect spreadsheet users against formula injection from MSDS text.
-            w.writerow({k: ("'" + v if v.lstrip().startswith(("=", "+", "-", "@")) else v)
+            w.writerow({k: ("'" + v if v != "=" and v.lstrip().startswith(("=", "+", "-", "@")) else v)
                         for k, v in row.items()})
 
 
