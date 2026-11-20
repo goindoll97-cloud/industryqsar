@@ -3,7 +3,7 @@
 
 Public Data Portal dataset: 15157612
 Search: getChemList001 (CAS searchCnd=1)
-Sections: getChemDetail111 (section 11), getChemDetail121 (section 12)
+Human-health section only: getChemDetail111 (MSDS section 11)
 
 A KOSHA MSDS entry is a REFERENCE source, not evidence of experimental provenance.
 All candidate endpoint mentions remain unverified until manually checked.
@@ -27,9 +27,9 @@ import requests
 
 BASE_URL = "https://apis.data.go.kr/B552468/msdschem1"
 SEARCH_PATH = "getChemList001"
-DETAIL_PATHS = {"11": "getChemDetail111", "12": "getChemDetail121"}
+DETAIL_PATHS = {"11": "getChemDetail111"}
 CAS_PATTERN = re.compile(r"^\d{2,7}-\d{2}-\d$")
-ENDPOINT_PATTERN = re.compile(r"(?i)(?:\bLD\s*50\b|\bLC\s*50\b|\bEC\s*50\b|반수\s*치사|반수\s*영향|유영\s*저해|급성\s*독성)")
+ENDPOINT_PATTERN = re.compile(r"(?i)(?:\bLD\s*50\b|\bLC\s*50\b|반수\s*치사|급성\s*독성|피부\s*부식|표적\s*장기\s*독성)")
 ID_KEYS = ("chemId", "chemID", "chem_id", "chemicalId", "msdsId", "msdsNo", "chemNo")
 CAS_KEYS = ("casNo", "casNO", "cas_no", "casRn", "cas", "casNum", "casNumber")
 
@@ -87,7 +87,7 @@ def xml_text(root: ET.Element) -> str:
 
 
 def candidate_mentions(text: str, context: int = 120, limit: int = 60) -> list[str]:
-    """Extract mentions for *manual* review, NOT numeric LD50/EC50 values."""
+    """Extract human-health endpoint mentions for manual review; no numeric toxicity parsing."""
     one_line = re.sub(r"\s+", " ", text)
     out = []
     for match in ENDPOINT_PATTERN.finditer(one_line):
@@ -158,7 +158,7 @@ class KoshaClient:
 
     def detail(self, chem_id: str, section: str, id_param: str) -> tuple[bytes, ET.Element]:
         if section not in DETAIL_PATHS:
-            raise ValueError("섹션 번호는 11 또는 12여야 합니다.")
+            raise ValueError("인체독성 전용 파일럿은 MSDS 11번만 조회합니다.")
         if not re.fullmatch(r"[A-Za-z][A-Za-z0-9]*", id_param):
             raise ValueError("상세조회 ID 파라미터명이 유효하지 않습니다.")
         if not re.fullmatch(r"[\w-]{1,120}", chem_id):
@@ -224,7 +224,7 @@ def run(cas_values: list[str], out: Path, fetch_details: bool,
                 row["selected_chem_id"] = chem_id
                 row["search_status"] = "exact_cas_match" if chem_id else "exact_cas_no_recognized_id"
                 if fetch_details and chem_id:
-                    for section in ("11", "12"):
+                    for section in ("11",):
                         try:
                             payload, root = client.detail(chem_id, section, detail_id_param)
                             filename = f"{idx:03d}_section{section}.xml"
@@ -279,8 +279,8 @@ def run(cas_values: list[str], out: Path, fetch_details: bool,
         "notes": [
             "KOSHA 공단 MSDS 정보는 참고용이며 시험자료의 원출처 검증이 필요합니다.",
             "유사명 또는 여러 CAS/물질ID 매칭은 자동 확정하지 않습니다.",
-            "LD50, EC50, LC50 언급은 원문 후보이며 구조화 독성 수치가 아닙니다.",
-            "법정 지정 여부 및 물벼룩 48시간 EC50과의 종말점 정합성은 별도 검증이 필요합니다.",
+            "LD50, LC50 및 인체급성독성 관련 언급은 원문 후보이며 구조화 독성 수치가 아닙니다.",
+            "법정 지정 여부 및 설치류 경구 LD50의 시험종·노출경로·단위 정합성은 별도 검증이 필요합니다.",
             "상세조회 ID 파라미터는 현재 API 명세와 비교 확인하세요.",
         ],
     }
@@ -294,7 +294,7 @@ def main() -> None:
     parser.add_argument("--cas", action="append", default=[], help="Search CAS RN; repeatable")
     parser.add_argument("--cas-csv", type=Path, help="CSV with cas column")
     parser.add_argument("--out", type=Path, default=Path("outputs/kosha_pilot"))
-    parser.add_argument("--fetch-details", action="store_true", help="Also request MSDS sections 11 and 12")
+    parser.add_argument("--fetch-details", action="store_true", help="Request human-health MSDS section 11 only (no ecological section 12)")
     parser.add_argument("--detail-id-param", default=os.getenv("KOSHA_MSDS_DETAIL_ID_PARAM", "chemId"),
                         help="Confirm ID parameter in API swagger; default is provisional.")
     parser.add_argument("--max-cas", type=int, default=10)
