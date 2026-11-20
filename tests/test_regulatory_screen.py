@@ -151,6 +151,9 @@ def test_end_to_end_zip_no_api_key_and_reproducible(tmp_path):
     assert len(rows) == 2
     assert all(row["legal_designation_verified"] == "false" for row in rows)
     assert all(row["model_training_performed"] == "false" for row in rows)
+    assert summary["registry_vs_oral_numeric_relation"]["registry_not_provided"] == {"meets": 1, "above": 1}
+    assert (tmp_path / "reports/reference_evidence_audit.csv").exists()
+    assert (tmp_path / "reports/manual_endpoint_review.csv").exists()
 
 
 def test_zip_duplicates_rejected(tmp_path):
