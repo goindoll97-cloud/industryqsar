@@ -13,20 +13,23 @@
 ~~~powershell
 git pull origin main
 python -m pip install -r requirements-qsar.txt
-python prepare_epa_batch.py --registry data/private/acute_registry_for_screening.csv --out data/private/epa_batch_cas.txt
+python prepare_epa_batch.py --registry data/private/acute_registry_for_screening.csv --candidates data/private/cas_list_pilot20.csv --out data/private/epa_batch_cas.txt
 ~~~
 
 EPA CompTox 일괄 다운로드 CSV를 확보한 후:
 
 ~~~powershell
-python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --out outputs/epa_qsar_structure_pilot
+python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --candidates data/private/cas_list_pilot20.csv --out outputs/epa_qsar_structure_pilot
 ~~~
 
 EPA TEST의 기존 흰쥐 경구 LD50 예측값까지 확보했다면:
 
 ~~~powershell
-python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --predictions data/private/epa_test_predictions.csv --out outputs/epa_qsar_with_predictions
+python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --candidates data/private/cas_list_pilot20.csv --predictions data/private/epa_test_predictions.csv --kosha-endpoints outputs/kosha_pilot20/human_acute_endpoints.csv --out outputs/epa_qsar_with_predictions
+python qsar_ablation.py --screen outputs/epa_qsar_with_predictions/qsar_candidates.csv --out outputs/epa_qsar_ablation
 ~~~
+
+**중요:** 기존 20종의 CAS 목록을 `--candidates`로 지정하는 것은 입력·출력 검증용 예시이며, 국내 전체 취급물질을 대표하지 않습니다. 최종 연구에서는 국내 산업용 화학물질의 별도 후보 CAS 모집단을 확보해야 합니다. EPA 파일에 구조만 있고 TEST 예측값이 없다면 **아직 QSAR 결과가 아니라 구조 유사성 분석**입니다.
 
 **EPA TEST는 사전 학습된 기존 모델이며 이 GitHub에서는 새 모델을 훈련하지 않습니다.** RDKit의 Tanimoto 유사성은 QSAR LD50 예측과 별개입니다.
 
