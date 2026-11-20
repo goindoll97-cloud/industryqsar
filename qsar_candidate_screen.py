@@ -262,7 +262,7 @@ def create_rankings(structures, registry, predictions, candidates=None, kosha_or
             "canonical_smiles": (entry["canonical"] if entry else ""),
             "dtxsid": (entry["dtxsid"] if entry else ""),
         })
-    candidates, rejected = [], []
+    candidate_rows, rejected = [], []
     for cas, item in sorted(structures.items()):
         if cas in registry:
             continue
@@ -324,7 +324,7 @@ def create_rankings(structures, registry, predictions, candidates=None, kosha_or
             tier = "P3_ANALOGUE_HYPOTHESIS_NO_LD50_INFERENCE"
         else:
             tier = "P4_NO_CONFIRMED_QSAR_OR_STRUCTURE_SIGNAL_NOT_SAFE"
-        candidates.append({
+        candidate_rows.append({
             "cas": cas, "dtxsid": item["dtxsid"],
             "smiles_as_exported": item["smiles"],
             "canonical_smiles": item["canonical"],
@@ -361,8 +361,8 @@ def create_rankings(structures, registry, predictions, candidates=None, kosha_or
                   "P2_KOSHA_REPORTED_ORAL_SIGNAL_UNVERIFIED": 2,
                   "P3_ANALOGUE_HYPOTHESIS_NO_LD50_INFERENCE": 3,
                   "P4_NO_CONFIRMED_QSAR_OR_STRUCTURE_SIGNAL_NOT_SAFE": 4}
-    candidates.sort(key=lambda r: (tier_order[r["review_tier"]], -float(r["nearest_reference_tanimoto"] or 0), r["cas"]))
-    return reference_coverage, candidates, rejected
+    candidate_rows.sort(key=lambda r: (tier_order[r["review_tier"]], -float(r["nearest_reference_tanimoto"] or 0), r["cas"]))
+    return reference_coverage, candidate_rows, rejected
 
 
 def safe_cell(value):
