@@ -113,9 +113,16 @@ def registry_meta(meta_file: Path) -> dict:
     scope = meta.get("coverage")
     if scope not in ("partial", "complete_acute_list"):
         raise ValueError("지정목록 metadata.coverage는 partial 또는 complete_acute_list여야 합니다.")
-    url = str(meta.get("source_url", ""))
+    url = str(meta.get("source_url", "")).strip()
+    provenance = meta.get("provenance_status", "")
     if not url.startswith(("https://", "http://")):
-        raise ValueError("공식 지정목록의 source_url을 기록해야 합니다.")
+        # A user-uploaded workbook is NOT sufficient to assert official provenance.
+        # Allow its preliminary CAS overlap analysis, but keep provenance unresolved.
+        if not (url == "" and provenance == "unverified_user_upload"
+                and str(meta.get("source_file_name", "")).strip()):
+            raise ValueError("공식 출처 URL을 넣거나, 원본 파일명과 provenance_status=unverified_user_upload를 명시하세요.")
+    meta["provenance_status"] = ("source_url_user_supplied_unverified" if url else
+                                 "unverified_user_upload")
     try:
         date.fromisoformat(meta["snapshot_date"])
     except (KeyError, ValueError, TypeError):
@@ -186,7 +193,10 @@ def load_registry(path: Path | None, meta_path: Path | None):
     diag = {
         "loaded": True,
         "status": "USER_SUPPLIED_SNAPSHOT_UNVERIFIED_COVERAGE",
-        "source_url": meta["source_url"], "snapshot_date": meta["snapshot_date"],
+        "source_url": meta["source_url"], "source_file_name": meta.get("source_file_name", ""),
+        "snapshot_date": meta["snapshot_date"],
+        "snapshot_date_basis": meta.get("snapshot_date_basis", "user_supplied_not_officially_verified"),
+        "provenance_status": meta["provenance_status"],
         "coverage_declared_by_user": declared_coverage,
         "effective_cas_lookup_coverage": meta["coverage"],
         "coverage_downgraded_due_to_casless_groups": meta["coverage"] != declared_coverage,
@@ -414,6 +424,7 @@ def run(batch: Path | None, batch_zip: Path | None, out: Path,
         "priority_counts": dict(Counter(x["screening_priority"] for x in screening)),
         "registry_diagnostics": reg_diag,
         "registry_missing_for_all": len(missing) == len(screening),
+        "registry_snapshot_is_officially_verified": False,
         "qsar_records_supplied": len(qsar),
         "kosha_source_audit_present": bool(audit),
         "kosha_source_fetched_at_utc": audit.get("fetched_at_utc", "") if audit else "",
