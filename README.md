@@ -2,6 +2,38 @@
 
 기존 MSDS **설치류 급성경구 LD50** 및 외부 QSAR 예측을 이용해 **추가 검토 우선순위**를 산출하는 연구용 프로토타입입니다. **규제 지정 판정 도구가 아닙니다.** 신규 독성시험 자료 수집이나 QSAR 재학습은 수행하지 않습니다.
 
+## QSAR 중심 연구 설계 (EPA 단일 국외 자료원)
+
+권장 논문 방향: **QSAR 기반 화학구조 유사성과 급성독성 정보의 통합을 통한 국내 인체급성유해성물질 규제 후보 스크리닝**.
+
+기존 KOSHA 독성정보 품질 검토는 후속 근거확인 단계로 사용하고, 주요 도구를 **한국 인체급성 지정목록 + EPA CompTox 구조 + EPA TEST 경구 LD50 QSAR + RDKit 구조유사성**으로 제한합니다. EU ECHA 등 다른 해외 규제체계와의 비교는 본 분석 범위에서 제외합니다.
+
+현재 분석하는 정량 종말점은 **설치류 급성경구 LD50 (300 mg/kg 이하)** 하나이며, EPA 자료에 있다는 사실은 미국 규제물질 지정이 아니고 국내 목록에 CAS가 없다는 사실도 '국내 미지정 확정'이 아닙니다.
+
+~~~powershell
+git pull origin main
+python -m pip install -r requirements-qsar.txt
+python prepare_epa_batch.py --registry data/private/acute_registry_for_screening.csv --out data/private/epa_batch_cas.txt
+~~~
+
+EPA CompTox 일괄 다운로드 CSV를 확보한 후:
+
+~~~powershell
+python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --out outputs/epa_qsar_structure_pilot
+~~~
+
+EPA TEST의 기존 흰쥐 경구 LD50 예측값까지 확보했다면:
+
+~~~powershell
+python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --predictions data/private/epa_test_predictions.csv --out outputs/epa_qsar_with_predictions
+~~~
+
+**EPA TEST는 사전 학습된 기존 모델이며 이 GitHub에서는 새 모델을 훈련하지 않습니다.** RDKit의 Tanimoto 유사성은 QSAR LD50 예측과 별개입니다.
+
+[5단계 EPA QSAR 실행 가이드](docs/step5_epa_qsar_focus_ko.md)
+
+---
+
 ## 3단계: 업로드한 인체급성·인체만성·생태유해성 통합 엑셀과 CAS 대조
 
 사용자가 준비한 **인체급성 CAS만 정리한 스냅샷 CSV**와 근거 메타데이터를 local data/private에 보관하면, 현재 KOSHA 배치와 대조할 수 있습니다. 원본 Excel이나 실제 규제 데이터는 이 공개 GitHub에 업로드하지 않습니다.
