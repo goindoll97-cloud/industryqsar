@@ -80,3 +80,25 @@ def test_export_preserves_equality_qualifier(tmp_path):
     with outfile.open(encoding="utf-8-sig", newline="") as f:
         loaded = list(csv.DictReader(f))
     assert loaded[2]["qualifier"] == "="
+
+
+
+def test_repeated_identical_ld50_mention_is_one_unverified_candidate():
+    xml = """<response><item><msdsItemCode>K040202</msdsItemCode>
+    <itemDetail>LD50 147 mg/kg 실험종 : Rat (랫드 LD50=147mg/kg)</itemDetail>
+    </item></response>""".encode("utf-8")
+    record = parse_section11(xml, "624-18-0")[0]
+    assert record["extraction_status"] == "parsed_unverified"
+    assert record["value"] == "147"
+    assert record["extraction_note"] == "repeated_identical_value_in_text"
+    assert record["oral_ld50_300_relation_preliminary"] == "meets_numeric_criterion"
+
+
+def test_range_is_not_a_measured_ld50():
+    xml = """<response><item><msdsItemCode>K040202</msdsItemCode>
+    <itemDetail>LD50 50 ~ 300 mg/kg |※출처 : 환경부 유해성심사 결과</itemDetail>
+    </item></response>""".encode("utf-8")
+    record = parse_section11(xml, "3965-00-2")[0]
+    assert record["extraction_status"] == "manual_review_range_not_single_value"
+    assert record["value"] == ""
+    assert record["oral_ld50_300_relation_preliminary"] == "not_assessed"
