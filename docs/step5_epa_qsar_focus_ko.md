@@ -50,10 +50,10 @@ python -m pip install -r requirements-qsar.txt
 사용자님이 이미 로컬에 갖고 있는 인체급성 준비 CSV로 첫 단계 확인:
 
 ~~~powershell
-python prepare_epa_batch.py --registry data/private/acute_registry_for_screening.csv --out data/private/epa_batch_cas.txt
+python prepare_epa_batch.py --registry data/private/acute_registry_for_screening.csv --candidates data/private/cas_list_pilot20.csv --out data/private/epa_batch_cas.txt
 ~~~
 
-이 명령은 data/private/epa_batch_cas.txt 및 data/private/epa_batch_cas_roles.csv를 만듭니다. 두 파일을 구분해 보관하십시오.
+이 명령은 기존 20종 시험용 CAS를 국내 급성지정 참조 CAS와 합쳐 data/private/epa_batch_cas.txt 및 data/private/epa_batch_cas_roles.csv를 만듭니다. 그중 **16종은 이미 지정목록 참조집단**, 나머지 **4종은 미지정 여부가 검증되지 않은 비교대상**입니다. 두 파일을 구분해 보관하십시오.
 
 국내 후보집단 CAS를 확보했을 때에는 다음과 같이 결합할 수 있습니다.
 
@@ -76,7 +76,7 @@ python prepare_epa_batch.py --registry data/private/acute_registry_for_screening
 ### 4. EPA 구조만으로 먼저 적용 가능성 파악하기
 
 ~~~powershell
-python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --out outputs/epa_qsar_structure_pilot
+python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --candidates data/private/cas_list_pilot20.csv --out outputs/epa_qsar_structure_pilot
 ~~~
 
 생성 파일:
@@ -85,6 +85,10 @@ python qsar_candidate_screen.py --structures data/private/epa_structures.csv --r
 - qsar_candidates.csv : 제공 목록에 없는 후보 CAS, 가장 가까운 지정 참조구조, Tanimoto, 기술자 등
 - structure_manual_review.csv : 이 단계에서 제외된 염류·무기물·복합물·구조오류
 - qsar_screen_summary.json : 전체 범위·해석 제약
+- candidate_structure_missing.csv : 국내 후보목록에 있으나 EPA 구조파일에 없는 CAS (후보목록 지정 시)
+- evidence_manual_review.csv : 식별자/AD/불일치 등 재검토 대상
+
+**중요한 화학적 안전장치:** EPA의 원래 SMILES와 QSAR-ready SMILES가 모두 있고 표준화된 구조가 원래 구조와 다르면, 염류·다성분/구조 정합성 문제를 피하기 위해 자동 구조 유사성 산정에서 제외합니다.
 
 **중요:** 참조집단 CAS만 EPA에서 검색하면 후보행 수는 0이 될 수 있습니다. 이는 정상입니다. 후보 스크리닝에는 별도의 국내 후보 CAS 목록이 필요합니다. 또한 이 단계는 구조 유사성 파일럿이지 독성 QSAR 모델 성능 검증이 아닙니다.
 
@@ -106,14 +110,20 @@ cas,ld50_value,ld50_unit,ad_status,model_name
 - qsar 후보를 이미 학습자료에 포함한 모델일 수 있으므로 독립 예측으로서의 유효성은 반드시 별도 검토해야 합니다.
 
 ~~~powershell
-python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --predictions data/private/epa_test_predictions.csv --out outputs/epa_qsar_with_predictions
+python qsar_candidate_screen.py --structures data/private/epa_structures.csv --registry data/private/acute_registry_for_screening.csv --candidates data/private/cas_list_pilot20.csv --predictions data/private/epa_test_predictions.csv --kosha-endpoints outputs/kosha_pilot20/human_acute_endpoints.csv --out outputs/epa_qsar_with_predictions
+
+python qsar_ablation.py --screen outputs/epa_qsar_with_predictions/qsar_candidates.csv --out outputs/epa_qsar_ablation
 ~~~
 
 QSAR 결과를 확보하기 전에는 'QSAR 예측이 유해성을 예측했다'고 보고하지 마세요.
 
+**세 가지 방법 비교:** ablation 분석은 (A) EPA TEST QSAR만, (B) QSAR + RDKit 유사성, (C) QSAR + RDKit + KOSHA MSDS의 **검토 후보 목록이 어떻게 달라지는지** 비교합니다. 독립 실험 정답이 없으므로 정확도·민감도·false-safe를 산출하지 않습니다. 이를 논문 성능 지표로 쓰려면 별도 외부 검증자료가 필요합니다.
+
+기존 KOSHA CSV 경로가 없다면 --kosha-endpoints 옵션을 생략하세요. 이 옵션은 보조 근거이며 독성시험 원자료가 아닙니다. 특히 QSAR와 MSDS가 동일한 기존 실험값을 공유할 수 있으므로 두 독립 증거로 해석하지 않습니다.
+
 ### 6. ChatGPT에 보낼 파일
 
-첫 번째 확인 단계에서는 **outputs/epa_qsar_structure_pilot 전체를 ZIP으로 압축한 파일**과 **EPA CompTox 원본 다운로드 CSV**를 업로드해 주세요. EPA TEST 결과가 준비되었다면 원본 TEST 출력 및 정규화한 CSV도 추가하면 됩니다. .env 파일/인증키는 절대 업로드하지 마세요.
+첫 번째 확인 단계에서는 **outputs/epa_qsar_structure_pilot 전체를 ZIP으로 압축한 파일**과 **EPA CompTox 원본 다운로드 CSV**를 업로드해 주세요. PowerShell에서 `Compress-Archive -Path outputs\epa_qsar_structure_pilot\* -DestinationPath epa_qsar_structure_pilot.zip -Force`를 실행할 수 있습니다. EPA TEST 결과가 준비되었다면 원본 TEST 출력 및 정규화한 CSV도 추가하면 됩니다. .env 파일/인증키는 절대 업로드하지 마세요.
 
 ## 평가 설계에서 주의할 점
 
