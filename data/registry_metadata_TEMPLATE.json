@@ -1,0 +1,7 @@
+{
+  "source_url": "https://kreach.me.go.kr/repwrt/mttrInfoOpen/existedMttrHzrdsList.do",
+  "snapshot_date": "YYYY-MM-DD",
+  "coverage": "partial",
+  "acute_only": false,
+  "notes": "공식 지정목록을 다운로드한 실제 날짜와 범위를 확인한 후 수정하세요. partial은 안전한 기본값입니다."
+}
