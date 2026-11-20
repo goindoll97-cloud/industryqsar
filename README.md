@@ -2,6 +2,29 @@
 
 기존 MSDS **설치류 급성경구 LD50** 및 외부 QSAR 예측을 이용해 **추가 검토 우선순위**를 산출하는 연구용 프로토타입입니다. **규제 지정 판정 도구가 아닙니다.** 신규 독성시험 자료 수집이나 QSAR 재학습은 수행하지 않습니다.
 
+## 2단계: 규제 검토 우선순위 분석 (인체급성만)
+
+기존 KOSHA MSDS 11번 수집 파일을 **다시 API 조회하지 않고** 재분석할 수 있습니다.
+
+~~~powershell
+git pull origin main
+python regulatory_screen.py --batch outputs/kosha_batch --out outputs/regulatory_step2
+~~~
+
+이전에 업로드한 ZIP 파일을 그대로 쓰려면:
+
+~~~powershell
+python regulatory_screen.py --batch-zip kosha_batch.zip --out outputs/regulatory_step2
+~~~
+
+생성된 **outputs/regulatory_step2 전체 폴더를 ZIP으로 압축해 전달**해 주세요. 결과 파일은 screening_priorities.csv, review_queue.csv, endpoint_quality_review.csv, screening_summary.json의 네 개입니다.
+
+**공식 지정고시 목록의 CAS 매칭은 선택 입력**이며, 목록을 넣지 않은 경우 법적 미지정 판정을 하지 않습니다. 정부 사이트에서 공식 목록을 다운로드한 후 CSV로 보관하고 출처/기준일 JSON을 함께 제공하면 대조할 수 있습니다. 자료 예시는 data/acute_registry_TEMPLATE.csv와 data/registry_metadata_TEMPLATE.json에 있습니다.
+
+상세 실행 방법은 [2단계 실습 가이드](docs/step2_regulatory_screening_ko.md)를 참조하세요. 물벼룩 등 생태독성은 다루지 않으며, 경구 LD50만 정량적으로 법정 기준에 비교합니다.
+
+---
+
 ## 빠른 실행
 
 Python 3.11 이상:
