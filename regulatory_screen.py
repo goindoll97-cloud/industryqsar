@@ -158,12 +158,18 @@ def load_registry(path: Path | None, meta_path: Path | None):
         raise ValueError("혼합 지정목록에는 유해성물질 구분 열이 필요합니다.")
     mapped = defaultdict(list)
     ignored_nonacute = 0
+    unmapped_acute_rows = 0
     bad_cas = []
     for i, row in enumerate(data, start=2):
         if class_col and not is_acute_type(row.get(class_col, "")):
             ignored_nonacute += 1
             continue
         cas = normalize_cas(row.get(cas_col, ""))
+        if not cas:
+            # The official inventory may have group entries without a CAS.
+            # Never infer that a nonmatched CAS is certainly not covered.
+            unmapped_acute_rows += 1
+            continue
         if not valid_cas(cas):
             bad_cas.append(f"{i}:{cas[:30]}")
             continue
@@ -172,11 +178,19 @@ def load_registry(path: Path | None, meta_path: Path | None):
         raise ValueError("인체급성 지정목록 CAS 오류. 자동 일치 처리하지 않습니다: " + ", ".join(bad_cas[:8]))
     if not mapped:
         raise ValueError("유효한 인체급성 지정 물질이 없습니다. 목록의 구분명과 범위를 확인하세요.")
+    declared_coverage = meta["coverage"]
+    meta = dict(meta)
+    if unmapped_acute_rows and declared_coverage == "complete_acute_list":
+        # CAS-less group entries make an exact-CAS-only registry incomplete.
+        meta["coverage"] = "partial"
     diag = {
         "loaded": True,
         "status": "USER_SUPPLIED_SNAPSHOT_UNVERIFIED_COVERAGE",
         "source_url": meta["source_url"], "snapshot_date": meta["snapshot_date"],
-        "coverage_declared_by_user": meta["coverage"],
+        "coverage_declared_by_user": declared_coverage,
+        "effective_cas_lookup_coverage": meta["coverage"],
+        "coverage_downgraded_due_to_casless_groups": meta["coverage"] != declared_coverage,
+        "unmapped_acute_rows_no_cas": unmapped_acute_rows,
         "acute_only_declared_by_user": meta["acute_only"],
         "input_rows": len(data), "acute_distinct_cas": len(mapped),
         "nonacute_rows_ignored": ignored_nonacute,
