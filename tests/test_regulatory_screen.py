@@ -161,3 +161,25 @@ def test_zip_duplicates_rejected(tmp_path):
         z.writestr("a/human_acute_endpoints.csv", "cas,route\n")
     with pytest.raises(ValueError, match="중복"):
         load_batch(None, p)
+
+
+def test_official_group_without_cas_downgrades_complete_claim(tmp_path):
+    reg = tmp_path / "official.csv"
+    reg.write_text(
+        "cas,유해성물질,고유번호\n"
+        "71-43-2,인체급성유해성물질,EXAMPLE-1\n"
+        ",인체급성유해성물질,EXAMPLE-GROUP\n", encoding="utf-8")
+    meta_path = tmp_path / "metadata.json"
+    meta_path.write_text(json.dumps({
+        "coverage": "complete_acute_list",
+        "source_url": "https://www.law.go.kr/",
+        "snapshot_date": "2026-11-20",
+        "acute_only": False,
+    }), encoding="utf-8")
+    mapping, meta, diag = load_registry(reg, meta_path)
+    assert mapping["71-43-2"] == ["EXAMPLE-1"]
+    assert diag["coverage_downgraded_due_to_casless_groups"] is True
+    assert diag["unmapped_acute_rows_no_cas"] == 1
+    assert meta["coverage"] == "partial"
+    result, _ = assess([search_row("108-88-3")], [endpoint(cas="108-88-3")], mapping, meta, {})
+    assert result[0]["designated_acute_registry_status"] == "not_found_in_partial_snapshot_unknown"
