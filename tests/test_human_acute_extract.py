@@ -71,3 +71,12 @@ def test_no_ecotoxicity_section_used():
     rows = parse_section11(xml, "123-45-6")
     assert len(rows) == 1
     assert rows[0]["route"] == "oral"
+
+
+def test_export_preserves_equality_qualifier(tmp_path):
+    rows = parse_section11(SAMPLE, "71-43-2", "001008")
+    outfile = tmp_path / "human.csv"
+    write_csv(outfile, rows)
+    with outfile.open(encoding="utf-8-sig", newline="") as f:
+        loaded = list(csv.DictReader(f))
+    assert loaded[2]["qualifier"] == "="
