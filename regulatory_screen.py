@@ -448,19 +448,41 @@ def run(batch: Path | None, batch_zip: Path | None, out: Path,
     write_csv(out / "review_queue.csv",
               [r for r in screening if r["screening_priority"] not in ("reference_listed", "P4_oral_above")],
               SCREEN_COLS)
+    # A registry-listed compound should not disappear from evidence QA.
+    # Reference-list membership and oral toxicity evidence are separate axes.
+    write_csv(out / "reference_evidence_audit.csv",
+              [r for r in screening if r["designated_acute_registry_status"] == "listed_in_supplied_acute_registry"],
+              SCREEN_COLS)
     endpoint_columns = list(dict.fromkeys(list(endpoints[0]) + ["endpoint_numeric_relation", "endpoint_quality_flags", "legal_test_evidence_verified"])) if endpoints else list(ENDPOINT_FIELDS) + ["endpoint_numeric_relation", "endpoint_quality_flags", "legal_test_evidence_verified"]
     write_csv(out / "endpoint_quality_review.csv", endpoint_qa, endpoint_columns)
+    write_csv(out / "manual_endpoint_review.csv",
+              [r for r in endpoint_qa if r.get("extraction_status", "").startswith("manual_review_")],
+              endpoint_columns)
     registry_qa = (registry_row_audit(registry_path, {r["cas"] for r in screening})
                    if registry_path else [])
     if registry_path:
         write_csv(out / "registry_cas_audit.csv", registry_qa, REGISTRY_AUDIT_COLS)
     missing = [x for x in screening if x["designated_acute_registry_status"] == "registry_not_provided"]
+    cross_tab: dict[str, dict[str, int]] = {}
+    for row in screening:
+        key = row["designated_acute_registry_status"]
+        rel = row["oral_numeric_relation"]
+        cross_tab.setdefault(key, {})
+        cross_tab[key][rel] = cross_tab[key].get(rel, 0) + 1
     summary = {
         "research_scope": "human_acute_only; quantitative comparison: rodent oral LD50 <= 300 mg/kg only",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "input_compounds": len(screening),
         "extracted_human_endpoints": len(endpoint_qa),
         "route_record_counts": dict(Counter(x.get("route", "") for x in endpoint_qa)),
+        "extraction_status_counts": dict(Counter(x.get("extraction_status", "") for x in endpoint_qa)),
+        "oral_numeric_relation_counts": dict(Counter(x["oral_numeric_relation"] for x in screening)),
+        "registry_vs_oral_numeric_relation": cross_tab,
+        "registry_listed_evidence_audit_rows": sum(
+            x["designated_acute_registry_status"] == "listed_in_supplied_acute_registry" for x in screening),
+        "manual_endpoint_review_rows": sum(
+            x.get("extraction_status", "").startswith("manual_review_") for x in endpoint_qa),
+        "kosha_no_hit_count": sum(x["kosha_search_status"] == "no_hit" for x in screening),
         "priority_counts": dict(Counter(x["screening_priority"] for x in screening)),
         "registry_diagnostics": reg_diag,
         "registry_cas_audit_rows": len(registry_qa),
