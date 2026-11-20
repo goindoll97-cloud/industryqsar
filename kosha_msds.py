@@ -25,6 +25,8 @@ from urllib.parse import unquote
 from dotenv import load_dotenv
 import requests
 
+from human_acute_extract import export_from_folder
+
 BASE_URL = "https://apis.data.go.kr/B552468/msdschem1"
 SEARCH_PATH = "getChemList001"
 DETAIL_PATHS = {"11": "getChemDetail111"}
@@ -267,12 +269,15 @@ def run(cas_values: list[str], out: Path, fetch_details: bool,
               ["queried_cas", "chem_id", "section", "mention", "evidence_status"])
     write_csv(out / "screening_input_template.csv", templates,
               list(templates[0].keys()))
+    n_structured_human = export_from_folder(out, searches)
     audit = {
         "source": "KOSHA MSDS Lookup Service (Public Data Portal 15157612)",
         "fetched_at_utc": utc_now(),
         "cas_requested": len(chosen), "exact_unique_cas_matched": sum(x["search_status"] == "exact_cas_match" for x in searches),
         "sections_downloaded": sum(x["status"] == "api_returned_unverified" for x in sections),
-        "endpoint_mentions": len(mentions), "details_requested": fetch_details,
+        "endpoint_mentions": len(mentions), "structured_human_endpoint_rows": n_structured_human,
+        "structured_human_endpoint_file": "human_acute_endpoints.csv",
+        "details_requested": fetch_details,
         "search_endpoint": SEARCH_PATH, "detail_endpoints": DETAIL_PATHS,
         "detail_id_parameter_assumption": detail_id_param if fetch_details else None,
         "experimental_provenance_verified": False, "legal_designation_checked": False,
