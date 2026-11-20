@@ -2,6 +2,23 @@
 
 기존 MSDS **설치류 급성경구 LD50** 및 외부 QSAR 예측을 이용해 **추가 검토 우선순위**를 산출하는 연구용 프로토타입입니다. **규제 지정 판정 도구가 아닙니다.** 신규 독성시험 자료 수집이나 QSAR 재학습은 수행하지 않습니다.
 
+## 3단계: 업로드한 인체급성·인체만성·생태유해성 통합 엑셀과 CAS 대조
+
+사용자가 준비한 **인체급성 CAS만 정리한 스냅샷 CSV**와 근거 메타데이터를 local data/private에 보관하면, 현재 KOSHA 배치와 대조할 수 있습니다. 원본 Excel이나 실제 규제 데이터는 이 공개 GitHub에 업로드하지 않습니다.
+
+~~~powershell
+git pull origin main
+New-Item -ItemType Directory -Path data/private -Force
+Expand-Archive -Path "인체급성_규제목록_분석입력_20261120.zip" -DestinationPath data/private -Force
+python regulatory_screen.py --batch outputs/kosha_batch --registry data/private/acute_registry_for_screening.csv --registry-meta data/private/registry_metadata.json --out outputs/regulatory_with_registry
+~~~
+
+데이터는 **사용자 제공 목록으로 출처/시행일이 아직 검증되지 않았으므로** 공식 비지정 판정을 하지 않습니다. CAS 없는 그룹·염류 행은 registry_cas_audit.csv에서 수기 검토해야 합니다.
+
+세부 내용: [3단계 Excel/CAS 매칭 가이드](docs/step3_uploaded_registry_ko.md).
+
+---
+
 ## 2단계: 규제 검토 우선순위 분석 (인체급성만)
 
 기존 KOSHA MSDS 11번 수집 파일을 **다시 API 조회하지 않고** 재분석할 수 있습니다.
