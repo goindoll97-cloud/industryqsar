@@ -29,6 +29,11 @@ ORAL_SPECIES = {"rat", "mouse", "rodent", "랫드", "마우스", "설치류", "�
 INPUTS = ("kosha_search_results.csv", "human_acute_endpoints.csv")
 ENDPOINT_FIELDS = ("cas", "route", "extraction_status", "reported_metric", "qualifier", "value", "unit",
                    "species_as_written", "reported_source", "duration_hours", "raw_detail")
+REGISTRY_AUDIT_COLS = [
+    "source_row", "source_cas", "normalized_cas", "registry_acute_label",
+    "notice_id", "substance_name", "mixture_cutoff_original",
+    "cas_matching_status", "user_supplied_scope"
+]
 SCREEN_COLS = [
     "cas", "kosha_search_status", "designated_acute_registry_status",
     "registry_notice_ids", "registry_scope", "oral_records", "dermal_records",
@@ -382,6 +387,37 @@ def assess(search: list[dict], endpoints: list[dict], registry, meta, qsar: dict
     return sorted(output, key=sort_key), endpoint_qa
 
 
+def registry_row_audit(registry_path: Path, all_screened_cas: set[str]) -> list[dict]:
+    """Preserve unmatched group entries for human review and trace matched CAS."""
+    rows = read_csv_bytes(registry_path.read_bytes())
+    if not rows:
+        return []
+    cas_col = find_header(rows[0], REGISTRY_CAS_NAMES)
+    type_col = find_header(rows[0], REGISTRY_CLASS_NAMES)
+    id_col = find_header(rows[0], REGISTRY_ID_NAMES)
+    results = []
+    for n, record in enumerate(rows, 2):
+        if type_col and not is_acute_type(record.get(type_col, "")):
+            continue
+        cas = normalize_cas(record.get(cas_col, "")) if cas_col else ""
+        valid = valid_cas(cas)
+        status = ("unmapped_group_or_invalid_cas" if not valid
+                  else "cas_matched_to_kosha_batch" if cas in all_screened_cas
+                  else "valid_cas_not_in_kosha_batch")
+        results.append({
+            "source_row": record.get("원본_NO", str(n)),
+            "source_cas": record.get("source_cas_as_written", cas),
+            "normalized_cas": cas if valid else "",
+            "registry_acute_label": record.get(type_col, "") if type_col else "",
+            "notice_id": record.get(id_col, "") if id_col else "",
+            "substance_name": record.get("국문명", record.get("영문명", "")),
+            "mixture_cutoff_original": record.get("유해특성분류 및 혼합물 함량기준(%)", ""),
+            "cas_matching_status": status,
+            "user_supplied_scope": "unverified_uploaded_registry",
+        })
+    return results
+
+
 def safe_cell(key, value):
     txt = str(value) if value is not None else ""
     if key in ("qualifier",) and txt == "=":
@@ -414,6 +450,10 @@ def run(batch: Path | None, batch_zip: Path | None, out: Path,
               SCREEN_COLS)
     endpoint_columns = list(dict.fromkeys(list(endpoints[0]) + ["endpoint_numeric_relation", "endpoint_quality_flags", "legal_test_evidence_verified"])) if endpoints else list(ENDPOINT_FIELDS) + ["endpoint_numeric_relation", "endpoint_quality_flags", "legal_test_evidence_verified"]
     write_csv(out / "endpoint_quality_review.csv", endpoint_qa, endpoint_columns)
+    registry_qa = (registry_row_audit(registry_path, {r["cas"] for r in screening})
+                   if registry_path else [])
+    if registry_path:
+        write_csv(out / "registry_cas_audit.csv", registry_qa, REGISTRY_AUDIT_COLS)
     missing = [x for x in screening if x["designated_acute_registry_status"] == "registry_not_provided"]
     summary = {
         "research_scope": "human_acute_only; quantitative comparison: rodent oral LD50 <= 300 mg/kg only",
@@ -423,6 +463,9 @@ def run(batch: Path | None, batch_zip: Path | None, out: Path,
         "route_record_counts": dict(Counter(x.get("route", "") for x in endpoint_qa)),
         "priority_counts": dict(Counter(x["screening_priority"] for x in screening)),
         "registry_diagnostics": reg_diag,
+        "registry_cas_audit_rows": len(registry_qa),
+        "registry_cas_manual_review_rows": sum(
+            x["cas_matching_status"] == "unmapped_group_or_invalid_cas" for x in registry_qa),
         "registry_missing_for_all": len(missing) == len(screening),
         "registry_snapshot_is_officially_verified": False,
         "qsar_records_supplied": len(qsar),
