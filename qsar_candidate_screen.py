@@ -45,7 +45,8 @@ CANDIDATE_COLUMNS = (
     "structural_similarity_signal", "review_tier",
     "quality_flags", "registry_status", "source_boundary",
     "qsar_model_retrained", "legal_designation_determined",
-    "candidate_universe_status", "kosha_oral_numeric_relation_reported",
+    "candidate_universe_status", "original_smiles_from_epa",
+    "kosha_oral_numeric_relation_reported",
     "kosha_oral_records", "kosha_reported_source", "qsar_msds_numeric_agreement",
 )
 REFERENCE_COLUMNS = ("cas", "registry_match", "structure_usable", "structure_reason",
@@ -122,6 +123,7 @@ def load_structures(path: Path):
         raise ValueError("EPA 구조 CSV가 비어 있습니다.")
     cas_key = col(rows[0], STRUCTURE_COLUMNS["cas"])
     smiles_key = col(rows[0], STRUCTURE_COLUMNS["smiles"])
+    raw_smiles_key = col(rows[0], ("smiles", "canonical_smiles"))
     dtxsid_key = col(rows[0], STRUCTURE_COLUMNS["dtxsid"])
     if not cas_key or not smiles_key:
         raise ValueError("EPA 구조 CSV에 CASRN 또는 SMILES/QSAR_READY_SMILES 열이 필요합니다.")
@@ -134,10 +136,20 @@ def load_structures(path: Path):
             invalid_ids.append(cas[:50])
             continue
         smi = row.get(smiles_key, "")
+        original_smi = row.get(raw_smiles_key, "") if raw_smiles_key else ""
         mol, status = molecule(smi)
         canonical = Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True) if mol else ""
+        if (mol is not None and original_smi and raw_smiles_key != smiles_key):
+            original_mol = Chem.MolFromSmiles(original_smi)
+            if original_mol is None or Chem.MolToSmiles(
+                    original_mol, canonical=True, isomericSmiles=True) != canonical:
+                # Standardization can neutralize/desalt/group individual components.
+                # Never silently use a standardized neutral molecule as the actual
+                # original CAS substance for structural similarity or molecular weight.
+                mol, canonical = None, ""
+                status = "epa_structure_standardization_difference_requires_review"
         entry = {"cas": cas, "mol": mol, "canonical": canonical,
-                 "status": status, "smiles": smi,
+                 "status": status, "smiles": smi, "original_smiles": original_smi,
                  "dtxsid": row.get(dtxsid_key, "") if dtxsid_key else ""}
         if cas in loaded:
             prior = loaded[cas]
@@ -258,7 +270,9 @@ def create_rankings(structures, registry, predictions, candidates=None, kosha_or
             continue
         if item["mol"] is None:
             rejected.append({"cas": cas, "dtxsid": item["dtxsid"],
-                             "smiles": item["smiles"], "reason": item["status"]})
+                             "smiles": item["smiles"],
+                             "original_smiles": item["original_smiles"],
+                             "reason": item["status"]})
             continue
         mol = item["mol"]
         best_cas = ""
@@ -334,6 +348,7 @@ def create_rankings(structures, registry, predictions, candidates=None, kosha_or
             "source_boundary": "EPA_STRUCTURES_AND_TEST_ONLY_NOT_US_REGULATORY_DESIGNATION",
             "qsar_model_retrained": "false",
             "legal_designation_determined": "false",
+            "original_smiles_from_epa": item["original_smiles"],
             "candidate_universe_status": ("provided_domestic_candidate_universe"
                                           if candidates is not None else "EPA_EXPORT_ONLY_NOT_DOMESTIC_UNIVERSE"),
             "kosha_oral_numeric_relation_reported": k_relation,
@@ -388,7 +403,7 @@ def run(structures_path: Path, registry_path: Path, predictions_path: Path | Non
                     for cas in sorted(candidates - registry - set(structures))],
                    ("cas", "reason"))
     output_csv(out / "structure_manual_review.csv", rejected,
-               ("cas", "dtxsid", "smiles", "reason"))
+               ("cas", "dtxsid", "smiles", "original_smiles", "reason"))
     summary = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "scope": "single_component_neutral_organic_rat_oral_ld50",
@@ -413,6 +428,7 @@ def run(structures_path: Path, registry_path: Path, predictions_path: Path | Non
             "Model AD flags come from the user's TEST report and are not independently validated.",
             "TEST common output of -log10(mol/kg) is converted with RDKit molecular weight; verify structure identity and original TEST units.",
             "Metal salts, multi-component and charged substances are outside this pilot and require a separate chemical approach.",
+            "If CompTox original SMILES and QSAR-ready SMILES differ after canonicalization, the structure is excluded for identity review.",
             "A Korean industrial-chemical universe must be separately defined to claim nationwide coverage.",
             "KOSHA MSDS is user-supplied reported evidence, not independently verified experimental toxicity.",
             "Missing EPA structures and excluded metal/salt chemicals must not be labelled nonhazardous.",
