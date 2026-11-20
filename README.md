@@ -76,3 +76,55 @@ API 인증 전, 로컬 분석만 점검하려면 `--live-law`를 생략할 수 �
 4. 과거 시점 기준 목록으로 시간적 외부검증 및 우선순위 발견율 평가
 
 > **제한:** `.env`에 키를 추가해야 실제 법령 API 호출이 가능합니다. 합성 데모 성공은 실물질 데이터 통합이나 API 호출 성공을 의미하지 않습니다.
+
+
+## KOSHA MSDS OpenAPI: CAS 기반 조회 및 독성 근거 확보 (추가 기능)
+
+공공데이터포털 **한국산업안전보건공단_물질안전보건자료 조회 서비스** (데이터 ID **15157612**)의 2026년 신규 `msdschem1` 경로를 이용합니다.
+
+- 공식 소개: https://www.data.go.kr/data/15157612/openapi.do
+- 기본 주소: `https://apis.data.go.kr/B552468/msdschem1`
+- CAS 목록 조회: `getChemList001` (`searchWrd=CAS`, `searchCnd=1`, `numOfRows`, `pageNo`)
+- 상세 MSDS: `getChemDetail111`(11. 독성), `getChemDetail121`(12. 환경영향)`
+- **중요:** 상세조회 `chemId` 파라미터는 파일럿의 기본 가정입니다. 실제 계정에 제공되는 **최신 OpenAPI 활용가이드/Swagger에서 상세 요청변수명과 응답 필드를 확인**해야 합니다. 호출이 실패하면 `KOSHA_MSDS_DETAIL_ID_PARAM` 또는 `--detail-id-param`을 실제 요청변수명으로 수정하세요.
+
+**로컬 환경변수 설정** (인증값을 채팅이나 GitHub에 게시하지 마세요):
+
+```dotenv
+LAW_API_OC=본인_법령_API_인증값
+KOSHA_MSDS_SERVICE_KEY=본인_KOSHA_서비스키
+KOSHA_MSDS_DETAIL_ID_PARAM=chemId
+```
+
+**예시: CAS 목록 먼저 2건 조회** (실제 API 요청, 키·서비스 승인 필요):
+
+```bash
+python kosha_msds.py --cas 71-43-2 --cas 108-88-3 --out outputs/kosha_search
+```
+
+**실제 11·12번 섹션도 조회** (기본 파라미터 명세 확인 후 실행):
+
+```bash
+python kosha_msds.py --cas 71-43-2 --fetch-details --out outputs/kosha_details
+```
+
+**CAS 목록 CSV 사용:** 입력 `data/private/cas_list.csv`에 `cas` 열을 준비합니다.
+
+```bash
+python kosha_msds.py --cas-csv data/private/cas_list.csv --max-cas 20 --fetch-details --sleep 1.0 --out outputs/kosha_batch
+```
+
+수집 결과는 `outputs/` 아래에 저장되며 Git에 커밋되지 않습니다.
+
+| 출력 | 내용 |
+|---|---|
+| `kosha_search_results.csv` | CAS 조회 상태 및 원본 목록 필드, 다중/불확실 매칭 경고 |
+| `kosha_sections.csv` | MSDS 11·12번 원문 텍스트 (검증 전) |
+| `kosha_endpoint_mentions.csv` | LD50·LC50·EC50 언급 부분 (후보 텍스트만) |
+| `raw_xml/*.xml` | 원문 XML 증거 보존 |
+| `screening_input_template.csv` | 기존 `pilot.py` 입력 규격의 빈 양식 |
+| `kosha_audit.json` | 조회시점, 정확한 CAS 매칭 건수 및 검증상태 기록 |
+
+**자료 해석 유의사항:** 수집된 LD50·EC50 텍스트는 *아직 시험종·노출경로·시험시간·단위·원출처가 검증되지 않은 자료*입니다. 공단 MSDS는 참고용이므로 조회 결과를 자동으로 `msds_basis=experimental`로 채우지 않습니다. 자동 추출 후보를 곧바로 법정 지정 근거로 사용하지 마세요. `designation_status`도 `unknown`으로 두며 공식 지정고시와 별도 대조 후에만 변경하세요. 특히 12번 물벼룩 자료와 11번 설치류 자료는 서로 다른 종말점입니다. 현재 `pilot.py`는 설치류 경구 LD50 스크리닝이므로, 물벼룩 EC50은 별도 생태유해성 모델 확장 전까지 해당 법적 기준에 자동 대입하지 않습니다.
+
+**테스트:** `python -m pytest -q` (가짜 XML을 이용한 계약 테스트; 실제 API 인증·상세조회 성공은 보장하지 않음).
