@@ -90,3 +90,73 @@ def test_mixed_registry_must_not_be_accepted(tmp_path):
     epa.write_text("cas,smiles\n71-43-2,c1ccccc1\n", encoding="utf-8")
     with pytest.raises(ValueError, match="인체급성 이외"):
         run(epa, reg, None, tmp_path / "result")
+
+
+
+def test_domestic_candidate_allowlist_and_kosha_discordance(tmp_path):
+    registry = tmp_path / "ref.csv"
+    registry.write_text("cas,유해성물질\n71-43-2,인체급성유해성물질\n", encoding="utf-8")
+    structs = tmp_path / "structures.csv"
+    structs.write_text(
+        "CASRN,SMILES,DTXSID\n"
+        "71-43-2,c1ccccc1,ref\n"
+        "108-88-3,Cc1ccccc1,candidate\n"
+        "67-64-1,CC(C)=O,irrelevant\n", encoding="utf-8")
+    domestic = tmp_path / "domestic.csv"
+    domestic.write_text("cas\n108-88-3\n75-09-2\n", encoding="utf-8")
+    predictions = tmp_path / "test.csv"
+    predictions.write_text(
+        "cas,ld50_value,ld50_unit,ad_status,model_name\n"
+        "108-88-3,100,mg/kg,inside,EPA_TEST_demo\n", encoding="utf-8")
+    kosha = tmp_path / "kosha.csv"
+    kosha.write_text(
+        "cas,route,extraction_status,reported_metric,qualifier,value,unit,species_as_written,reported_source\n"
+        "108-88-3,oral,parsed_unverified,LD50,=,900,mg/kg,Rat,MSDS_reference_unverified\n",
+        encoding="utf-8")
+    summary = run(structs, registry, predictions, tmp_path / "result", domestic, kosha)
+    assert summary["candidate_universe_provided"] is True
+    assert summary["domestic_candidate_universe_missing_from_epa_export"] == 1
+    assert summary["qsar_kosha_numeric_disagreement_count"] == 1
+    with (tmp_path / "result/qsar_candidates.csv").open(encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+    assert len(rows) == 1
+    assert rows[0]["cas"] == "108-88-3"
+    assert rows[0]["qsar_msds_numeric_agreement"] == "disagree"
+    assert rows[0]["kosha_oral_numeric_relation_reported"] == "above"
+    assert rows[0]["review_tier"] == "P1_QSAR_ORAL_SIGNAL_REPORTED_INSIDE_AD"
+    assert "qsar_msds_numeric_discordance_sources_not_independent" in rows[0]["quality_flags"]
+    with (tmp_path / "result/candidate_structure_missing.csv").open(encoding="utf-8-sig") as f:
+        missing = list(csv.DictReader(f))
+    assert missing[0]["cas"] == "75-09-2"
+    with (tmp_path / "result/evidence_manual_review.csv").open(encoding="utf-8-sig") as f:
+        manual = list(csv.DictReader(f))
+    assert len(manual) == 1
+
+
+def test_kosha_msds_without_qsar_is_unverified_review_signal(tmp_path):
+    r = tmp_path / "r.csv"
+    r.write_text("cas\n71-43-2\n", encoding="utf-8")
+    s = tmp_path / "s.csv"
+    s.write_text("cas,smiles\n71-43-2,c1ccccc1\n108-88-3,Cc1ccccc1\n", encoding="utf-8")
+    k = tmp_path / "k.csv"
+    k.write_text(
+        "cas,route,extraction_status,reported_metric,qualifier,value,unit,species_as_written,reported_source\n"
+        "108-88-3,oral,parsed_unverified,LD50,<,200,mg/kg,Rat,source_only\n",
+        encoding="utf-8")
+    run(s, r, None, tmp_path / "out", None, k)
+    with (tmp_path / "out/qsar_candidates.csv").open(encoding="utf-8-sig") as f:
+        row = next(csv.DictReader(f))
+    assert row["review_tier"] == "P2_KOSHA_REPORTED_ORAL_SIGNAL_UNVERIFIED"
+    assert row["epa_test_threshold_relation"] == "not_available"
+
+
+def test_raw_vs_qsar_ready_salt_change_requires_manual_review(tmp_path):
+    p = tmp_path / "epa.csv"
+    p.write_text(
+        "CASRN,QSAR_READY_SMILES,SMILES,DTXSID\n"
+        "71-43-2,c1ccccc1,c1ccccc1,ref\n"
+        "108-88-3,CCN,CCN.Cl,changed\n", encoding="utf-8")
+    structs, audit = load_structures(p)
+    assert structs["71-43-2"]["status"] == "valid_single_component_organic"
+    assert structs["108-88-3"]["status"] == "epa_structure_standardization_difference_requires_review"
+    assert structs["108-88-3"]["mol"] is None
