@@ -104,10 +104,18 @@ python kosha_msds.py --cas 71-43-2 --fetch-details --out outputs/kosha_human_acu
 python kosha_msds.py --cas-csv data/private/cas_list.csv --max-cas 20 --fetch-details --out outputs/kosha_batch
 ```
 
-조회 결과: `kosha_search_results.csv`, `kosha_sections.csv`(11번만), `kosha_endpoint_mentions.csv`(LD50·LC50 등 인체독성 후보 문구), `raw_xml/*.xml`, `screening_input_template.csv`, `kosha_audit.json`. `outputs/` 아래에 저장되며 Git에 포함되지 않습니다.
+조회 결과: `kosha_search_results.csv`, `kosha_sections.csv`(11번만), `kosha_endpoint_mentions.csv`(언급 문구), **`human_acute_endpoints.csv`**(경구·경피·흡입의 독성 수치·부등호·단위·시험종·원문출처·시험시간 추출 후보), `raw_xml/*.xml`, `screening_input_template.csv`, `kosha_audit.json`. `outputs/` 아래에 저장되며 Git에 포함되지 않습니다.
 
 **현재 스크리닝의 정량적 종말점은 설치류 급성경구 LD50(300 mg/kg 이하) 하나입니다.** MSDS 11번에는 흡입·경피·피부부식성 등 다른 인체건강 항목이 함께 나올 수 있으나, **코드가 해당 항목을 법정 지정기준에 자동 대입하지는 않습니다.** 향후 확장은 각각의 법적 기준과 시험조건을 확인한 다음 별도 구현해야 합니다.
 
 KOSHA MSDS에 적힌 값은 시험자료의 원출처·시험종·노출경로·단위가 확인되기 전까지 **미검증 참고정보**입니다. 수집기는 원문을 보관하고 후보 표현만 추출합니다. `msds_basis=experimental`, 실제 지정 여부, QSAR AD를 자동으로 추정하지 않습니다. 실제 API 호출은 인증정보가 없어 아직 검증하지 않았으며, 오프라인 테스트는 모의 XML로 동작합니다.
 
 **테스트:** `python -m pytest -q`. 생태독성 조회를 금지하는 회귀 테스트도 포함합니다.
+
+### 기존 원문 XML에서 인체급성독성 구조화 추출만 다시 실행
+
+```bash
+python human_acute_extract.py --xml outputs/kosha_pilot/raw_xml/001_section11.xml --cas 71-43-2 --chem-id 001008 --out outputs/kosha_pilot/human_acute_endpoints.csv
+```
+
+**주의:** `human_acute_endpoints.csv`의 `above_numeric_criterion`은 독성자료의 시험종·자료 품질·법적 지정 여부를 판정하는 결과가 아닌 **단순 숫자 비교 신호**입니다. 경피 및 흡입은 종말점·시험시간의 별도 검증이 필요하여 자동 기준 비교를 하지 않습니다. `screening_input_template.csv`에는 근거 검증 전의 숫자를 자동 확정 입력하지 않습니다.
