@@ -420,7 +420,7 @@ def registry_row_audit(registry_path: Path, all_screened_cas: set[str]) -> list[
 
 def safe_cell(key, value):
     txt = str(value) if value is not None else ""
-    if key in ("qualifier",) and txt == "=":
+    if (key in ("qualifier",) and txt == "=") or (key == "source_cas" and txt == "-"):
         return txt
     if txt.lstrip().startswith(("=", "+", "-", "@")):
         return "'" + txt
