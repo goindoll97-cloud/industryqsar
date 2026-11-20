@@ -18,7 +18,8 @@ SEARCH_XML = b"""<response><header><resultCode>00</resultCode></header><body><it
 <item><chemId>111</chemId><casNo>71-43-2</casNo><chemName>benzene</chemName></item>
 </items></body></response>"""
 SECTION_11 = b"""<response><header><resultCode>00</resultCode></header><body><items>
-<item><title>Acute toxicity</title><contents>rat oral LD50 930 mg/kg</contents></item>
+<item><msdsItemCode>K040202</msdsItemCode><msdsItemNameKor>oral</msdsItemNameKor>
+<itemDetail>LD50 930 mg/kg Rat</itemDetail></item>
 </items></body></response>"""
 
 class FakeResponse:
@@ -56,7 +57,7 @@ def test_list_schema_and_cas_search():
 def test_extract_mentions_without_declaring_experimental_values():
     root = ET.fromstring(SECTION_11)
     text = xml_text(root)
-    assert "rat oral" in text
+    assert "LD50 930 mg/kg" in text
     matches = candidate_mentions(text)
     assert any("LD50" in s for s in matches)
     assert not any("experimental" in s for s in matches)
