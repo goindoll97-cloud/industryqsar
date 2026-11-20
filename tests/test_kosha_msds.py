@@ -73,6 +73,7 @@ def test_end_to_end_search_and_sections_are_unverified(tmp_path):
     audit = run(["71-43-2"], tmp_path, True, "chemId", 5, 10, 0, KoshaClient("SECRET123", session=fake))
     assert audit["exact_unique_cas_matched"] == 1
     assert audit["sections_downloaded"] == 1
+    assert audit["structured_human_endpoint_rows"] == 1
     assert audit["experimental_provenance_verified"] is False
     assert audit["legal_designation_checked"] is False
     assert len(fake.calls) == 2
@@ -85,6 +86,11 @@ def test_end_to_end_search_and_sections_are_unverified(tmp_path):
     with (tmp_path / "kosha_endpoint_mentions.csv").open(encoding="utf-8-sig") as f:
         mention_rows = list(csv.DictReader(f))
     assert {r["section"] for r in mention_rows} == {"11"}
+    with (tmp_path / "human_acute_endpoints.csv").open(encoding="utf-8-sig") as f:
+        structured = list(csv.DictReader(f))
+    assert len(structured) == 1
+    assert structured[0]["route"] == "oral"
+    assert structured[0]["value"] == "930"
     assert all(x["evidence_status"] == "UNVERIFIED_TEXT_ONLY" for x in mention_rows)
     for path in tmp_path.rglob("*"):
         if path.is_file():
