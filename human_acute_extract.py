@@ -32,7 +32,7 @@ SOURCE_RE = re.compile(r"(?:※\s*)?출처\s*:\s*(?P<source>[^|;\n]{1,120})", re
 GUIDELINE_RE = re.compile(r"OECD\s*TG\s*\d+[A-Za-z]?", re.IGNORECASE)
 COLUMNS = [
     "cas", "chem_id", "msds_code", "route", "expected_metric",
-    "raw_detail", "extraction_status", "reported_metric", "qualifier",
+    "raw_detail", "extraction_status", "extraction_note", "reported_metric", "qualifier",
     "value", "unit", "species_as_written", "duration_hours",
     "exposure_form", "reported_source", "test_guideline",
     "oral_ld50_300_relation_preliminary", "evidence_verification",
@@ -69,11 +69,28 @@ def parse_section11(xml_bytes: bytes, cas: str, chem_id: str = "") -> list[dict[
             continue
         matches = [m for m in VALUE_RE.finditer(raw)
                    if re.sub(r"\s+", "", m.group("metric")).upper() == metric]
-        if len(matches) != 1:
-            record["extraction_status"] = ("manual_review_multiple_values" if len(matches) > 1
+        if not matches:
+            # E.g. LD50 50~300 mg/kg can be a hazard-class range rather than
+            # one measured LD50. Do not turn it into a single experimental value.
+            is_range = bool(re.search(
+                r"\bLD\s*50\s*\d+(?:\.\d+)?\s*[-~–]\s*\d+(?:\.\d+)?\s*mg\s*/\s*kg",
+                raw, flags=re.IGNORECASE))
+            record["extraction_status"] = ("manual_review_range_not_single_value" if is_range
                                            else "manual_review_unrecognized_format")
+            record["extraction_note"] = "do_not_infer_experimental_ld50_from_range" if is_range else ""
             rows.append(record)
             continue
+        if len(matches) > 1:
+            # Korean MSDS often repeats exactly the same number in explanatory
+            # parentheses. Only collapse numerically identical repeats;
+            # genuinely different measurements remain flagged for manual review.
+            unique = {(m.group("op") or "=", float(m.group("value").replace(",", "")),
+                       re.sub(r"\s+", "", m.group("unit")).lower()) for m in matches}
+            if len(unique) != 1:
+                record["extraction_status"] = "manual_review_multiple_values"
+                rows.append(record)
+                continue
+            record["extraction_note"] = "repeated_identical_value_in_text"
         m = matches[0]
         normalized_unit = re.sub(r"\s+", "", m.group("unit")).lower()
         qualifier = m.group("op") or "="
