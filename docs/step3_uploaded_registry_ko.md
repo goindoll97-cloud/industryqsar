@@ -21,6 +21,7 @@
 | registry_manual_review.csv | CAS가 없거나 검증되지 않은 행 |
 | cas_list_pilot20.csv | 검증용 20종 CAS 조회목록 |
 | cas_pilot20_selection_manifest.csv | 20종 표본 구분과 원본 행 추적정보 |
+| four_existing_kosha_registry_context.csv | 기존 벤젠·톨루엔·아세톤·디클로로메탄의 원본 목록상 급성·만성 기재 여부 |
 
 파일을 저장소 루트에 다운로드한 다음 PowerShell에서 실행하세요.
 
@@ -73,3 +74,5 @@ python regulatory_screen.py --batch outputs/kosha_pilot20 --registry data/privat
 - not_found_in_partial_snapshot_unknown는 부분목록에서 찾지 못했다는 뜻입니다. 미지정·무독성 판정이 아닙니다.
 - 그룹·염류·수화물·함량기준은 자동 CAS 매칭으로 확인하지 못하므로 원본고시 수기 확인이 필요합니다.
 - 지정 상태를 독성 레이블의 음성 정답으로 사용하지 않습니다.
+
+데이터 재현성 확인을 위해 registry_metadata.json에 원본 XLSX와 변환 CSV의 SHA-256 해시, 추출 규칙 및 표본 선정 규칙을 기록했습니다. 따라서 법정 효력·출처 검증과는 별개로 파일 변환 내용을 추적할 수 있습니다.
