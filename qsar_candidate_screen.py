@@ -22,7 +22,8 @@ import sys
 from rdkit import Chem, DataStructs
 from rdkit.Chem import Descriptors, rdMolDescriptors, rdFingerprintGenerator
 
-from regulatory_screen import valid_cas, normalize_cas
+from regulatory_screen import valid_cas, normalize_cas, evidence_relation
+from prepare_epa_batch import get_cas_csv
 from pilot import relation
 
 MORGAN = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=2048)
@@ -44,6 +45,8 @@ CANDIDATE_COLUMNS = (
     "structural_similarity_signal", "review_tier",
     "quality_flags", "registry_status", "source_boundary",
     "qsar_model_retrained", "legal_designation_determined",
+    "candidate_universe_status", "kosha_oral_numeric_relation_reported",
+    "kosha_oral_records", "kosha_reported_source", "qsar_msds_numeric_agreement",
 )
 REFERENCE_COLUMNS = ("cas", "registry_match", "structure_usable", "structure_reason",
                      "canonical_smiles", "dtxsid")
@@ -183,6 +186,42 @@ def load_test_predictions(path: Path | None) -> dict:
     return out
 
 
+def load_kosha_oral(path: Path | None) -> dict[str, list[dict]]:
+    """Optional report-only overlay: raw KOSHA extraction is not validated experiment."""
+    if path is None:
+        return {}
+    rows = read_csv(path)
+    required = {"cas", "route", "extraction_status", "reported_metric",
+                "qualifier", "value", "unit", "species_as_written", "reported_source"}
+    if not rows or required - set(rows[0]):
+        raise ValueError("KOSHA 인체독성 CSV 열 누락: " + ", ".join(sorted(required - set(rows[0]) if rows else required)))
+    oral = {}
+    for row in rows:
+        cas = normalize_cas(row.get("cas", ""))
+        if valid_cas(cas) and row["route"].lower() == "oral":
+            oral.setdefault(cas, []).append(row)
+    return oral
+
+
+def reported_kosha_signal(records: list[dict]) -> tuple[str, str, list[str]]:
+    if not records:
+        return "not_reported", "", []
+    relations = []
+    flags = ["kosha_msds_not_independently_verified"]
+    sources = set()
+    for record in records:
+        signal, problems = evidence_relation(record)
+        relations.append(signal)
+        flags.extend(problems)
+        if record.get("reported_source"):
+            sources.add(record["reported_source"])
+    distinct = set(relations)
+    if len(distinct) > 1 or len(records) > 1:
+        flags.append("multiple_kosha_oral_records_review")
+    return (next(iter(distinct)) if len(distinct) == 1 else "mixed",
+            ";".join(sorted(sources)), flags)
+
+
 def value_as_mgkg(predict: dict, mw: float):
     if predict["unit"] == "mg/kg":
         return predict["value"]
@@ -196,7 +235,8 @@ def value_as_mgkg(predict: dict, mw: float):
     return converted if math.isfinite(converted) and converted > 0 else None
 
 
-def create_rankings(structures, registry, predictions):
+def create_rankings(structures, registry, predictions, candidates=None, kosha_oral=None):
+    kosha_oral = kosha_oral or {}
     references = [(cas, entry) for cas, entry in sorted(structures.items())
                   if cas in registry and entry["mol"] is not None]
     refs_fps = [MORGAN.GetFingerprint(entry["mol"]) for _, entry in references]
@@ -214,6 +254,8 @@ def create_rankings(structures, registry, predictions):
     for cas, item in sorted(structures.items()):
         if cas in registry:
             continue
+        if candidates is not None and cas not in candidates:
+            continue
         if item["mol"] is None:
             rejected.append({"cas": cas, "dtxsid": item["dtxsid"],
                              "smiles": item["smiles"], "reason": item["status"]})
@@ -230,10 +272,18 @@ def create_rankings(structures, registry, predictions):
             same_structure = item["canonical"] == ref["canonical"]
         mw = Descriptors.MolWt(mol)
         predictor = predictions.get(cas)
+        k_records = kosha_oral.get(cas, [])
+        k_relation, k_source, k_flags = reported_kosha_signal(k_records)
         ld = value_as_mgkg(predictor, mw) if predictor else None
         qrel = relation(str(ld)) if ld is not None else "not_available"
         ad = predictor["ad"] if predictor else "not_provided"
-        flags = []
+        flags = list(k_flags)
+        numeric_agreement = "not_assessable"
+        if (predictor and ad == "inside" and qrel in ("meets", "above")
+                and k_relation in ("meets", "above")):
+            numeric_agreement = "agree" if qrel == k_relation else "disagree"
+            if numeric_agreement == "disagree":
+                flags.append("qsar_msds_numeric_discordance_sources_not_independent")
         if same_structure:
             flags.append("same_canonical_structure_as_registry_cas_review_identifiers")
         if not refs_fps:
@@ -254,6 +304,8 @@ def create_rankings(structures, registry, predictions):
             tier = "P1_QSAR_ORAL_SIGNAL_REPORTED_INSIDE_AD"
         elif qrel == "meets":
             tier = "P2_QSAR_SIGNAL_AD_UNCERTAIN"
+        elif k_relation == "meets":
+            tier = "P2_KOSHA_REPORTED_ORAL_SIGNAL_UNVERIFIED"
         elif structure_signal == "high_similarity_review_only":
             tier = "P3_ANALOGUE_HYPOTHESIS_NO_LD50_INFERENCE"
         else:
@@ -282,9 +334,16 @@ def create_rankings(structures, registry, predictions):
             "source_boundary": "EPA_STRUCTURES_AND_TEST_ONLY_NOT_US_REGULATORY_DESIGNATION",
             "qsar_model_retrained": "false",
             "legal_designation_determined": "false",
+            "candidate_universe_status": ("provided_domestic_candidate_universe"
+                                          if candidates is not None else "EPA_EXPORT_ONLY_NOT_DOMESTIC_UNIVERSE"),
+            "kosha_oral_numeric_relation_reported": k_relation,
+            "kosha_oral_records": str(len(k_records)),
+            "kosha_reported_source": k_source,
+            "qsar_msds_numeric_agreement": numeric_agreement,
         })
     tier_order = {"IDENTIFIER_REVIEW_FIRST": 0, "P1_QSAR_ORAL_SIGNAL_REPORTED_INSIDE_AD": 1,
                   "P2_QSAR_SIGNAL_AD_UNCERTAIN": 2,
+                  "P2_KOSHA_REPORTED_ORAL_SIGNAL_UNVERIFIED": 2,
                   "P3_ANALOGUE_HYPOTHESIS_NO_LD50_INFERENCE": 3,
                   "P4_NO_CONFIRMED_QSAR_OR_STRUCTURE_SIGNAL_NOT_SAFE": 4}
     candidates.sort(key=lambda r: (tier_order[r["review_tier"]], -float(r["nearest_reference_tanimoto"] or 0), r["cas"]))
@@ -304,14 +363,30 @@ def output_csv(path: Path, data: list[dict], fields):
             writer.writerow({k: safe_cell(row.get(k, "")) for k in fields})
 
 
-def run(structures_path: Path, registry_path: Path, predictions_path: Path | None, out: Path):
+def run(structures_path: Path, registry_path: Path, predictions_path: Path | None, out: Path,
+        candidates_path: Path | None = None, kosha_endpoints_path: Path | None = None):
     registry = load_registry(registry_path)
     structures, import_audit = load_structures(structures_path)
     predictions = load_test_predictions(predictions_path)
-    refs, candidate_rows, rejected = create_rankings(structures, registry, predictions)
+    candidates = set(get_cas_csv(candidates_path)) if candidates_path is not None else None
+    if candidates is not None and not candidates:
+        raise ValueError("후보집단 CSV에 유효한 CAS가 없습니다.")
+    kosha_oral = load_kosha_oral(kosha_endpoints_path)
+    refs, candidate_rows, rejected = create_rankings(structures, registry, predictions, candidates, kosha_oral)
     out.mkdir(parents=True, exist_ok=True)
     output_csv(out / "qsar_candidates.csv", candidate_rows, CANDIDATE_COLUMNS)
+    output_csv(out / "evidence_manual_review.csv",
+               [r for r in candidate_rows if r["qsar_msds_numeric_agreement"] == "disagree"
+                or r["review_tier"] in ("IDENTIFIER_REVIEW_FIRST",
+                                       "P2_QSAR_SIGNAL_AD_UNCERTAIN",
+                                       "P2_KOSHA_REPORTED_ORAL_SIGNAL_UNVERIFIED")],
+               CANDIDATE_COLUMNS)
     output_csv(out / "registry_structure_coverage.csv", refs, REFERENCE_COLUMNS)
+    if candidates is not None:
+        output_csv(out / "candidate_structure_missing.csv",
+                   [{"cas": cas, "reason": "not_in_epa_structure_export"}
+                    for cas in sorted(candidates - registry - set(structures))],
+                   ("cas", "reason"))
     output_csv(out / "structure_manual_review.csv", rejected,
                ("cas", "dtxsid", "smiles", "reason"))
     summary = {
@@ -323,6 +398,12 @@ def run(structures_path: Path, registry_path: Path, predictions_path: Path | Non
         "candidate_structures_usable_not_in_supplied_snapshot": len(candidate_rows),
         "nonreference_structure_manual_review": len(rejected),
         "external_qsar_predictions_loaded": len(predictions),
+        "kosha_oral_reported_compounds_loaded": len(kosha_oral),
+        "candidate_universe_provided": candidates is not None,
+        "domestic_candidate_universe_size": len(candidates - registry) if candidates is not None else None,
+        "domestic_candidate_universe_missing_from_epa_export": len(candidates - registry - set(structures)) if candidates is not None else None,
+        "qsar_kosha_numeric_disagreement_count": sum(
+            x["qsar_msds_numeric_agreement"] == "disagree" for x in candidate_rows),
         "candidate_priority_counts": dict(Counter(x["review_tier"] for x in candidate_rows)),
         "epa_import_audit": import_audit,
         "important_limitations": [
@@ -333,6 +414,8 @@ def run(structures_path: Path, registry_path: Path, predictions_path: Path | Non
             "TEST common output of -log10(mol/kg) is converted with RDKit molecular weight; verify structure identity and original TEST units.",
             "Metal salts, multi-component and charged substances are outside this pilot and require a separate chemical approach.",
             "A Korean industrial-chemical universe must be separately defined to claim nationwide coverage.",
+            "KOSHA MSDS is user-supplied reported evidence, not independently verified experimental toxicity.",
+            "Missing EPA structures and excluded metal/salt chemicals must not be labelled nonhazardous.",
             "No binary nonhazard labels, model fitting, toxicology study validation, or legal designation decisions.",
         ],
     }
@@ -349,10 +432,12 @@ def main():
     p.add_argument("--structures", type=Path, required=True, help="EPA CompTox export CSV: cas/CASRN and smiles/QSAR_READY_SMILES")
     p.add_argument("--registry", type=Path, required=True, help="Prepared acute-only Korean registry CSV")
     p.add_argument("--predictions", type=Path, help="Optional manually normalized EPA TEST predictions; must include units and AD")
+    p.add_argument("--candidates", type=Path, help="Optional domestic candidate CAS CSV; filters EPA export to Korean candidate universe")
+    p.add_argument("--kosha-endpoints", type=Path, help="Optional existing KOSHA human_acute_endpoints.csv; oral evidence overlay only")
     p.add_argument("--out", type=Path, default=Path("outputs/epa_qsar_pilot"))
     args = p.parse_args()
     try:
-        run(args.structures, args.registry, args.predictions, args.out)
+        run(args.structures, args.registry, args.predictions, args.out, args.candidates, args.kosha_endpoints)
     except (OSError, ValueError) as exc:
         print("ERROR: " + str(exc), file=sys.stderr)
         sys.exit(2)
