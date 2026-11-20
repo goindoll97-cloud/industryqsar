@@ -183,3 +183,46 @@ def test_official_group_without_cas_downgrades_complete_claim(tmp_path):
     assert meta["coverage"] == "partial"
     result, _ = assess([search_row("108-88-3")], [endpoint(cas="108-88-3")], mapping, meta, {})
     assert result[0]["designated_acute_registry_status"] == "not_found_in_partial_snapshot_unknown"
+
+
+
+def test_upload_registry_without_verified_url_must_label_provenance(tmp_path):
+    registry = tmp_path / "acute_registry.csv"
+    registry.write_text(
+        "cas,유해성물질,고유번호,원본_NO,source_cas_as_written,국문명,유해특성분류 및 혼합물 함량기준(%)\n"
+        "71-43-2,인체급성·생태97-1-271(1),97-1-271(1),1,71-43-2,가상물질 A,인체급성유해성 : 25%\n"
+        ",인체급성97-1-411,97-1-411,8,-,가상 염류,인체급성유해성 : 25%\n",
+        encoding="utf-8-sig"
+    )
+    meta = tmp_path / "meta.json"
+    meta.write_text(json.dumps({
+        "coverage": "partial",
+        "source_url": "",
+        "source_file_name": "uploaded.xlsx",
+        "snapshot_date": "2026-11-20",
+        "snapshot_date_basis": "filename_date_unverified",
+        "acute_only": True,
+        "provenance_status": "unverified_user_upload",
+    }), encoding="utf-8")
+    loaded, cfg, diag = load_registry(registry, meta)
+    assert loaded == {"71-43-2": ["97-1-271(1)"]}
+    assert diag["unmapped_acute_rows_no_cas"] == 1
+    assert diag["provenance_status"] == "unverified_user_upload"
+    assert diag["effective_cas_lookup_coverage"] == "partial"
+    from regulatory_screen import registry_row_audit
+    audit = registry_row_audit(registry, {"71-43-2"})
+    assert len(audit) == 2
+    assert audit[0]["cas_matching_status"] == "cas_matched_to_kosha_batch"
+    assert audit[0]["notice_id"] == "97-1-271(1)"
+    assert audit[1]["cas_matching_status"] == "unmapped_group_or_invalid_cas"
+    assert audit[1]["source_cas"] == "-"
+
+
+def test_missing_source_url_without_unverified_provenance_rejected(tmp_path):
+    r = tmp_path / "m.json"
+    r.write_text(json.dumps({
+        "coverage": "partial", "source_url": "", "snapshot_date": "2026-11-20",
+        "acute_only": True
+    }), encoding="utf-8")
+    with pytest.raises(ValueError, match="출처 URL"):
+        registry_meta(r)
