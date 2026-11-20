@@ -20,10 +20,6 @@ SEARCH_XML = b"""<response><header><resultCode>00</resultCode></header><body><it
 SECTION_11 = b"""<response><header><resultCode>00</resultCode></header><body><items>
 <item><title>Acute toxicity</title><contents>rat oral LD50 930 mg/kg</contents></item>
 </items></body></response>"""
-SECTION_12 = b"""<response><header><resultCode>00</resultCode></header><body><items>
-<item><contents>Daphnia magna 48h EC50 12 mg/L</contents></item>
-</items></body></response>"""
-
 
 class FakeResponse:
     def __init__(self, content):
@@ -44,8 +40,6 @@ class FakeSession:
             return FakeResponse(self.search)
         if url.endswith("getChemDetail111"):
             return FakeResponse(SECTION_11)
-        if url.endswith("getChemDetail121"):
-            return FakeResponse(SECTION_12)
         raise AssertionError("unexpected operation")
 
 
@@ -60,12 +54,13 @@ def test_list_schema_and_cas_search():
 
 
 def test_extract_mentions_without_declaring_experimental_values():
-    root = ET.fromstring(SECTION_12)
+    root = ET.fromstring(SECTION_11)
     text = xml_text(root)
-    assert "Daphnia magna" in text
+    assert "rat oral" in text
     matches = candidate_mentions(text)
-    assert any("EC50" in s for s in matches)
+    assert any("LD50" in s for s in matches)
     assert not any("experimental" in s for s in matches)
+    assert candidate_mentions("Daphnia magna 48h EC50 12 mg/L") == []
 
 
 def test_api_error_xml_detected():
@@ -77,10 +72,10 @@ def test_end_to_end_search_and_sections_are_unverified(tmp_path):
     fake = FakeSession()
     audit = run(["71-43-2"], tmp_path, True, "chemId", 5, 10, 0, KoshaClient("SECRET123", session=fake))
     assert audit["exact_unique_cas_matched"] == 1
-    assert audit["sections_downloaded"] == 2
+    assert audit["sections_downloaded"] == 1
     assert audit["experimental_provenance_verified"] is False
     assert audit["legal_designation_checked"] is False
-    assert len(fake.calls) == 3
+    assert len(fake.calls) == 2
     assert fake.calls[1][1]["chemId"] == "111"
     with (tmp_path / "screening_input_template.csv").open(encoding="utf-8-sig") as f:
         row = next(csv.DictReader(f))
@@ -89,7 +84,7 @@ def test_end_to_end_search_and_sections_are_unverified(tmp_path):
     assert row["msds_oral_ld50_raw"] == ""
     with (tmp_path / "kosha_endpoint_mentions.csv").open(encoding="utf-8-sig") as f:
         mention_rows = list(csv.DictReader(f))
-    assert {r["section"] for r in mention_rows} == {"11", "12"}
+    assert {r["section"] for r in mention_rows} == {"11"}
     assert all(x["evidence_status"] == "UNVERIFIED_TEXT_ONLY" for x in mention_rows)
     for path in tmp_path.rglob("*"):
         if path.is_file():
@@ -122,3 +117,9 @@ def test_cas_csv_input(tmp_path):
 def test_reject_wrong_base():
     with pytest.raises(ValueError):
         KoshaClient("abc", base_url="https://example.org")
+
+
+def test_environmental_section_disallowed():
+    client = KoshaClient("dummy", session=FakeSession())
+    with pytest.raises(ValueError, match="11번만"):
+        client.detail("111", "12", "chemId")
