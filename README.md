@@ -7,7 +7,7 @@ Python 3.11 이상, 저장소 루트:
 ```powershell
 python -m pip install -r cmp_hematotoxicity/requirements.txt
 python cmp_hematotoxicity/build_human_base.py --raw data/private/cmp_hematotoxicity/raw
-python cmp_hematotoxicity/build_dataset.py --only candidates
+python cmp_hematotoxicity/build_dataset.py
 ```
 
 - [연구 실행 안내](cmp_hematotoxicity/README.md)
