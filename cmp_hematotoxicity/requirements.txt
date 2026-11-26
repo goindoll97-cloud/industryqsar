@@ -1,0 +1,4 @@
+pandas>=2.0
+requests>=2.31
+rdkit>=2023.9
+datasets>=2.19
