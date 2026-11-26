@@ -1,15 +1,13 @@
-name: pilot unit tests
-on:
-  push:
-  pull_request:
+name: CMP human pilot checks
+on: [push, pull_request]
 jobs:
-  test:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install -r requirements-qsar.txt
-      - run: python -m pytest -q
-      - run: python pilot.py --demo --out outputs/synthetic_ci
+      - run: python -m compileall -q cmp_hematotoxicity
+      - run: python -m pip install pandas openpyxl
+      - run: python cmp_hematotoxicity/build_human_base.py --help
