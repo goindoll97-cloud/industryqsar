@@ -1,3 +1,7 @@
+# Current scope: human-first pilot (2026-11-26)
+
+See [Human candidate base v1.0](HUMAN_BASE_V1.md) for source citations, exact snapshot hashes, data dictionary and reproducible extraction. Run `build_human_base.py` for the current human-first inventory; the older general benchmark and animal inhalation workflow below are retained for reference only, not human training. Unreported is not negative.
+
 # CMP organic chemicals and hematotoxicity: dataset pilot
 
 ## 실행 (저장소 루트, PowerShell)
