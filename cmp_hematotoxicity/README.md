@@ -1,39 +1,20 @@
-# Current scope: human-first pilot (2026-11-26)
+# CMP human hematotoxicity pilot
 
-See [Human candidate base v1.0](HUMAN_BASE_V1.md) for source citations, exact snapshot hashes, data dictionary and reproducible extraction. Run `build_human_base.py` for the current human-first inventory; the older general benchmark and animal inhalation workflow below are retained for reference only, not human training. Unreported is not negative.
+현재 단계는 SIDER 인체 이상반응 후보 및 IRIS 산업물질 검증 후보의 재현 가능한 인벤토리 구축, CMP 유기물질의 식별자 확인이다.
 
-# CMP organic chemicals and hematotoxicity: dataset pilot
-
-## 실행 (저장소 루트, PowerShell)
+## 실행 (저장소 루트)
 ```powershell
-git fetch origin
-git switch cmp-hematotoxicity-data
 python -m pip install -r cmp_hematotoxicity/requirements.txt
+python cmp_hematotoxicity/build_human_base.py --raw data/private/cmp_hematotoxicity/raw
 python cmp_hematotoxicity/build_dataset.py --only candidates
-python cmp_hematotoxicity/build_dataset.py
 ```
-원본 및 생성물은 기본적으로 data/private/cmp_hematotoxicity에 저장. 외부 데이터 라이선스 확인 전 재배포 금지.
-Hugging Face 데이터는 SMILES/Y를 제공하지만 route 및 개별 실험 근거가 없음. 원 논문의 scaffold train/test/external 1330/442/610과 HF 재분할 1788/594는 동일 분할이 아님. 원본 분할을 복원하기 전에는 논문 외부검증 재현이라고 주장하지 말 것.
 
-## 데이터
-- cmp_organic_evidence.csv: 69 evidence rows, 56 unique names. 특허 후보, 실시예, 출판된 모사실험을 구분. 실제 삼성 사용, 규제 미지정, 혈액독성 미확인을 입증하지 않음.
-- PubChem 이름 매칭은 잠정적이며 CAS/입체화학/염 형태의 수기 검증 필요. 실패/복수 CID도 보존. 이름만으로 CAS를 추측하지 않음.
-- hematox_benchmark.csv: 일반 혈액독성 분류 벤치마크. 흡입독성 정답이나 발암성 정답으로 사용 금지.
-- inhalation_studies_TEMPLATE.csv: 반복 흡입 연구 원자료 추출용 빈 스키마. 현재 실측 행 없음.
-- 공정 부산물은 실제 분석 확인 후 별도 등록. 현재 유기 부산물의 검출 근거 없음.
-- 기존 main 코드 및 자료 보존. 급성 경구 LD50/ECOSAR/수생 EC50은 혈액독성 정답으로 사용하지 않음.
+[HUMAN_BASE_V1.md](HUMAN_BASE_V1.md): 원자료 4개, SHA-256, 출처, 데이터 사전, 라벨 한계. `data/cmp_organic_evidence.csv`: 69개 출처 기록, 56개 물질 명칭, 특허 및 논문 근거. 실제 사용 확인이나 독성 정답이 아님.
 
-## 확보할 원자료
-1. Long et al. DOI https://doi.org/10.1021/acs.jcim.2c01088 원문 및 전체 supplementary files, 원래 train/test/external split과 라벨 정의.
-2. https://huggingface.co/datasets/maomlab/HematoxLong2023 (license unspecified; local retrieval only).
-3. https://www.epa.gov/comptox-tools/downloadable-computational-toxicology-data ToxRefDB study/effect/dose/chemical tables 및 data dictionary; ToxValDB는 보조 근거.
-4. https://repdose.item.fraunhofer.de/ 반복 흡입 혈액/골수 endpoint export 및 접근 조건.
-5. CMP 제품별 SDS 1/3/8/9/11절, 작업별 공기측정/사용 후 슬러리 유기성분 분석. 자료가 없다면 후보 스크리닝으로 한정.
-6. https://doi.org/10.1016/j.chemosphere.2017.10.138 원문 및 supplement (실제 실험 조성/폐기물 분석 확인).
-7. KOSHA section 11 raw XML, 기존 산업물질 CAS 목록(사용자 로컬 보관); 공개 저장소에 키나 비공개 자료 업로드 금지.
+`build_dataset.py --only candidates`는 PubChem 이름 기반 잠정 구조 매칭을 실행한다. CAS, 입체화학, 염 형태 수기 확인이 필요하다. 기본 all 및 benchmark 모드는 일반 혈액독성 비교 연구용으로만 보존되어 있으며 현재 인체 전용 파일럿에는 사용하지 않는다. 원본과 출력은 기본적으로 data/private/ 아래에 저장.
 
-## 다음 분석 원칙
-반복 흡입 혈액학/골수 효과를 1차 endpoint로 설정하되 충분한 시험 수를 확인한 후 결정. 백혈구 감소와 증가, 골수 병변, 적혈구 이상을 별도 보존. 음성은 해당 endpoint를 평가했고 유해영향이 없었다는 명시적 시험 근거가 필요. 미시험/미보고는 unknown. 경구와 흡입 및 사람/동물 자료 혼합 금지. 농도 및 노출기간을 보존하고 NOAEC/LOAEC를 구분. 구조 그룹 단위 검증 및 적용영역 분석 수행. 실측 노출농도가 없으면 정량 위험도 산출 금지.
+## 다음 단계
+인체 근거 판정, STITCH/CAS/SMILES 확인, 구조 표준화 및 중복 제거, 화학적 공간/AD 분석, 충분한 검증자료 확보 후 모델 개발. 미보고를 음성으로 사용하지 않는다. 동물독성, 급성경구 LD50, 수생 EC50은 학습 라벨로 사용하지 않는다. 실측 노출량 없이는 위해성 정량평가를 하지 않는다.
 
-## 검증 상태
-이 브랜치에서 원격 데이터 다운로드 및 코드 실행은 아직 검증되지 않았음. CSV는 문헌 기반 초기 목록이며 독성/노출 측정 데이터는 아님.
+## 검증
+현재 코드의 실제 외부 API/원자료 재현 실행은 미검증이다. CI는 문법 및 합성 테스트만 검증하도록 구성한다.
