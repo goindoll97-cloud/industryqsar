@@ -1,0 +1,32 @@
+{
+  "version": "v0.18",
+  "status": "provisional_public_projection",
+  "reference_count": 28,
+  "reference_levels": {
+    "1_core": 9,
+    "2_extended": 7,
+    "3_uncertain": 12
+  },
+  "A_rechecked_existing": 10,
+  "A_added": 1,
+  "B_count": 249,
+  "structure_status": {
+    "provisional_organic_single_component": 134,
+    "outside_organic_single_component": 114,
+    "unresolved_structure": 1
+  },
+  "roles": {
+    "candidate_pending_toxicity_and_use_review": 123,
+    "structure_or_scope_review": 115,
+    "reference_overlap_exclude_from_novel_ranking": 11
+  },
+  "B_new_structure_candidates": 26,
+  "B_old_unresolved_scope_excluded": 28,
+  "B_existing_scope_corrections": 2,
+  "B_remaining_conflicts": 1,
+  "final_labels": 0,
+  "priority_scores": 0,
+  "sha256_public_A": "ee8c95a5a552263d5ba3cd8ef43e24f1b512f8aa85bad882b3c14acbcfcc7d8f",
+  "sha256_public_B": "c3d49c5e8d076dc057e573b7bc7a4f8215974e9b31cd5008edb000894399c431",
+  "note": "New structures are graph reconstructions from names with CAS/name/CID associations inspected; independent registry key validation pending. Abstract-level evidence review only. No final toxicity or score labels."
+}

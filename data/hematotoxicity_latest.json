@@ -1,6 +1,6 @@
 {
-  "version": "v0.17",
+  "version": "v0.18",
   "status": "provisional",
-  "path": "supplementary/hematotoxicity_v17",
+  "path": "supplementary/hematotoxicity_v18",
   "protocol": "../docs/hematotoxicity_research_protocol_v17_ko.md"
 }
