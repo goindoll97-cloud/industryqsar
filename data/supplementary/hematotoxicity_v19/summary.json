@@ -1,0 +1,52 @@
+{
+  "working_version": "v0.19",
+  "status": "local_snapshot_public_manifest_only",
+  "latest_public_dataset": "v0.18",
+  "local_archive": "hematotoxicity_v19.zip",
+  "A_count": 29,
+  "A_levels": {
+    "1_core": 9,
+    "2_extended": 7,
+    "3_uncertain": 13
+  },
+  "A_primary": 16,
+  "B_count": 8110,
+  "B_groups": {
+    "A1": 249,
+    "A2": 7833,
+    "TRI_only": 28
+  },
+  "B_scope": {
+    "semiconductor_core": 249,
+    "electronics_sector_candidate": 428,
+    "process_function_candidate": 1618,
+    "other_industrial_candidate": 5787,
+    "TRI_only_candidate": 28
+  },
+  "B_structure_status": {
+    "provisional_organic_single_component": 237,
+    "unresolved_structure": 6861,
+    "outside_organic_single_component": 1012
+  },
+  "B_novel_candidates": 212,
+  "B_reference_overlap": 25,
+  "B_novel_semiconductor": 121,
+  "B_novel_expansion": 91,
+  "B_priority_registry_queue": 2020,
+  "prior_candidate_search_seeds": 1127,
+  "prior_candidate_literature_links": 167,
+  "prior_candidate_industry_leads": 23,
+  "prior_candidate_both_leads": 14,
+  "B_literature_linked_substances": 209,
+  "B_novel_with_literature_cues": 41,
+  "final_labels": 0,
+  "scores": 0,
+  "independent_registry_network_access": false,
+  "sha256_local_files": {
+    "dataset_A_human_inhalation_references.csv": "633fb6fdd9ffe3ca1aae096c5331668c69d03bd5b303bf264ed273067039be01",
+    "dataset_B_industrial_8110.csv": "6d8e77c806584a20f7c4713056ff18180916ab5c1a992cd7457c0e0db08398f6",
+    "epa_batch_priority_CAS.txt": "3227f62d06c506b0546165e693988dfc55f7a318bac81ed9be4e8b9af4bd0052",
+    "epa_batch_all_8110_CAS.txt": "eafa798d993c81f81467c6bea8f3d628fd71eacfeb32b3ce11153638dff59643"
+  },
+  "validation": "Local row count, graph/key consistency, unique CAS and preserved A1 verified. No independent registry identity or toxicity validation."
+}
