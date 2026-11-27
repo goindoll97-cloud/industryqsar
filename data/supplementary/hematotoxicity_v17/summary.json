@@ -1,0 +1,46 @@
+{
+  "version": "v0.17",
+  "date": "2026-11-27",
+  "status": "provisional_public_projection",
+  "reference_count": 27,
+  "reference_levels": {
+    "1_core": 9,
+    "2_extended": 6,
+    "3_uncertain": 12
+  },
+  "B_count": 249,
+  "CDR_matches": 213,
+  "structure_status": {
+    "provisional_organic_single_component": 110,
+    "unresolved_structure": 55,
+    "outside_organic_single_component": 84
+  },
+  "structure_sources": {
+    "Inventory_249": 192,
+    "": 55,
+    "v15_registry_same_CAS": 2
+  },
+  "roles": {
+    "candidate_pending_toxicity_and_use_review": 99,
+    "structure_or_scope_review": 139,
+    "reference_overlap_exclude_from_novel_ranking": 11
+  },
+  "reference_overlaps": 11,
+  "process_evidence": {
+    "workplace_inventory_or_air_record": 32,
+    "emission_or_waste_context_not_personal_exposure": 34,
+    "compiled_candidate_not_verified_site_use": 179,
+    "usage_survey_citation_pending": 4
+  },
+  "process_reported": 40,
+  "historical_personal_air": 7,
+  "source_evidence_count_local": 310,
+  "source_register_count": 8,
+  "identity_flag_rows": 16,
+  "final_labels": 0,
+  "priority_scores": 0,
+  "sha256_public_A": "144950533e9495c53f2d85d7498f4fdaec24b36f8b8ab774c0307d1de7bdb571",
+  "sha256_public_B": "c7fec3e1ae17046a6a89e0da84c1d9d0cbd5ee6b677db2c64c1e25dae92a2abb",
+  "local_archive_sha256": "8aa3f2a0d506783545be76ee36230c515c48b6ec5a38175f78f1711933708451",
+  "note": "Inherited evidence only; no independent toxicity adjudication or identity verification. 249 is a candidate universe, not verified current use. Public projection excludes original evidence tables and nonessential fields."
+}
