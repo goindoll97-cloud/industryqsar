@@ -1,0 +1,42 @@
+{
+  "version": "0.4",
+  "status": "provisional_evidence_index",
+  "date": "2026-11-27",
+  "scope": "Human in vivo inhalation, unrestricted concentration and duration; holds not eligible training labels.",
+  "prior": "../human_inhalation_v03/",
+  "counts": {
+    "original_queue": 949,
+    "prior_linked_in_queue": 87,
+    "remaining_at_start": 862,
+    "additional_curated_rows": 33,
+    "linked_prior_rows": 7,
+    "unlinked_observation_candidates": 26,
+    "additional_cas": 12,
+    "integrated_source_rows": 147,
+    "integrated_cas": 56,
+    "newly_linked_queue_rows": 55,
+    "new_manual_disposition_queue_rows": 92,
+    "pending_manual_review": 715,
+    "candidate_rows": 11,
+    "hold_rows": 22,
+    "primary_positive_reference_rows": 2,
+    "final_training_labels": 0
+  },
+  "source_sha256": "170e849fface5973258561a5b0eaf9efc9b8296974667a892314dd7ebc05f5c9",
+  "local_package": "human_inhalation_hematotoxicity_v04.zip",
+  "github_files": {
+    "additional_evidence_index": {
+      "rows": 33,
+      "git_blob_sha1": "c2becd7d236139863c5eaf29a6df5bc0b7aed14a"
+    },
+    "additional_chemical_identity": {
+      "rows": 12,
+      "git_blob_sha1": "ad042778cb0da6e87ff444f085a98cec9df043f4"
+    },
+    "primary_positive_references": {
+      "rows": 2,
+      "git_blob_sha1": "b0174cf6da4e605492663896afdbaf2ebf43dfe2"
+    }
+  },
+  "note": "Public compact index with shortened notes; not byte-identical to complete local v0.4 CSVs. Full registry, 949-row audit, detailed metadata, source locators and reproducible builder are in local downloadable package. No independent reviewer signoff; primary access levels are explicit."
+}
