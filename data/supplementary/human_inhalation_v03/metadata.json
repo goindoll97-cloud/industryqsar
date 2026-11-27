@@ -1,0 +1,81 @@
+{
+  "version": "0.3",
+  "status": "provisional_not_training",
+  "v10_source_rows": 64,
+  "v02_included_rows": 49,
+  "v02_excluded_rows": 1,
+  "all_source_rows": 114,
+  "cas_identities": 44,
+  "v10_only": 23,
+  "v02_only": 4,
+  "overlap": 17,
+  "overlap_links": 28,
+  "citation_review_groups": 92,
+  "review_bucket_rows": {
+    "candidate": 54,
+    "hold": 39,
+    "excluded": 11,
+    "data_gap": 6,
+    "cancer_separate": 4
+  },
+  "review_bucket_groups": {
+    "candidate": 41,
+    "hold": 34,
+    "excluded": 7,
+    "cancer_separate": 4,
+    "data_gap": 6
+  },
+  "candidate_cas": 20,
+  "structure_candidates": 43,
+  "unique_candidate_structures": 42,
+  "rdkit_version": "2025.09.4",
+  "final_training_labels": 0,
+  "source_sha256": {
+    "v10_all_evidence": "a58dbc28bd4ec3755890cd6d0ef62703de709683457f7a476c8a25634416a682",
+    "v10_chemical_review": "c21184d838411d38fa85a180fd80980d4b6d3c8b9ac7356357be1bea2fd30ae9",
+    "v02_evidence": "0683824b2e7c74c66d4002617cf4eba835aa3a6ba29186c1337a4524ec54ef3f",
+    "v02_excluded": "b803c938d78a2d5a72699630d85892dff809e37c14bd2dd231b1ab56ac58edc8"
+  },
+  "note": "Review groups are overlapping citation units, not deduplicated independent studies. Preserve conflicting assessments and distinct exposure arms. No confirmed negatives or positive labels.",
+  "assembled_date": "2026-11-27",
+  "source_archives": {
+    "official_evidence_v10.zip": "228d97c190c12907abf6cc7752c0edb870ad3e9186e4411295420644c24f6446",
+    "human_inhalation_hematotoxicity_v02.zip": "e4aa97303b292a6edad8fafb0746fd9ccce4aff507e56b62a16e7e9a31aec887"
+  },
+  "v10_agency_counts": {
+    "ATSDR": 53,
+    "EPA IRIS": 5,
+    "OEHHA": 6
+  },
+  "scope": "Human in vivo inhalation only; no concentration or duration restriction; non-target source rows retained for audit only; no final labels.",
+  "published_files": {
+    "chemical_inventory.csv": {
+      "rows": 44,
+      "git_blob_sha1": "d2a5ef4ed729c014cb1971bc84eedf086a2ac3b4"
+    },
+    "citation_review_groups.csv": {
+      "rows": 92,
+      "git_blob_sha1": "a310283095324a302a9a27c6a6311aa2e1f3cf15"
+    },
+    "evidence_overlap_links.csv": {
+      "rows": 28,
+      "git_blob_sha1": "6a1ad574acf9a6276d894157a818bd078fdd451a"
+    },
+    "integrated_evidence.csv": {
+      "rows": 114,
+      "git_blob_sha1": "f6adf6917aea65992a98797949e94d86f8d532da"
+    },
+    "official_v10_chemical_review.csv": {
+      "rows": 40,
+      "git_blob_sha1": "5b641ca5a6c202daee37362be9682f5454573c4c"
+    },
+    "official_v10_evidence.csv": {
+      "rows": 64,
+      "git_blob_sha1": "b8fd4fe988b35863e12e1ec7bf91d204902e3082"
+    },
+    "training_labels_pending.csv": {
+      "rows": 0,
+      "git_blob_sha1": "b0e3fcb4e26cce7144bc88a11a17995cdc090f6a"
+    }
+  }
+}
