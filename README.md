@@ -1,6 +1,6 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 작업 버전: v0.19 (로컬 산업화학물질 확장) | 최신 공개 CSV: v0.18 | 데이터 구축 단계 (provisional)**
+**최신 작업 버전: v0.20 (로컬 EPA 우선 조회 병합) | 최신 공개 CSV: v0.18 | 데이터 구축 단계 (provisional)**
 
 ## 연구 목적
 
@@ -8,7 +8,13 @@
 
 *Prioritization of Potential Hematotoxicants in Semiconductor Manufacturing Based on Human Inhalation Evidence and Molecular Structural Characteristics*
 
-## 최신 작업 v0.19 — 산업화학물질 확장
+## 최신 작업 v0.20 — EPA 우선 조회 실제 병합
+
+[실제 작업 결과 manifest](data/supplementary/hematotoxicity_v20/summary.json) · [v0.20 작업 설명](data/supplementary/hematotoxicity_v20/README.md)
+
+A 29종(주 분석 잠정 16), B 8,110종. EPA 우선 조회 2,020종을 실제 병합했으며, CAS 및 전체 InChIKey와 RDKit 계산이 일치하고 잠정 유기 단일성분 범위를 통과한 물질 779종(신규 762, 참조 중복 17). 미조회 기존 구조 52종을 포함한 잠정 구조 831종. 나머지 6,090종은 미조회이다. 전체 로컬 데이터 및 코드는 hematotoxicity_v20.zip에 보존하고 GitHub에는 manifest만 공개한다. 독성 판정은 변경하지 않았으며 점수와 최종 라벨은 없다.
+
+## 이전 작업 v0.19 — 산업화학물질 확장
 
 [실제 작업 결과 manifest](data/supplementary/hematotoxicity_v19/summary.json) · [v0.19 작업 설명](data/supplementary/hematotoxicity_v19/README.md)
 

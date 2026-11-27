@@ -1,0 +1,72 @@
+{
+  "version": "v0.20",
+  "status": "local_snapshot_public_manifest_only",
+  "latest_public_dataset": "v0.18",
+  "local_archive": "hematotoxicity_v20.zip",
+  "registry_file": "CCD-Batch-Search_2026-11-27_03_28_11.csv",
+  "registry_sha256": "8e8e211ad856b9c7b8b78ff444352a9769349214f571c986dbab8e7656c30437",
+  "registry_rows": 2020,
+  "priority_queue_exact_set": true,
+  "exact_CAS_rows": 2019,
+  "alternate_CAS_rows": 1,
+  "A_count": 29,
+  "A_levels": {
+    "1_core": 9,
+    "2_extended": 7,
+    "3_uncertain": 13
+  },
+  "B_count": 8110,
+  "B_structure_status": {
+    "unresolved_structure": 5614,
+    "outside_organic_single_component": 1665,
+    "provisional_organic_single_component": 831
+  },
+  "returned_graph_key_agreement": {
+    "exact": 1334,
+    "no_parseable_graph": 413,
+    "same_connectivity_only": 229,
+    "missing_registry_key": 40,
+    "different_connectivity": 4
+  },
+  "registry_status": {
+    "not_queried": 6090,
+    "exact_CAS_full_key_consistent": 779,
+    "returned_graph_outside_domain": 653,
+    "no_parseable_original_structure": 413,
+    "same_connectivity_only_hold": 171,
+    "missing_registry_key_hold": 2,
+    "inherited_identity_conflict_hold": 1,
+    "alternate_or_nonexact_CAS_hold": 1
+  },
+  "analysis_status": {
+    "not_queried_no_inference": 6038,
+    "EPA_checked_novel_candidate": 762,
+    "outside_domain": 653,
+    "structure_unresolved": 413,
+    "identity_review": 175,
+    "prior_structure_not_EPA_checked": 52,
+    "EPA_checked_reference_overlap": 17
+  },
+  "novel_by_scope": {
+    "process_function_candidate": 522,
+    "electronics_sector_candidate": 131,
+    "semiconductor_core": 109
+  },
+  "prior_unchecked_novel": 44,
+  "new_checked_from_unresolved": 610,
+  "returned_prior_candidates_held": 16,
+  "unqueried": 6090,
+  "EPA_checked_novel_with_prior_literature_cue": 46,
+  "EPA_checked_novel_without_prior_literature_cue": 716,
+  "final_labels": 0,
+  "priority_scores": 0,
+  "sha256_local_files": {
+    "dataset_A_human_inhalation_references.csv": "633fb6fdd9ffe3ca1aae096c5331668c69d03bd5b303bf264ed273067039be01",
+    "dataset_B_industrial_8110.csv": "ac40ed42309db7a1ee12899d8380e0df1b67b386b0a3d9416449a3a80a308012",
+    "EPA_checked_novel_candidate_index.csv": "406a5d2e302162a5830d0633cb021aae0040c628688cae73489c104bd5c0fec3",
+    "registry_merge_audit.csv": "38b84fe5ecff516918d80bbb384cd2e94cffc97bae9eb097460783b727ba21df",
+    "epa_remaining_unqueried_6090_CAS.txt": "fbafd439b455ec5c4cfb5dff2ddcb743da821f3297ed62b63c95083f7e7d38fe",
+    "merge_epa_registry_v20.py": "7bbdd2b700c256e5b7b552d6e5daf4aa09e67dfb6cbe2e63a7986814e4bbcc7e"
+  },
+  "note": "Exact CAS and full InChIKey agreement with RDKit plus provisional molecular domain, not independent identity or toxicity verification. A inherited unchanged. Full data local only."
+}
