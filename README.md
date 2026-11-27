@@ -73,6 +73,10 @@
 - [혈액독성 근거 입력 양식 (빈 CSV)](data/hematotoxicity_evidence_TEMPLATE.csv)
 - [이전 급성경구 LD50 규제 스크리닝 README (보존)](docs/legacy_acute_screening_readme_ko.md)
 
+## 논문 보충자료 (예비 데이터 v0.2)
+
+[공개 보충자료 디렉터리](data/supplementary/human_inhalation_v02/): 인체 흡입 관찰 근거 49행, 화학물질 21종, 암종 근거 4행(부분집합), 제외 1행, 출처 위치 90행, 참조 근거 3행, 메타데이터, 영문 데이터 사전 및 무결성 검사 코드. 확정 학습 라벨 0행. 원문 발췌 및 원본 PDF, 949개 후보 원문 검토표는 로컬에 보존한다. 공개 보충자료는 예비 근거 스냅샷이며 논문 최종 학습자료로 오인하지 않는다.
+
 ## 인체 흡입 근거 데이터 v0.2
 
 [실행 결과 및 한계](docs/human_inhalation_evidence_v02_ko.md). 기존 후보 949행을 유지했으며 원문 근거 90행을 연결했다. 자료는 예비 관찰 근거이며 확정 학습자료가 아니다.
