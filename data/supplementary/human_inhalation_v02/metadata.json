@@ -1,0 +1,140 @@
+{
+  "dataset_id": "industryqsar-human-inhalation-hematotoxicity",
+  "version": "0.2",
+  "release_status": "provisional_evidence_not_training_dataset",
+  "assembled_date": "2026-11-27",
+  "scope": {
+    "species": "human in vivo only",
+    "route": "inhalation or occupational airborne candidate; exclusive attribution pending",
+    "concentration_restriction": null,
+    "duration_restriction": null,
+    "excluded": [
+      "animal",
+      "in vitro only",
+      "non-inhalation",
+      "unconfirmed route"
+    ],
+    "endpoint": [
+      "hematology",
+      "hematologic neoplasm (separate)"
+    ]
+  },
+  "provenance": {
+    "original_candidate_file": "hematology_candidates(1).csv",
+    "original_candidate_sha256": "170e849fface5973258561a5b0eaf9efc9b8296974667a892314dd7ebc05f5c9",
+    "original_local_archive": "human_inhalation_hematotoxicity_v02.zip",
+    "original_local_archive_sha256": "e4aa97303b292a6edad8fafb0746fd9ccce4aff507e56b62a16e7e9a31aec887",
+    "original_inputs": [
+      "atsdr_review/priority_review.csv",
+      "hematotoxicity_v01/results/unique_review_queue.csv",
+      "atsdr_study_review/pilot_study_exposure_evidence.csv"
+    ],
+    "original_assembly_script": "build_human_inhalation.py (in local archive)",
+    "original_source_pdf_versions": "not recorded in v0.2; source URL and PDF page retained",
+    "individual_source_access_dates": "not recorded; assembly date is not access date",
+    "reviewer": "not recorded; independent reviewer adjudication pending",
+    "collection_method": "ATSDR keyword extraction, previous priority queue union with human/inhalation cues, partial manual/context review plus selected primary articles"
+  },
+  "counts": {
+    "raw_candidate_rows": 11724,
+    "raw_reports": 184,
+    "review_queue_rows": 949,
+    "queue_reports": 157,
+    "linked_source_contexts": 90,
+    "chemicals": 21,
+    "included_observation_rows": 49,
+    "hematology_rows": 45,
+    "cancer_rows": 4,
+    "excluded_route_uncertain_rows": 1,
+    "primary_reference_rows_overlapping_existing_evidence": 3,
+    "source_level": {
+      "ATSDR_context": 45,
+      "external_article": 4
+    },
+    "route": {
+      "inhalation": 13,
+      "occupational_airborne": 36
+    },
+    "hematology_effect": {
+      "adverse_signal": 7,
+      "change_signal": 7,
+      "no_effect_at_condition": 23,
+      "uncertain": 8
+    },
+    "chemical_status": {
+      "positive_candidate": 5,
+      "conditional_no_effect_only": 6,
+      "change_or_uncertain": 10
+    },
+    "final_training_labels": 0
+  },
+  "serialization": {
+    "encoding": "UTF-8 without BOM",
+    "line_endings": "LF",
+    "delimiter": ",",
+    "quoting": "all fields",
+    "missing": "empty string; not zero or negative",
+    "integrity": "Git blob SHA-1, SHA1('blob ' + byte length + NUL + UTF-8 bytes); normalized original CSVs and derived source index verified against local archive."
+  },
+  "files": [
+    {
+      "path": "human_inhalation_study_evidence.csv",
+      "rows": 49,
+      "git_blob_sha1": "e248778a9a12264b6933ad5ed39c9aed0a72a7d7"
+    },
+    {
+      "path": "route_uncertain_excluded.csv",
+      "rows": 1,
+      "git_blob_sha1": "ce892f9f55b6956062ca7afeb2e775faa6bcd82f"
+    },
+    {
+      "path": "hematologic_cancer_evidence.csv",
+      "rows": 4,
+      "git_blob_sha1": "c320126db184f6e511e73e39615c7052efb0351d",
+      "subset_of": "human_inhalation_study_evidence.csv"
+    },
+    {
+      "path": "chemical_identity.csv",
+      "rows": 21,
+      "git_blob_sha1": "2d70a814459c2a3da088bcfbbfe9c2a3a2003989"
+    },
+    {
+      "path": "chemical_evidence_summary.csv",
+      "rows": 21,
+      "git_blob_sha1": "3f9aabc9058543fec9a241b183bb6852f6082bd4"
+    },
+    {
+      "path": "training_labels_pending.csv",
+      "rows": 0,
+      "git_blob_sha1": "b0e3fcb4e26cce7144bc88a11a17995cdc090f6a"
+    },
+    {
+      "path": "source_context_index.csv",
+      "rows": 90,
+      "git_blob_sha1": "faeb39a53ee05d4160e7c6af591cfc85076a7327",
+      "derived_from": "reviewed_source_contexts.csv; source excerpts omitted, evidence ID joins added"
+    },
+    {
+      "path": "primary_reference_signals.csv",
+      "rows": 3,
+      "git_blob_sha1": "3000b105d562cffcd0084de808391483f6db39e7",
+      "overlapping_reference_signals": true
+    }
+  ],
+  "not_published": [
+    "949-row review queue with source excerpts",
+    "90 verbatim source contexts",
+    "raw ATSDR PDF files and original raw candidate CSV",
+    "original local builder and intermediate curation inputs"
+  ],
+  "rights": "Public repository contains derived evidence summaries and bibliographic locators, not full texts; source-specific rights and reuse terms remain applicable; no blanket license asserted for third-party material.",
+  "limitations": [
+    "Not exhaustive or independently adjudicated",
+    "CAS and SMILES candidate mappings not registry verified",
+    "Occupational airborne evidence may include dermal or coexposure contributions",
+    "Grouped citations can represent overlapping cohorts",
+    "Concentration and duration strings retain source ambiguities including cumulative exposure or latency",
+    "No final positive or negative training labels; no model training or external validation",
+    "IRIS/OEHHA integration and comprehensive PDF/primary paper review pending"
+  ]
+}

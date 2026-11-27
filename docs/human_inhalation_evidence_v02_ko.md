@@ -15,7 +15,7 @@
 
 ## 로컬 산출물
 
-human_inhalation_hematotoxicity_v02.zip: human_inhalation_review_queue.csv, human_inhalation_study_evidence.csv, hematologic_cancer_evidence.csv, chemical_evidence_summary.csv, reviewed_source_contexts.csv, route_uncertain_excluded.csv, training_labels_pending.csv(빈 확정 라벨 양식), summary.json, 후보 구조 매핑/수기 정리/재현 스크립트 및 참조 근거 파일. 원자료 및 산출물은 공개 저장소에 게시하지 않았다.
+human_inhalation_hematotoxicity_v02.zip: human_inhalation_review_queue.csv, human_inhalation_study_evidence.csv, hematologic_cancer_evidence.csv, chemical_evidence_summary.csv, reviewed_source_contexts.csv, route_uncertain_excluded.csv, training_labels_pending.csv(빈 확정 라벨 양식), summary.json, 후보 구조 매핑/수기 정리/재현 스크립트 및 참조 근거 파일. 원자료와 원문 발췌는 공개 저장소에 게시하지 않았다. 정리된 예비 근거 및 출처 위치 메타데이터의 보충자료 스냅샷은 [공개 데이터 디렉터리](../data/supplementary/human_inhalation_v02/)에서 확인한다. 확정 학습자료는 아니다.
 
 ## 제한 및 다음 작업
 
