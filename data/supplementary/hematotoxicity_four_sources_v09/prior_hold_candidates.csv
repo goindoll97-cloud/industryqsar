@@ -1,0 +1,13 @@
+Chemical,CAS_RN,Reference,Reason
+Chlorobenzene,108-90-7,https://pubmed.ncbi.nlm.nih.gov/13946059/,Historical title reports inhalation-related hemolysis; original report unavailable; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK590252/ does not support human hematology claim. Hold.
+Mixed xylenes,1330-20-7,https://pubmed.ncbi.nlm.nih.gov/24466720/,Thrombocytopenia case; individual isomer unresolved.
+Hexachloroethane,67-72-1,https://pubmed.ncbi.nlm.nih.gov/20384461/,"Mixed smoke exposure, not single parent chemical."
+Amyl nitrite,,https://pubmed.ncbi.nlm.nih.gov/7913822/,Clinical inhalation methemoglobinemia; specific pentyl isomer not established from available report.
+Acrylonitrile,107-13-1,Wilson 1944; ATSDR,"Low-grade anemia with jaundice, route and attribution uncertain."
+Propylene glycol methyl ether,107-98-2,https://pubmed.ncbi.nlm.nih.gov/36933710/,Controlled inhalation blood parameter changes; adverse interpretation not established.
+Propylene glycol butyl ether,5131-66-8,https://pubmed.ncbi.nlm.nih.gov/36933710/,Controlled inhalation blood parameter changes; adverse interpretation not established.
+"2,4-Dinitrotoluene",121-14-2,ATSDR https://www.ncbi.nlm.nih.gov/books/NBK591581/,"Historical DNT worker anemia; 2,4-isomer inferred and technical mixture/route not resolved; not a substance-specific positive."
+m-Toluidine,108-44-1,https://www.cdc.gov/niosh/chemicals/pel88/pell-pages/108-44.html,Agency describes human methemoglobinemia after skin or inhalation exposure; individual underlying inhalation study and endpoint not independently linked.
+Methoxychlor,72-43-5,Recovered ATSDR profile afc0a43507e867f7_0_health_effects.pdf p4 l19; Ziem 1982,Aplastic anemia after inhaling mixture with captan; cannot attribute to a single compound.
+Captan,133-06-2,Recovered ATSDR profile afc0a43507e867f7_0_health_effects.pdf p4 l19; Ziem 1982,Same mixture case; no isolated attribution.
+Chlordane,57-74-9,Recovered ATSDR profile 7c64bdf1beaca8f1_0_health_effects.pdf p37 l15,Indoor air measurement combined aldrin/heptachlor; mixture and attribution unresolved.

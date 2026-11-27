@@ -1,0 +1,35 @@
+{
+  "version": "0.9",
+  "status": "provisional_reference_snapshot",
+  "hua_total": 2157,
+  "hua_positive": 632,
+  "long_total": 2382,
+  "long_positive": 759,
+  "long_positive_parse_failure": 13,
+  "exact_inchikey_overlap": 251,
+  "unique_positive_candidate_structures": 1127,
+  "source_label_conflicts": 14,
+  "pubchem_preferred_key_matches": 61,
+  "pubchem_records_parsed": 12025,
+  "pubchem_record_errors": 4,
+  "industry_inventory_records": 8110,
+  "industry_inventory_nonempty_smiles": 108,
+  "industry_candidate_matches": 21,
+  "industry_match_groups": {
+    "A1": 8,
+    "A2": 11,
+    "TRI_only": 2
+  },
+  "prior_positive": 12,
+  "prior_conditional": 23,
+  "provisional_industrial_positive": 10,
+  "new_confirmed_positive": 0,
+  "public_scope": "curated audit and priority tables; full extracted third-party data and local integration scripts retained locally pending redistribution review",
+  "limitations": [
+    "Partial identity mapping; lack of a match is not lack of industrial use.",
+    "A1 membership is not proof of actual individual process use.",
+    "TRI reporting is not proof of use.",
+    "Inherited v0.8 labels not independently re-adjudicated in full.",
+    "Human inhalation evidence review incomplete; candidate structures are not confirmed inhalation positives."
+  ]
+}

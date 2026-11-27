@@ -1,0 +1,5 @@
+Source_ID,Source,Role,Reference
+S1,Hua et al. (2021),"Candidate identification, not inhalation label",https://doi.org/10.1007/s11030-021-10255-x
+S2,Long et al. (2023),"Candidate identification, not inhalation label",https://doi.org/10.1021/acs.jcim.2c01088
+S3,ATSDR Toxicological Profiles,Evidence evaluation and industrial use context,https://www.atsdr.cdc.gov/toxprofiledocs/index.html
+S4,PubMed-indexed primary studies,Evidence evaluation; cite individual PMID/DOI,https://pubmed.ncbi.nlm.nih.gov/
