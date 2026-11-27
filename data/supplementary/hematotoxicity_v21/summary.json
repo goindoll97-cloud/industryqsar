@@ -1,0 +1,81 @@
+{
+  "version": "v0.21",
+  "status": "local_snapshot_public_manifest_only",
+  "latest_public_dataset": "v0.18",
+  "local_archive": "hematotoxicity_v21.zip",
+  "registry_files": [
+    {
+      "file": "CCD-Batch-Search_2026-11-27_03_28_11.csv",
+      "sha256": "8e8e211ad856b9c7b8b78ff444352a9769349214f571c986dbab8e7656c30437",
+      "rows": 2020,
+      "unique_inputs": 2020
+    },
+    {
+      "file": "CCD-Batch-Search_2026-11-27_03_33_32.csv",
+      "sha256": "6cacb9db1b57fa4ede57114d60cd6e685fbdbffe23a08e3db15801fa43221e1c",
+      "rows": 6092,
+      "unique_inputs": 6090
+    }
+  ],
+  "registry_rows": 8112,
+  "unique_inputs": 8110,
+  "unqueried": 0,
+  "A_count": 29,
+  "A_levels": {
+    "1_core": 9,
+    "2_extended": 7,
+    "3_uncertain": 13
+  },
+  "A_primary_provisional": 16,
+  "B_count": 8110,
+  "B_structure_status": {
+    "unresolved_structure": 2824,
+    "provisional_organic_single_component": 2674,
+    "outside_organic_single_component": 2612
+  },
+  "registry_status": {
+    "exact_CAS_full_key_consistent": 2674,
+    "no_parseable_original_structure": 2058,
+    "returned_graph_outside_domain": 1601,
+    "prior_scope_exclusion_retained": 1011,
+    "same_connectivity_only_hold": 732,
+    "missing_registry_key_hold": 29,
+    "inherited_identity_conflict_hold": 2,
+    "multiple_returned_records_hold": 2,
+    "alternate_or_nonexact_CAS_hold": 1
+  },
+  "analysis_status": {
+    "EPA_checked_novel_candidate": 2650,
+    "outside_domain": 2612,
+    "structure_unresolved": 2058,
+    "identity_review": 766,
+    "EPA_checked_reference_overlap": 24
+  },
+  "novel_by_scope": {
+    "other_industrial_candidate": 1871,
+    "process_function_candidate": 522,
+    "electronics_sector_candidate": 131,
+    "semiconductor_core": 109,
+    "TRI_only_candidate": 17
+  },
+  "duplicate_input_CAS": [
+    "12167-74-7",
+    "13851-11-1"
+  ],
+  "previous_batch_status_unchanged": true,
+  "second_batch_exact_input_set": true,
+  "EPA_checked_novel_with_prior_literature_cue": 66,
+  "EPA_checked_novel_without_prior_literature_cue": 2584,
+  "final_labels": 0,
+  "priority_scores": 0,
+  "sha256_local_files": {
+    "dataset_A_human_inhalation_references.csv": "633fb6fdd9ffe3ca1aae096c5331668c69d03bd5b303bf264ed273067039be01",
+    "dataset_B_industrial_8110.csv": "6d8bd1e19b037e8d36e208a0ec01b257be99beac54139f0f7ddb7d417a98a468",
+    "EPA_checked_novel_candidate_index.csv": "6945846588cfe42947d879326b652847c3ac612d5529e6b871745b41e27e8007",
+    "EPA_returned_identity_records.csv": "aafe409b34b65b3154f8ee30d64f310967d14c8eb8d22ee750f301d9ad91833a",
+    "literature_priority_review_queue.csv": "134233a6776dc652e2213d505a1c0f2c3ea8aa0b2cea1440cffcf51ec7708de9",
+    "merge_epa_registry_v21.py": "2dba8071c6c4cc4d97756460b5a3e5195f60a6c29011985e576ccf7cdf0352fe",
+    "registry_merge_audit.csv": "401c22496cd4f0979b859ba385b4e8eabec17d5398b479b4c7e99803cb8040b6"
+  },
+  "note": "All 8110 requested CAS returned in 8112 records, not all have resolved structures. Same v20 domain and full key criterion. Prior scope exclusions retained, not independently adjudicated. No new literature review, toxicity labels or priority scores."
+}
