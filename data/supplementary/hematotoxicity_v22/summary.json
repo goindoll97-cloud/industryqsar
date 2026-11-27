@@ -1,0 +1,57 @@
+{
+  "version": "v0.22",
+  "base": "v0.21",
+  "status": "local_snapshot_public_manifest_only",
+  "latest_public_dataset": "v0.18",
+  "local_archive": "hematotoxicity_v22.zip",
+  "A_count": 36,
+  "A_levels": {
+    "3_uncertain": 20,
+    "1_core": 9,
+    "2_extended": 7
+  },
+  "A_primary_provisional": 16,
+  "A_new_sensitivity": 7,
+  "A_new_primary": 0,
+  "B_count": 8110,
+  "B_analysis_status": {
+    "EPA_checked_novel_candidate": 2643,
+    "outside_domain": 2613,
+    "structure_unresolved": 2058,
+    "identity_review": 766,
+    "EPA_checked_reference_overlap": 30
+  },
+  "B_structure_status": {
+    "unresolved_structure": 2824,
+    "provisional_organic_single_component": 2673,
+    "outside_organic_single_component": 2613
+  },
+  "B_new_reference_overlaps": 6,
+  "B_elemental_carbon_correction": 1,
+  "queue_66_count": 66,
+  "queue_source_links": {
+    "PubMed": 472,
+    "ATSDR": 389
+  },
+  "queue_manual_targeted_decisions": 18,
+  "targeted_decisions_including_extra": 28,
+  "queue_remaining_individual_review": 48,
+  "novel_by_scope": {
+    "other_industrial_candidate": 1870,
+    "process_function_candidate": 521,
+    "electronics_sector_candidate": 130,
+    "semiconductor_core": 105,
+    "TRI_only_candidate": 17
+  },
+  "final_labels": 0,
+  "priority_scores": 0,
+  "sha256_files": {
+    "EPA_checked_novel_candidate_index.csv": "2280c379b7088c0483523a602d4182211cc530e72113ba12d29312e188945c57",
+    "dataset_A_human_inhalation_references.csv": "b445171445ac83aa6f49cac123d097db97b3504b4205cbb25f77c3ad15eebefd",
+    "dataset_B_industrial_8110.csv": "63b407ac6b4649199155944aeaea64b45122d6c8e21d6659cc76481e2e510d1e",
+    "literature_cue_triage_v22.csv": "8c7d8cbd474ecf039df32328f965d6c217d9f655cdbe74b50718dc3a7718ac25",
+    "literature_priority_review_queue_v22.csv": "9e37d6713337169fe572bfbb2b90948eb045bd0088c1e0dfa8727c0e6ba7f8f5",
+    "targeted_evidence_review_v22.csv": "ad7143214e8438e6cea7d15d52013805880e4fcacd090412cd8ed3126c2438c7"
+  },
+  "notes": "Targeted abstract/context review and web verification; not full-text systematic review. Seven new sensitivity references; no new primary admissions. No final labels or scores."
+}
