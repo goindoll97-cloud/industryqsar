@@ -1,0 +1,8 @@
+Chemical,CAS_RN,SMILES,Label,Endpoint,Reference
+Benzene,71-43-2,c1ccccc1,1,core_hematology,Lan et al. (2004) https://doi.org/10.1126/science.1102443
+Trichloroethylene,79-01-6,ClC=C(Cl)Cl,1,core_hematology,Lan et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20530238/
+Ethylene glycol,107-21-1,OCCO,0,measured_hematology_no_effect,Wills et al. (1974) https://www.ncbi.nlm.nih.gov/books/NBK600985/
+"1,1-Dichloroethene",75-35-4,C=C(Cl)Cl,0,measured_hematology_no_effect,Ott et al. (1976) https://www.atsdr.cdc.gov/toxprofiles/tp39.pdf
+"1,1,1-Trichloroethane",71-55-6,CC(Cl)(Cl)Cl,0,measured_hematology_no_effect,ATSDR https://www.ncbi.nlm.nih.gov/books/NBK602929/ (Torkelson et al. 1958; Kramer et al. 1978)
+p-Xylene,106-42-3,Cc1ccc(C)cc1,0,measured_hematology_no_effect,NIOSH (1981) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600778/
+"1,2-Dichlorobenzene",95-50-1,Clc1ccccc1Cl,0,measured_hematology_no_effect,Hollingsworth et al. (1958) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600880/

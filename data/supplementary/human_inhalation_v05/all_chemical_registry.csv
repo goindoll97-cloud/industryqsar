@@ -1,0 +1,61 @@
+Chemical,CAS_RN,SMILES,Label,Status,Reason,Reference
+Ethylbenzene,100-41-4,CCc1ccccc1,,sensitivity,20-year monitoring no adverse findings; low power; conflicting mixture findings not attributable; V8-09/V8-10.,Bardodej and Cirek (1988) via ATSDR https://www.atsdr.cdc.gov/toxprofiles/tp110.pdf
+Styrene,100-42-5,C=Cc1ccccc1,,unresolved_or_separate_endpoint,mixed_exposure_hold; no_effect_at_condition; uncertain; change_signal,https://www.ncbi.nlm.nih.gov/books/NBK601965/; https://www.atsdr.cdc.gov/ToxProfiles/tp53-c3.pdf
+p-Xylene,106-42-3,Cc1ccc(C)cc1,0,main,Isomer-specific controlled exposure; V7-03. Short study; other xylene mixtures not assigned.,NIOSH (1981) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600778/
+"1,4-Dichlorobenzene",106-46-7,Clc1ccc(Cl)cc1,,unresolved_or_separate_endpoint,positive_candidate; conditional_no_effect; adverse_signal; no_effect_at_condition,https://www.ncbi.nlm.nih.gov/books/NBK600880/; https://www.atsdr.cdc.gov/ToxProfiles/tp10-c3.pdf
+1-Bromopropane,106-94-5,CCCBr,,sensitivity,Sex-specific decreases; potential coexposure and clinical adversity unclear; H015/V7-07.,Li et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20853682/; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK591365/
+"1,3-Butadiene",106-99-0,C=CC=C,,unresolved_or_separate_endpoint,conditional_no_effect; uncertain; no_effect_at_condition; association_signal,https://www.ncbi.nlm.nih.gov/books/NBK590960/; https://www.atsdr.cdc.gov/ToxProfiles/tp28-c3.pdf; https://pmc.ncbi.nlm.nih.gov/articles/PMC8606437/
+"1,2-Dichloroethane",107-06-2,ClCCCl,,unresolved_or_separate_endpoint,mixed_exposure_hold; conditional_no_effect; no_effect_at_condition,https://www.ncbi.nlm.nih.gov/books/NBK607311/; https://www.atsdr.cdc.gov/ToxProfiles/tp38-c2.pdf
+Acrylonitrile,107-13-1,C=CC#N,,sensitivity,Two occupational studies; unresolved historical anemia with jaundice; V9-06–08. Not a cancer-negative label.,Muto et al. (1992) https://pubmed.ncbi.nlm.nih.gov/1434310/; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK615721/
+"1,3,5-Trimethylbenzene",108-67-8,Cc1cc(C)cc(C)c1,,unresolved_or_separate_endpoint,mixed_exposure_hold,https://iris.epa.gov/document/%26deid%3D246041
+Toluene,108-88-3,Cc1ccccc1,,unresolved_or_separate_endpoint,inconsistent_or_limited; conditional_no_effect; adversity_uncertain; no_effect_at_condition,https://www.ncbi.nlm.nih.gov/books/NBK592498/; https://www.atsdr.cdc.gov/ToxProfiles/tp56.pdf; https://www.atsdr.cdc.gov/ToxProfiles/tp56-c3.pdf
+Chlorobenzene,108-90-7,Clc1ccccc1,,unresolved_or_separate_endpoint,no_human_evidence,https://www.ncbi.nlm.nih.gov/books/NBK590252/
+2-Methoxyethanol,109-86-4,COCCO,,unresolved_or_separate_endpoint,mixed_exposure_hold,https://oehha.ca.gov/sites/default/files/media/downloads/crnr/22summs.pdf
+2-Methoxyethanol acetate,110-49-6,COCCOC(C)=O,,unresolved_or_separate_endpoint,index_only,https://oehha.ca.gov/air/chemicals/ethylene-glycol-monomethyl-ether-acetate
+n-Hexane,110-54-3,CCCCCC,,sensitivity,Multiple CBC studies no effect; minor within-range changes in another study; V9-01–05.,Chang et al. (1993); Sanagi et al. (1980) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK601184/
+2-Ethoxyethanol,110-80-5,CCOCCO,,unresolved_or_separate_endpoint,index_only,https://oehha.ca.gov/air/chemicals/ethylene-glycol-monoethyl-ether
+2-Ethoxyethyl acetate,111-15-9,CCOCCOC(C)=O,,sensitivity,"Air concentration related to Hb, Hct and RBC; follow-up glove intervention suggests dermal contribution; occupational air association only; V8-19 upgraded from index.",Chen et al. (2003) https://pubmed.ncbi.nlm.nih.gov/12937203/
+2-Butoxyethanol,111-76-2,CCCCOCCO,,unresolved_or_separate_endpoint,conditional_no_effect; no_effect_at_condition,https://www.ncbi.nlm.nih.gov/books/NBK594625/; https://www.atsdr.cdc.gov/ToxProfiles/tp118-c2.pdf
+"2,4-Dinitrotoluene",121-14-2,Cc1ccc([N+](=O)[O-])cc1[N+](=O)[O-],,unresolved_or_separate_endpoint,mixed_exposure_hold,https://www.ncbi.nlm.nih.gov/books/NBK591581/
+Tetrachloroethylene,127-18-4,ClC(Cl)=C(Cl)Cl,,sensitivity,"Suggestive, conflicting controlled and worker studies; H032/V7-06.",Emara et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20044880/; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK591311/
+Mixed xylenes,1330-20-7,,,excluded_structure,excluded_mixture,https://www.ncbi.nlm.nih.gov/books/NBK600778/
+Formaldehyde,50-00-0,C=O,,sensitivity,Inconsistent blood-cell studies; association only; E03/H048/H049. Also separate leukemia evidence.,EPA IRIS (2024) https://www.ncbi.nlm.nih.gov/books/NBK612570/table/appc.tab35/; Zhang et al. (2010) https://pmc.ncbi.nlm.nih.gov/articles/PMC2974570/
+"1,2,3-Trimethylbenzene",526-73-8,Cc1cccc(C)c1C,,unresolved_or_separate_endpoint,mixed_exposure_hold,https://iris.epa.gov/document/%26deid%3D246041
+"1,3-Dichlorobenzene",541-73-1,Clc1cccc(Cl)c1,,unresolved_or_separate_endpoint,no_human_evidence,https://www.ncbi.nlm.nih.gov/books/NBK600880/
+Carbon Tetrachloride,56-23-5,ClC(Cl)(Cl)Cl,,unresolved_or_separate_endpoint,change_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp30-c3.pdf
+2-Hexanone,591-78-6,CCCCC(C)=O,,unresolved_or_separate_endpoint,insufficient_no_effect,https://www.ncbi.nlm.nih.gov/books/NBK591915/
+Acetone,67-64-1,CC(C)=O,,unresolved_or_separate_endpoint,adversity_uncertain; conditional_no_effect; adverse_signal; no_effect_at_condition; uncertain,https://www.atsdr.cdc.gov/toxprofiles/tp21.pdf; https://www.atsdr.cdc.gov/ToxProfiles/tp21-c2.pdf
+Chloroform,67-66-3,ClC(Cl)Cl,,unresolved_or_separate_endpoint,excluded_medical_exposure; case_only_hold; adverse_signal,https://www.ncbi.nlm.nih.gov/books/NBK609959/; https://www.atsdr.cdc.gov/ToxProfiles/tp6-c2.pdf
+Benzene,71-43-2,c1ccccc1,1,main,Worker blood-cell reductions; H008; multiple corroborating studies.,Lan et al. (2004) https://doi.org/10.1126/science.1102443
+Chloromethane,74-87-3,CCl,,sensitivity,Historical inhalation poisonings with reduced blood cells; agency says evidence limited; V9-10.,Kegel et al. (1929) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600818/
+Chloroethane,75-00-3,CCCl,,unresolved_or_separate_endpoint,excluded_non_target_effect,https://www.ncbi.nlm.nih.gov/books/NBK614213/
+Vinyl chloride,75-01-4,C=CCl,,unresolved_or_separate_endpoint,positive_candidate; conditional_no_effect; adverse_signal; change_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp20.pdf; https://www.atsdr.cdc.gov/ToxProfiles/tp20-c2.pdf
+Methylene Chloride,75-09-2,ClCCl,1,main,Clinical inhalation case plus ATSDR medical guidance; not cytopenia.,Carboxyhemoglobinemia caused by inhalation of methylene chloride https://pubmed.ncbi.nlm.nih.gov/3947433/
+Carbon Disulfide,75-15-0,S=C=S,,excluded_structure,excluded_scope_no_effect; no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp82-c2.pdf
+Ethylene Oxide,75-21-8,C1CO1,,unresolved_or_separate_endpoint,conditional_no_effect; animal_supported_only; no_effect_at_condition; association_signal,https://www.ncbi.nlm.nih.gov/books/NBK589511/; https://www.ncbi.nlm.nih.gov/books/NBK589518/; https://www.atsdr.cdc.gov/ToxProfiles/tp137-c2.pdf; https://pmc.ncbi.nlm.nih.gov/articles/PMC1757803/
+"1,2-Dichloropropane",78-87-5,CC(Cl)CCl,,unresolved_or_separate_endpoint,hold_mixed_exposure; adverse_signal,https://www.ncbi.nlm.nih.gov/books/NBK590232/; https://www.atsdr.cdc.gov/ToxProfiles/tp134-c2.pdf
+2-Butanone,78-93-3,CCC(C)=O,,unresolved_or_separate_endpoint,mixed_exposure_hold,https://www.ncbi.nlm.nih.gov/books/NBK590513/
+Trichloroethylene,79-01-6,ClC=C(Cl)Cl,1,main,Measured occupational air; dose-related lower lymphocyte counts; H038.,Lan et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20530238/
+Acrylamide,79-06-1,C=CC(N)=O,,unresolved_or_separate_endpoint,unknown,https://www.ncbi.nlm.nih.gov/books/NBK591426/
+"1,1,2,2-Tetrachloroethane",79-34-5,ClC(Cl)C(Cl)Cl,,unresolved_or_separate_endpoint,adverse_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp93-c3.pdf
+Naphthalene,91-20-3,c1ccc2ccccc2c1,,unresolved_or_separate_endpoint,positive_candidate; change_signal,https://www.ncbi.nlm.nih.gov/books/NBK615481/; https://www.atsdr.cdc.gov/ToxProfiles/tp67-c2.pdf
+"1,2-Dichlorobenzene",95-50-1,Clc1ccccc1Cl,0,main,Multiple assessed blood indices; sample size and duration unavailable; V10-01.,Hollingsworth et al. (1958) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600880/
+"1,2,4-Trimethylbenzene",95-63-6,Cc1ccc(C)c(C)c1,,unresolved_or_separate_endpoint,mixed_exposure_hold,https://iris.epa.gov/document/%26deid%3D246041
+Nitrobenzene,98-95-3,O=[N+]([O-])c1ccccc1,1,main,Inhalation case only; H026.,Lee et al. (2013) https://pubmed.ncbi.nlm.nih.gov/24475977/
+"1,3-Dinitrobenzene",99-65-0,O=[N+]([O-])c1cccc([N+](=O)[O-])c1,,unresolved_or_separate_endpoint,adverse_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp74-c2.pdf
+"1,4-Dioxane",123-91-1,C1COCCO1,,sensitivity,Two no-effect studies; acute leukocytosis unresolved; N004–006.,Young et al. (1977) https://pubmed.ncbi.nlm.nih.gov/926203/; Thiess et al. (1976) via ATSDR https://www.atsdr.cdc.gov/ToxProfiles/tp187-c3.pdf
+"1,1,1-Trichloroethane",71-55-6,CC(Cl)(Cl)Cl,0,main,Human study arms with assessed indices; N007/N008. Not absence of toxicity in all conditions.,ATSDR https://www.ncbi.nlm.nih.gov/books/NBK602929/ (Torkelson et al. 1958; Kramer et al. 1978)
+Bromomethane,74-83-9,CBr,,unresolved_or_separate_endpoint,no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp27-c2.pdf
+Hexachloroethane,67-72-1,ClC(Cl)(Cl)C(Cl)(Cl)Cl,,unresolved_or_separate_endpoint,no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp97-c2.pdf
+Hexamethylene diisocyanate,822-06-0,O=C=NCCCCCCN=C=O,,unresolved_or_separate_endpoint,no_effect_at_condition; change_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp120-c2.pdf
+Methanethiol,74-93-1,CS,,unresolved_or_separate_endpoint,adverse_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp139-c2.pdf
+RDX,121-82-4,O=[N+]([O-])N1CN([N+](=O)[O-])CN([N+](=O)[O-])C1,,unresolved_or_separate_endpoint,no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp78-c3.pdf
+"2,4,6-Trinitrotoluene",118-96-7,Cc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1[N+](=O)[O-],,unresolved_or_separate_endpoint,adverse_signal; no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp81-c2.pdf
+Vinyl acetate,108-05-4,C=COC(C)=O,,unresolved_or_separate_endpoint,no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp59-c2.pdf
+"2,4-Dinitrophenol",51-28-5,O=[N+]([O-])c1ccc(O)c([N+](=O)[O-])c1,,unresolved_or_separate_endpoint,change_signal,https://www.atsdr.cdc.gov/ToxProfiles/tp64-c2.pdf
+Phenol,108-95-2,Oc1ccccc1,,unresolved_or_separate_endpoint,uncertain,https://www.atsdr.cdc.gov/ToxProfiles/tp115-c3.pdf
+"1,2-Dibromo-3-chloropropane",96-12-8,ClCC(Br)CBr,,unresolved_or_separate_endpoint,no_effect_at_condition,https://www.atsdr.cdc.gov/ToxProfiles/tp36-c2.pdf
+4-Bromo-2-fluoroaniline,367-24-8,Nc1ccc(Br)cc1F,1,main,"Specific named derivative in case, not parent aniline; CAS verified NIST https://webbook.nist.gov/cgi/cbook.cgi?ID=367-24-8; hemolysis after therapy not used.",Occupational inhalation of aniline fumes https://pmc.ncbi.nlm.nih.gov/articles/PMC4280784/
+Ethylene glycol,107-21-1,OCCO,0,main,Controlled human aerosol study; blood indices evaluated; original records 5463-5465.,Wills et al. (1974) https://www.ncbi.nlm.nih.gov/books/NBK600985/
+"1,1-Dichloroethene",75-35-4,C=C(Cl)Cl,0,main,138 workers and matched controls; original records 3816-3818.,Ott et al. (1976) https://www.atsdr.cdc.gov/toxprofiles/tp39.pdf
+Aniline,62-53-3,Nc1ccccc1,,sensitivity,Controlled airborne study MetHb increase; possible skin contribution and clinical adversity at study exposure not established. Parent not inferred from derivative case.,Kaefferlein et al. (2014) https://pubmed.ncbi.nlm.nih.gov/24899222/; ATSDR https://wwwn.cdc.gov/TSP/MMG/MMGDetails.aspx?mmgid=448&toxid=79

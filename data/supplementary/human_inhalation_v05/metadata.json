@@ -1,0 +1,60 @@
+{
+  "version": "0.5-experiment",
+  "status": "frozen pilot observation labels; not validated hazard truth",
+  "species": "human in vivo",
+  "route": "inhalation or documented occupational airborne exposure; incidental dermal contribution may remain",
+  "concentration_duration_restriction": null,
+  "labels": {
+    "0": "conditional absence of observed effect in measured blood indices; not confirmed non-toxic; functional Hb or cancer may not be assessed",
+    "1": "observed blood/hematopoietic or functional hemoglobin effect supported by selected sources; not cancer probability"
+  },
+  "counts": {
+    "registry": 60,
+    "main": {
+      "positive": 5,
+      "conditional_no_effect": 5
+    },
+    "core": {
+      "positive": 2,
+      "conditional_no_effect": 5
+    },
+    "sensitivity": {
+      "positive": 11,
+      "conditional_no_effect": 9
+    },
+    "cancer_reference_rows": 5
+  },
+  "source_input_sha256": {
+    "chemical_inventory_v04.csv": "6fa253842199a7610070bd6e24ae25246815ccaf8eebe27d02a3ddd6d542ddda",
+    "integrated_source_registry.csv": "ec3a1942abc87338f90d83ccc4d674420244d6c92dd530e19e2caf912bdce12e",
+    "decisions.tsv": "2436891c317d4c459c0ef4f9d108e0fa331604a552be428b47c7755d436259b9"
+  },
+  "software": {
+    "rdkit": "2025.09.4",
+    "sklearn": "1.8.0",
+    "numpy": "2.3.5"
+  },
+  "method": "Morgan radius 2, 2048 bits, fixed LR/RF/Tanimoto, leave-one-molecule-out; no tuning or external validation",
+  "limits": [
+    "Small nonexhaustive pilot",
+    "No true chemical-level negatives established",
+    "Sensitivity set includes weaker associations and potential mixed-route contributions; not strictly confirmed inhalation-only",
+    "Heterogeneous endpoints",
+    "No independent reviewer or full registry identity verification",
+    "715 pending contexts were not all adjudicated",
+    "LOO fold prevalence differs by held-out class; pooled ranking metrics fragile"
+  ],
+  "git_blob_sha1": {
+    "hematotoxicity_dataset.csv": "d80f1199730cfa982866d54e84aaec8257ce431b",
+    "hematotoxicity_core.csv": "30526535313d97cd51573b3b3c6ae8d6513589ea",
+    "hematotoxicity_sensitivity.csv": "beb1610f828eed6df7f4d14add9c9c1092172078",
+    "label_decisions.csv": "385a2da0bd5c2e5f6f59b0f18a46d2900a629a2c",
+    "all_chemical_registry.csv": "b939d23d5c6fa304a379fc36ad0dcbf0a08643d7",
+    "cancer_reference_evidence.csv": "1254ced1afb66da754f384ec16783be8e4ba1075",
+    "run_pilot.py": "12dd411d067840980546ec081454c58b9b7dbe98",
+    "screen_similarity.py": "329888412917b321dce24915317023084fc50216",
+    "pilot_main/metrics.csv": "ef387f0e32085e75377a5bf2eb77163f32eca5bb",
+    "pilot_core/metrics.csv": "e974d400b39a2194d576e472d53982d2e324b598",
+    "pilot_sensitivity/metrics.csv": "a810de95fc600400ef50dcbfd3e3389e0974b8fe"
+  }
+}

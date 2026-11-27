@@ -1,0 +1,21 @@
+Chemical,CAS_RN,SMILES,Label,Endpoint,Reference
+Benzene,71-43-2,c1ccccc1,1,core_hematology,Lan et al. (2004) https://doi.org/10.1126/science.1102443
+Trichloroethylene,79-01-6,ClC=C(Cl)Cl,1,core_hematology,Lan et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20530238/
+2-Ethoxyethyl acetate,111-15-9,CCOCCOC(C)=O,1,core_hematology,Chen et al. (2003) https://pubmed.ncbi.nlm.nih.gov/12937203/
+Nitrobenzene,98-95-3,O=[N+]([O-])c1ccccc1,1,functional_hemoglobin,Lee et al. (2013) https://pubmed.ncbi.nlm.nih.gov/24475977/
+Dichloromethane,75-09-2,ClCCl,1,functional_hemoglobin,Carboxyhemoglobinemia caused by inhalation of methylene chloride https://pubmed.ncbi.nlm.nih.gov/3947433/
+4-Bromo-2-fluoroaniline,367-24-8,Nc1ccc(Br)cc1F,1,functional_hemoglobin,Occupational inhalation of aniline fumes https://pmc.ncbi.nlm.nih.gov/articles/PMC4280784/
+Ethylene glycol,107-21-1,OCCO,0,measured_hematology_no_effect,Wills et al. (1974) https://www.ncbi.nlm.nih.gov/books/NBK600985/
+"1,1-Dichloroethene",75-35-4,C=C(Cl)Cl,0,measured_hematology_no_effect,Ott et al. (1976) https://www.atsdr.cdc.gov/toxprofiles/tp39.pdf
+"1,1,1-Trichloroethane",71-55-6,CC(Cl)(Cl)Cl,0,measured_hematology_no_effect,ATSDR https://www.ncbi.nlm.nih.gov/books/NBK602929/ (Torkelson et al. 1958; Kramer et al. 1978)
+p-Xylene,106-42-3,Cc1ccc(C)cc1,0,measured_hematology_no_effect,NIOSH (1981) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600778/
+"1,2-Dichlorobenzene",95-50-1,Clc1ccccc1Cl,0,measured_hematology_no_effect,Hollingsworth et al. (1958) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600880/
+Formaldehyde,50-00-0,C=O,1,core_hematology,EPA IRIS (2024) https://www.ncbi.nlm.nih.gov/books/NBK612570/table/appc.tab35/; Zhang et al. (2010) https://pmc.ncbi.nlm.nih.gov/articles/PMC2974570/
+1-Bromopropane,106-94-5,CCCBr,1,core_hematology,Li et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20853682/; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK591365/
+Tetrachloroethylene,127-18-4,ClC(Cl)=C(Cl)Cl,1,core_hematology,Emara et al. (2010) https://pubmed.ncbi.nlm.nih.gov/20044880/; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK591311/
+Chloromethane,74-87-3,CCl,1,core_hematology,Kegel et al. (1929) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK600818/
+Aniline,62-53-3,Nc1ccccc1,1,functional_hemoglobin,Kaefferlein et al. (2014) https://pubmed.ncbi.nlm.nih.gov/24899222/; ATSDR https://wwwn.cdc.gov/TSP/MMG/MMGDetails.aspx?mmgid=448&toxid=79
+n-Hexane,110-54-3,CCCCCC,0,measured_hematology_no_effect,Chang et al. (1993); Sanagi et al. (1980) via ATSDR https://www.ncbi.nlm.nih.gov/books/NBK601184/
+Acrylonitrile,107-13-1,C=CC#N,0,measured_hematology_no_effect,Muto et al. (1992) https://pubmed.ncbi.nlm.nih.gov/1434310/; ATSDR https://www.ncbi.nlm.nih.gov/books/NBK615721/
+Ethylbenzene,100-41-4,CCc1ccccc1,0,measured_hematology_no_effect,Bardodej and Cirek (1988) via ATSDR https://www.atsdr.cdc.gov/toxprofiles/tp110.pdf
+"1,4-Dioxane",123-91-1,C1COCCO1,0,measured_hematology_no_effect,Young et al. (1977) https://pubmed.ncbi.nlm.nih.gov/926203/; Thiess et al. (1976) via ATSDR https://www.atsdr.cdc.gov/ToxProfiles/tp187-c3.pdf

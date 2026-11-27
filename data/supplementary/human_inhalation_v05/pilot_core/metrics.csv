@@ -1,0 +1,4 @@
+model,n,positive,negative,balanced_accuracy,recall,FNR,PR_AUC_AP,ROC_AUC,TP,FP,TN,FN
+similarity,7,2,5,0.4,0.0,1.0,0.22619047619047616,0.0,0,1,4,2
+LR,7,2,5,0.2,0.0,1.0,0.22619047619047616,0.0,0,3,2,2
+RF,7,2,5,0.3,0.0,1.0,0.22619047619047616,0.0,0,2,3,2

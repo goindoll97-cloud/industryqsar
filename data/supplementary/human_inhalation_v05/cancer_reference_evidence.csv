@@ -1,0 +1,6 @@
+Chemical,CAS_RN,SMILES,Endpoint,Reference
+Benzene,71-43-2,c1ccccc1,MDS association OR 4.33 CI 1.31–14.3,Schnatter et al. 2012 https://www.atsdr.cdc.gov/ToxProfiles/tp3-c2.pdf
+Benzene,71-43-2,c1ccccc1,elevated hematologic neoplasm and leukemia risk,Hayes et al. 1996; 1997; 2001 and Linet et al. 1996 https://www.atsdr.cdc.gov/ToxProfiles/tp3-c2.pdf
+Ethylene Oxide,75-21-8,C1CO1,male lymphoid tumor mortality exposure trend,Steenland et al. 2004 https://pmc.ncbi.nlm.nih.gov/articles/PMC1757803/
+"1,3-Butadiene",106-99-0,C=CC=C,all leukemia mortality RR 2.53 (95% CI 1.37–4.67),Sathiakumar et al. 2021 https://pmc.ncbi.nlm.nih.gov/articles/PMC8606437/
+Formaldehyde,50-00-0,C=O,myeloid leukemia; EPA IRIS integrated inhalation evaluation,EPA IRIS (2024) https://iris.epa.gov/ChemicalLanding/%26substance_nmbr%3D419
