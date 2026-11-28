@@ -1,0 +1,13 @@
+{
+  "version": "v0.29-validation-in-progress",
+  "local_archive": "hematotoxicity_v29_validation.zip",
+  "archive_sha256": "c5f0096c692558375f4514765318c5cc868736409558bd9b836bfb3b68a03aa3",
+  "local_sha256": {
+    "audit_v29.py": "36dede906a09993a37bd68a3893f9a7f87ef0beb8f922799ba59938d01d452a4",
+    "results/summary.json": "f5ba39ed2a1e48031dce9998fa4f68651d86eb07252908ceb61d6b3b6b330f5d",
+    "results/structure_hold_reaudit_40.csv": "362171b94384025f08723318c940d28f5f8bafa1054f4edb9b0f080403d9d1a8",
+    "human_reference_audit_16.csv": "983f625b95676976840c1e88949720fb971a25578afe38d47d54fc76159329e2",
+    "new_animal_cue_review_2.csv": "ff9332fc305aa9a6658385d833d5fdf05a5c480e9af05226f7909cbe95b8e853"
+  },
+  "public_scope": "Public audit notes, summary, reviewed source table projections and version pointer; full tested script and outputs in local ZIP. Public CSV text projections may have normalized line endings. v0.28 historical files and hashes unchanged."
+}

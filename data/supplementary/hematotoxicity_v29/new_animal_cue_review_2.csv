@@ -1,0 +1,3 @@
+CAS,evidence_id,source,observation,decision
+333-41-5,NITE-E0305,https://www.chem-info.nite.go.jp/chem/english/ghs/m-nite-333-41-5e.html,Rats aerosol study reports erythrocyte AChE inhibition; RBC/Hb/Hct findings are in other oral studies.,hold_AChE_not_type1_3_endpoint
+74-83-9,NITE-E0049,https://www.chem-info.nite.go.jp/chem/english/ghs/m-nite-74-83-9e.html,Rat/mouse studies report reduced mean erythrocyte Hb and volume and increased RBC count; NITE says inhalation etc.,hold_route_and_adversity_pending_primary

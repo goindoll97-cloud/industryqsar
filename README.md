@@ -1,14 +1,21 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 데이터 작업본: v0.28-evidence-rederivation (근거 재도출·경로/유형 분류) | 최신 실험: v0.26-pilot2 | 공개 A/B CSV: v0.18**
+**최신 데이터 작업본: v0.29-validation-in-progress (정밀 검증 진행 중) | 최신 실험: v0.26-pilot2 | 공개 A/B CSV: v0.18**
 
 ## 현행 연구 목적 및 방향
 
 일본 정부 NITE GHS의 공식 혈액계 특정표적장기 독성(STOT) 분류와 분자구조적 특성을 이용하여 산업화학물질의 혈액계 유해성 평가 우선순위를 도출하고, 반도체 제조공정 관련 물질에 적용한다. ATSDR·PubMed 인체 흡입/직업성 근거를 활용해 인체 관련성을 별도로 검토한다. 공식 유해성은 인체 흡입 양성 또는 실제 위해도를 의미하지 않는다. 인체·동물 및 노출경로별 근거를 구분한다. 백혈병 인과 규명, 독성 발생 확률, 안전성 판정은 목표가 아니다. 최종 참조집합 및 실험 계획은 근거 정제 후 확정한다.
 
-**[현행 연구 프로토콜 v0.27](docs/hematotoxicity_research_protocol_v27_ko.md)** · **[다음 대화/작업 인수인계 v0.28](docs/hematotoxicity_handoff_v28_ko.md)**
+**[현행 연구 프로토콜 및 인수인계 v0.29](docs/hematotoxicity_research_protocol_v29_ko.md)** · **[v0.28 역사적 인수인계](docs/hematotoxicity_handoff_v28_ko.md)**
 
-## 최신 작업 v0.28 — 공식 분류 근거 전수 재도출 및 노출경로·독성유형 분류
+## 최신 작업 v0.29 — 데이터 검증 후속
+
+[실행 결과 및 v0.28 감사 정정](data/supplementary/hematotoxicity_v29/README.md) · [실행 집계](data/supplementary/hematotoxicity_v29/summary.json) · [파일 해시](data/supplementary/hematotoxicity_v29/manifest.json)
+
+v0.27 원본 417행 독립 보수적 자동 선별, 2,235 단위, 단위 테스트 7개 통과. 40 구조 보류 재계산 결과 37종 표준화 차이 후보(기존 A 3, 신규 34), 3종 보류 유지. 인체 16종 중 12종 신규 출처 확인(원저 관련 절 2, 초록 전문 1, 색인 부분 8, 제목만 1). MBT 치료 교란 보류 권고, v0.28 신규 동물 단서 2행도 모두 편입 보류. v0.28 323행은 자동 전문 처리이지 독성학적 수동 검증 완료가 아니다. 149건 골수 문구는 직접 손상 확정 아님. 기존 A349/B8110/후보2519 및 예비실험 유지, 신규 양성 0. v0.28 전체 ZIP/workbook 및 신규 EPA 원본 미확보로 전체 재실행은 대기. 로컬 hematotoxicity_v29_validation.zip에 실제 실행 코드와 결과 보존.
+
+
+## 이전 작업 v0.28 — 공식 분류 근거 전수 재도출 및 노출경로·독성유형 분류
 
 [작업 설명](data/supplementary/hematotoxicity_v28/README.md) · [영문 설명](data/supplementary/hematotoxicity_v28/README_EN.md) · [데이터 사전](data/supplementary/hematotoxicity_v28/DATA_DICTIONARY.md) · [물질별 공개 색인](data/supplementary/hematotoxicity_v28/nite_evidence_public_index.csv) · [417행 판독 결과](data/supplementary/hematotoxicity_v28/S05c_v27_evidence_review_reconciliation.csv) · [실행 집계](data/supplementary/hematotoxicity_v28/summary.json) · [공백 등록부](data/supplementary/hematotoxicity_v28/S11_gap_register.csv) · [재현 코드](data/supplementary/hematotoxicity_v28/code) · [manifest](data/supplementary/hematotoxicity_v28/manifest.json)
 
