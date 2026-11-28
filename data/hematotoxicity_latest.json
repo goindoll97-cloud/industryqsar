@@ -3,7 +3,7 @@
   "status": "provisional",
   "path": "supplementary/hematotoxicity_v18",
   "protocol": "../docs/hematotoxicity_research_protocol_v17_ko.md",
-  "working_version": "v0.22",
+  "working_version": "v0.23",
   "working_status": "local_snapshot_public_manifest_only",
-  "working_manifest": "supplementary/hematotoxicity_v22/summary.json"
+  "working_manifest": "supplementary/hematotoxicity_v23/summary.json"
 }

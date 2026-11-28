@@ -1,0 +1,50 @@
+{
+  "version": "v0.23",
+  "base": "v0.22",
+  "status": "local_snapshot_public_manifest_only",
+  "latest_public_dataset": "v0.18",
+  "local_archive": "hematotoxicity_v23.zip",
+  "A_total": 39,
+  "A_human_inherited": 36,
+  "A_human_levels": {
+    "1_core": 9,
+    "2_extended": 7,
+    "3_uncertain": 20,
+    "not_reviewed_human": 3
+  },
+  "A_new_animal_only": 3,
+  "A_animal_provisional": 7,
+  "A_animal_transfer_ready": 4,
+  "A_animal_sensitivity": 2,
+  "A_animal_identity_hold": 3,
+  "animal_reviewed_substances": 18,
+  "animal_decisions": {
+    "provisional_animal_support": 7,
+    "animal_sensitivity_only": 2,
+    "animal_evidence_hold": 8,
+    "outside_domain_animal_hazard": 1
+  },
+  "ATSDR_candidate_contexts": 2869,
+  "PubMed_candidate_abstracts": 1795,
+  "ATSDR_reviewed_contexts": 19,
+  "PubMed_reviewed_abstracts": 1,
+  "B_total": 8110,
+  "B_analysis_status": {
+    "EPA_checked_reference_overlap": 31,
+    "EPA_checked_novel_candidate": 2642,
+    "outside_domain": 2613,
+    "identity_review": 766,
+    "structure_unresolved": 2058
+  },
+  "B_new_overlap": 1,
+  "novel_candidates": 2642,
+  "final_labels": 0,
+  "model_run": false,
+  "sha256_files": {
+    "dataset_B_industrial_8110.csv": "3c2ee6ab58706c4ded2bf20eaff5c36503ec56f2974b6ba94595cd3516aaa1df",
+    "animal_review_queue_v23.csv": "33855564d013443ff198c0591e7d9a532a6e29a4e130124ad1ae4c02d4136fe7",
+    "animal_evidence_review_v23.csv": "01f09aa0ce8f19db2a603ad1aa32145b06ccb5eb5ad258e93018831f70cac57e",
+    "screening_candidate_index_v23.csv": "9ec1a0c730819228f1214ded2947d8d7614b13cb8572fdc8b0a0def0b23a24bf",
+    "dataset_A_inhalation_hematotoxicity_references.csv": "201aa34c73125fce62b23207a9eda9c819b13b5b5641b7225b343b36920f8161"
+  }
+}

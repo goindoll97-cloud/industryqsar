@@ -1,6 +1,6 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 작업 버전: v0.22 (로컬 혈액독성 문헌 근거 병합) | 최신 공개 CSV: v0.18 | 데이터 구축 단계 (provisional)**
+**최신 작업 버전: v0.23 (로컬 인체·동물 흡입 근거 통합) | 최신 공개 CSV: v0.18 | 데이터 구축 단계 (provisional)**
 
 ## 연구 목적
 
@@ -8,7 +8,13 @@
 
 *Prioritization of Potential Hematotoxicants in Semiconductor Manufacturing Based on Human Inhalation Evidence and Molecular Structural Characteristics*
 
-## 최신 작업 v0.22 — 인체 혈액독성 문헌 근거 병합
+## 최신 작업 v0.23 — 인체·동물 흡입 근거 통합
+
+[작업 manifest](data/supplementary/hematotoxicity_v23/summary.json) · [작업 설명](data/supplementary/hematotoxicity_v23/README.md)
+
+A 39종(기존 인체 36종 유지, 신규 동물 전용 3종), B 8,110종 유지, 신규 후보 2,642종. 동물 잠정 근거 7종, 구조 기준 충족 4종. 인체 주 분석 잠정 참조 16종 유지. 종간 전이 검증 설계는 계획 단계이며 최종 라벨 및 모델 없음. 전체 로컬 파일은 hematotoxicity_v23.zip, 공개 저장소에는 manifest만 등록.
+
+## 이전 작업 v0.22 — 인체 혈액독성 문헌 근거 병합
 
 [작업 manifest](data/supplementary/hematotoxicity_v22/summary.json) · [작업 설명](data/supplementary/hematotoxicity_v22/README.md)
 
