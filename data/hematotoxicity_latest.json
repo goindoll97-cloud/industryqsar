@@ -12,5 +12,9 @@
   "pilot_feature_version": "v0.31-marrow-pilot",
   "pilot_feature_status": "exploratory_public_subset_not_frozen",
   "pilot_feature_manifest": "supplementary/hematotoxicity_v031/manifest.json",
-  "pilot_feature_readme": "supplementary/hematotoxicity_v031/README.md"
+  "pilot_feature_readme": "supplementary/hematotoxicity_v031/README.md",
+  "pilot_runner_version": "v0.32",
+  "pilot_runner": "supplementary/hematotoxicity_v031/run_pilot.py",
+  "pilot_runner_guide": "../docs/START_MODEL_ko.md",
+  "pilot_runner_status": "locally_tested_exploratory_33_102"
 }
