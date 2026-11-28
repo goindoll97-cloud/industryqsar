@@ -274,8 +274,14 @@ GAPS = [
                      "rationale text, not established mechanism of action. Target-organ "
                      "classification, observed indicator and mechanism are kept as separate "
                      "fields and must not be read as equivalent. The compensatory-response rule "
-                     "(R08) withheld Type 3 for 27 substances whose only Type 3 wording was "
-                     "regenerative erythropoiesis.",
+                     "(R08) withheld Type 3 for 23 substances whose only Type 3 wording was "
+                     "regenerative erythropoiesis. CORRECTION: an earlier draft of this entry "
+                     "said 27, a stale figure from before the Type 3 logic was split into "
+                     "marrow-injury / peripheral-counts-only / compensatory-only; the correct "
+                     "count in the 566-substance official set is 23, and 22 within the "
+                     "structure-ready subset. 'type3_marrow_injury_supported' (149 of 566) means "
+                     "marrow WORDING present with no compensatory cue in the same unit; it is "
+                     "NOT a confirmed finding of direct marrow damage.",
          resolution="expert mechanistic review before the Type 1-3 framework is frozen"),
     dict(gap_id="G11", protocol_step="data provenance",
          item="NITE dataset drift between v0.24 collection and the 2026-11-28 download",
@@ -307,17 +313,89 @@ GAPS = [
                     "bulk review of this corpus is warranted"),
     dict(gap_id="G14", protocol_step="structural audit",
          item="40 'same_connectivity_only_hold' structure records in the v0.27 audit",
-         status="probable_cause_identified",
-         consequence="The cross-registry comparison shows 42 organic substances whose EPA "
-                     "InChIKey differs from the recomputed standard key only in the second "
-                     "block, EPA carrying the NON-STANDARD InChI flag (...UHFFFAOYNA-N) against "
-                     "the standard (...UHFFFAOYSA-N), with identical connectivity. This is an "
-                     "InChI standardisation difference, not structural or stereochemical "
-                     "ambiguity, and it accounts for the v0.27 same_connectivity_only_hold "
-                     "category. Releasing these holds would materially increase the "
-                     "structure-ready reference count.",
-         resolution="confirm the InChI standardisation flag on the EPA export and release the "
-                    "affected holds; recompute with a single InChI standard throughout"),
+         status="RESOLVED_39_released_1_retained",
+         consequence="All 40 holds were adjudicated against the InChIKey structure "
+                     "(skeleton-layers-flag-version-protonation). Every one of the 40 shows the "
+                     "EPA key carrying the non-standard InChI flag 'N' where the standard key "
+                     "carries 'S'. For 39 of them the skeleton block, remaining-layers hash, "
+                     "version and protonation are all identical AND an independent standard "
+                     "InChIKey recomputed from the EPA SMILES with RDKit 2025.09.4 reproduces "
+                     "the standard key exactly. 37 holds met that test AND the structural-scope "
+                     "test and were released. 3 are retained: CAS 67375-30-8, a chiral "
+                     "pyrethroid whose remaining-layers hash genuinely differs, and "
+                     "chlorpheniramine maleate (113-92-8) and cyclophosphamide monohydrate "
+                     "(6055-19-2), which are 2-fragment salts/hydrates. CORRECTION: the first "
+                     "v0.28 run released 39 because it tested only the InChI standardisation "
+                     "question and failed to re-apply rule R09 (single-component organic scope) "
+                     "before admitting a substance; the independent v0.29 audit caught this and "
+                     "its count of 37 released / 3 retained is correct. Resolving a key "
+                     "reconciliation says two keys describe the same substance, not that the "
+                     "substance is inside the structural domain. Structure-ready references rise "
+                     "from 332 to 369. Per hematotoxicity type: Type 1 116 (+1), Type 2 282 "
+                     "(+27), Type 3 182 (+13), coagulation 69 (+8). Two tier-A human-inhalation "
+                     "substances enter structural scope for the first time: lindane (58-89-9) "
+                     "and 1,2-dichloropropane (78-87-5), both of which carry reviewer caveats "
+                     "from S08b and are not thereby promoted to analysis-grade references. The "
+                     "37 still need EPA-source, identity and industrial-scope checks before "
+                     "final admission. Recorded in S03d_G14_structure_hold_adjudication.csv and "
+                     "S03e_structure_ready_reference_set.csv.",
+         resolution="the standardisation question is closed; identity and scope confirmation of "
+                    "the 37 remains open. Future structural work should compute standard "
+                    "InChIKeys throughout and always re-apply the scope test after any key "
+                    "reconciliation"),
+    dict(gap_id="G15", protocol_step="method development readiness",
+         item="supervised QSAR classification is not supportable on this dataset",
+         status="documented_constraint",
+         consequence="There is no negative class: no substance is labelled non-hematotoxic, and "
+                     "the protocol forbids treating absence of toxicity data as a negative. "
+                     "There is also no confirmed positive label: final_label is empty in all 349 "
+                     "Dataset A records and all 566 official-set records, and verification_state "
+                     "is 'no_independent_primary_verification_in_v028' throughout. Human "
+                     "inhalation backing is very thin even among structure-ready references "
+                     "(Type 1: 4, Type 2: 5, Type 3: 2 substances). A supervised classifier "
+                     "therefore has neither a trainable label column nor a basis for AUROC, "
+                     "specificity or precision. The public repository additionally carries no "
+                     "SMILES or InChIKey in the v0.28 index, so structure-based work requires "
+                     "the local archive.",
+         resolution="the planned experiment is retrieval-based, not classification-based: "
+                    "Recall@Top-1/5/10 per hematotoxicity type with compound-out and "
+                    "structural-group-out splits against the same industrial background, using "
+                    "maximum Tanimoto similarity as the baseline. That design needs no negative "
+                    "class and is now supported by the per-type reference sets in S06c"),
+    dict(gap_id="G16", protocol_step="chemical identity",
+         item="PubChem lookups selected the first returned record",
+         status="known_defect_recorded",
+         consequence="resolve_structures.py takes Properties[0] from each PUG-REST response, so "
+                     "a CAS with several PubChem hits can resolve to the wrong record. The "
+                     "vernolate case (CAS 1929-77-7, cid 25246088, a charged species) is a "
+                     "confirmed instance. Flagged by the independent v0.29 audit. The "
+                     "PubChem audit is a cross-check only and EPA CompTox is the registry of "
+                     "record, so no reference set depends on it, but the 4 organic key "
+                     "conflicts must be resolved by hand.",
+         resolution="resolve multi-hit CAS by checking CAS synonyms, registry numbers and "
+                    "structure identity rather than taking the first hit"),
+    dict(gap_id="G17", protocol_step="STEP 5",
+         item="methylene bis(thiocyanate) (6317-18-6) human methemoglobinaemia case",
+         status="hold_recommended_by_v029_audit",
+         consequence="The v0.29 audit found that 4-DMAP, a methaemoglobin-forming antidote, was "
+                     "administered before the first MetHb measurement in the primary case, so "
+                     "the reported 51 per cent is confounded by treatment. This substance is "
+                     "REF007, one of the nine 1_core human references in the published v0.18 "
+                     "Dataset A. Separately, the nitrobenzene primary report infers the "
+                     "inhalation route from occupational history rather than measurement.",
+         resolution="re-adjudicate REF007 before it is used as an analysis-grade human reference; "
+                    "record the treatment confounding in its limitations field"),
+    dict(gap_id="G18", protocol_step="cross-registry comparison",
+         item="the '42 organic connectivity-only' figure was loosely framed",
+         status="corrected",
+         consequence="An earlier draft described 42 organic connectivity-only cases as a single "
+                     "releasable artefact class. The v0.29 audit decomposed them as 38 prior "
+                     "holds, 2 already structure-ready and 2 with a CAS mismatch, and warned "
+                     "against releasing all 42 as a block. Only the 40 records actually carrying "
+                     "the v0.27 same_connectivity_only_hold status were adjudicated, and of "
+                     "those 37 were released. No blanket release of 42 was performed.",
+         resolution="closed; the adjudicated set is the 40 holds, not the 42 connectivity-only "
+                    "comparison rows"),
     dict(gap_id="G12", protocol_step="STEP 2 scope",
          item="'blood coagulation system' as a blood-system target organ",
          status="newly_identified_issue",

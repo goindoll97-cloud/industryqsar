@@ -17,7 +17,7 @@ v0.27 원본 417행 독립 보수적 자동 선별, 2,235 단위, 단위 테스�
 
 ## 이전 작업 v0.28 — 공식 분류 근거 전수 재도출 및 노출경로·독성유형 분류
 
-[작업 설명](data/supplementary/hematotoxicity_v28/README.md) · [영문 설명](data/supplementary/hematotoxicity_v28/README_EN.md) · [데이터 사전](data/supplementary/hematotoxicity_v28/DATA_DICTIONARY.md) · [물질별 공개 색인](data/supplementary/hematotoxicity_v28/nite_evidence_public_index.csv) · [417행 판독 결과](data/supplementary/hematotoxicity_v28/S05c_v27_evidence_review_reconciliation.csv) · [실행 집계](data/supplementary/hematotoxicity_v28/summary.json) · [공백 등록부](data/supplementary/hematotoxicity_v28/S11_gap_register.csv) · [재현 코드](data/supplementary/hematotoxicity_v28/code) · [manifest](data/supplementary/hematotoxicity_v28/manifest.json)
+[작업 설명](data/supplementary/hematotoxicity_v28/README.md) · [영문 설명](data/supplementary/hematotoxicity_v28/README_EN.md) · [데이터 사전](data/supplementary/hematotoxicity_v28/DATA_DICTIONARY.md) · [물질별 공개 색인](data/supplementary/hematotoxicity_v28/nite_evidence_public_index.csv) · [417행 판독 결과](data/supplementary/hematotoxicity_v28/S05c_v27_evidence_review_reconciliation.csv) · [유형별 참조 수](data/supplementary/hematotoxicity_v28/S06c_endpoint_type_reference_counts.csv) · [실행 집계](data/supplementary/hematotoxicity_v28/summary.json) · [공백 등록부](data/supplementary/hematotoxicity_v28/S11_gap_register.csv) · [재현 코드](data/supplementary/hematotoxicity_v28/code) · [manifest](data/supplementary/hematotoxicity_v28/manifest.json)
 
 NITE 공식 다운로드 페이지에 분류 근거 전문 일괄 파일 `list_rational_e.xlsx`(117,026행)가 있음을 확인했다. v0.24~v0.27 입력 목록에 없던 파일이다. 따라서 v0.27에 남아 있던 323행 부분 검토 대신 **혈액계 분류 749행 전체**의 근거 원문을 재도출하여 **3,634개 근거 단위**로 분할하고 각 단위 원문을 보존했다.
 
@@ -43,7 +43,30 @@ Dataset A 349종을 CAS 기준 병합(335종 매칭, 14종 미매칭)했고 `fin
 
 STEP 6 공백은 해소 대신 **영향 범위를 확정**했다. TRI 전용 28종 중 스크리닝 후보에 포함된 것은 9종(0.36%)으로 전부 농약·제초제이며 흡입 후보·인체 플래그·반도체 관련 없음. 반도체 핵심 인용 대기 4건 중 3건은 독립 심사논문 출처를 보유하고, 미인용 표 단독 의존은 1건(CAS 25322-68-3 중합체)이며 이미 `outside_domain` 이므로 **분석 영향 없음**.
 
-**신규 확정 양성 라벨 0건, 독립 원저 전문 검증 완료 0건, 신규 모델·실험 없음.** PubChem 구조감사(570 CAS 중 단일성분 유기 390)는 EPA 기반 S03을 대체하지 않으며 EPA CompTox가 기준 등록 체계다. 검증 44건 통과·0건 실패·미확보 입력 1건은 `SKIP`으로 보고. 사항 14건을 공백 등록부에 기록했고 `G01`·`G02`·`G03` 은 해소, `G06`·`G07`·`G08` 은 범위 확정 또는 부분 해소다. 전체 보충자료는 로컬 `hematotoxicity_v28.zip`(632 파일), 공개 저장소는 관례대로 근거 원문과 Dataset A/B 전체를 재게시하지 않고 집계·문서·해시·물질별 색인·판독 결과·코드만 게시한다.
+### G14 구조 보류 해제 — 참조집합 332 → 369
+
+v0.27 `same_connectivity_only_hold` 40건을 InChIKey 구조로 판정했다. **40건 전부 EPA 키가 비표준 InChI 플래그 `N`, 표준 키는 `S`** 이고, 39건은 골격·잔여계층 해시·버전·양성자화가 동일하며 EPA SMILES에서 RDKit 2025.09.4으로 독립 재계산한 표준 키가 정확히 재현된다.
+
+다만 키 문제 해소는 두 키가 같은 물질을 가리킨다는 뜻일 뿐 구조 적용범위 안에 있다는 뜻이 아니다. 규칙 R09 범위 검정을 먼저 적용해 **37건 해제, 3건 유지**했다. 유지는 CAS 67375-30-8(키랄 피레스로이드, 잔여계층 해시 실제 차이), Chlorpheniramine maleate 113-92-8(2성분 염), Cyclophosphamide monohydrate 6055-19-2(2성분 수화물)이다. Cyclophosphamide는 단일성분 무수물 50-18-0으로 대표된다.
+
+> **정정.** v0.28 최초 실행은 표준화 문제만 검정하고 규칙 R09를 재적용하지 않아 39건을 해제했다. 독립 **v0.29 감사**가 이를 포착했고 37/3이 정확하다. 범위 검정을 표준화 검정보다 먼저 적용하도록 수정하고 `validate_v28.py` 에서 단정한다.
+
+| 혈액독성 유형 | v0.27 | v0.28 | 증가 | 인체흡입 | 동물흡입 |
+|---|---:|---:|---:|---:|---:|
+| Type 1 헤모글로빈 기능 | 115 | **116** | +1 | 4 | 22 |
+| Type 2 적혈구·빈혈 | 255 | **282** | +27 | 5 | 48 |
+| Type 3 혈구수·골수 | 169 | **182** | +13 | 2 | 22 |
+| 응고계(별도) | 61 | **69** | +8 | 0 | 6 |
+
+Type 3 내부: 골수손상 지지 92, 말초 혈구수만 68, 보상성 단독 보류 22. `type3_marrow_injury_supported` 는 보상성 단서 없이 골수 문구가 존재한다는 뜻이며 직접 손상 확정이 아니다. **tier A 인체 흡입 2종(Lindane 58-89-9, 1,2-Dichloropropane 78-87-5)이 처음으로 구조 적용범위에 편입**되지만 `S08b` 유보 사항(Lindane 경피 주류, 1,2-DCP 혼합제품)이 있어 분석용 인체 흡입 참조 승격은 아니다. 37종은 최종 편입 전 EPA 원본·신원·산업범위 점검이 필요하다. EPA CompTox가 기준 등록체계이고 PubChem 감사는 교차확인 전용이다.
+
+### 지도학습 QSAR 분류가 성립하지 않는 이유 (`G15`)
+
+**음성물질 0건** — 비혈액독성으로 라벨된 물질이 없고 프로토콜이 자료 부재의 음성 처리를 금지하므로 AUROC·specificity·precision을 산출할 수 없다. **확정 양성 라벨 0건** — `final_label` 이 Dataset A 349종과 공식집합 566종 전부 공란이므로 학습 대상 열이 없다. **인체 흡입 근거 빈약** — 구조 확보 참조 중 Type 1 4종, Type 2 5종, Type 3 2종. 또한 공개 색인에는 SMILES·InChIKey가 없어 구조 기반 작업은 로컬 아카이브가 필요하다.
+
+따라서 다음 실험은 분류가 아니라 **검색 기반**이다. 유형별 Recall@Top-1/5/10, 동일 산업 배경, 물질 단위 및 구조군 제외, 최대 Tanimoto 기준선. 음성물질이 불필요하며 필요한 유형별 참조집합이 이제 존재한다.
+
+**신규 확정 양성 라벨 0건, 독립 원저 전문 검증 완료 0건, 신규 모델·실험 없음.** PubChem 구조감사(570 CAS 중 단일성분 유기 390)는 EPA 기반 S03을 대체하지 않으며 EPA CompTox가 기준 등록 체계다. 검증 63건 통과·0건 실패·미확보 입력 1건은 `SKIP`으로 보고. 사항 18건을 공백 등록부에 기록했다. `G01`·`G02`·`G03` 해소, `G14` 표준화 문제 해소(신원·범위 확인 잔여), `G06`·`G07`·`G08` 범위 확정 또는 부분 해소, `G15` 모델링 제약 문서화. **`G13`·`G14`·`G10`·`G16`·`G17`·`G18` 은 독립 v0.29 감사가 지적한 정정 사항을 반영한 것이다** — 323행 자동 판독을 수동 검증으로 읽지 않도록 `G13` 결론 철회, Type 3 보류 수치 27→23 정정, PubChem 첫 결과 선택 결함, MBT(6317-18-6) 4-DMAP 치료 교란, 42행 일괄 해제 금지. 전체 보충자료는 로컬 `hematotoxicity_v28.zip`(637 파일), 공개 저장소는 관례대로 근거 원문과 Dataset A/B 전체를 재게시하지 않고 집계·문서·해시·물질별 색인·판독 결과·코드만 게시한다.
 
 
 ## 이전 작업 v0.27 — 보충자료 정제 및 근거 검토

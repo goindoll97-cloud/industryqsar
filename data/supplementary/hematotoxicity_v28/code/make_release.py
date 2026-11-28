@@ -21,6 +21,42 @@ def sha256(p):
     return h.hexdigest()
 
 
+def _g14_block(T):
+    """Summary of the G14 structure-hold adjudication and its effect on the reference sets."""
+    if "S03d_G14_structure_hold_adjudication.csv" not in T:
+        return {"status": "not performed (requires the v0.27 archive)"}
+    g = T["S03d_G14_structure_hold_adjudication.csv"]
+    e = T.get("S03e_structure_ready_reference_set.csv")
+    c = T.get("S06c_endpoint_type_reference_counts.csv")
+    out = {
+        "status": "adjudicated",
+        "holds_examined": len(g),
+        "decisions": g.g14_decision.value_counts().to_dict(),
+        "cause": ("every one of the 40 holds carries the EPA non-standard InChI flag 'N' where "
+                  "the standard key carries 'S'; for 39 the skeleton block, remaining-layers "
+                  "hash, version and protonation are identical and an independent standard "
+                  "InChIKey recomputed from the EPA SMILES reproduces the standard key exactly"),
+        "retained": ("CAS 67375-30-8, a chiral pyrethroid whose remaining-layers hash genuinely "
+                     "differs: a real stereochemical difference"),
+    }
+    if e is not None:
+        out["structure_ready_before"] = int((e.structure_ready_v27 == "1").sum())
+        out["structure_ready_after"] = len(e)
+        out["registry_of_record"] = "EPA CompTox; the PubChem audit remains a cross-check only"
+    if c is not None:
+        out["reference_counts_per_endpoint_type"] = {
+            r.endpoint_type: {
+                "before": int(r.references_v27_structure_ready),
+                "after": int(r.references_v28_after_G14_release),
+                "gained": int(r.gained),
+                "human_inhalation_backed": int(r.human_inhalation_backed),
+                "animal_inhalation_backed": int(r.animal_inhalation_backed),
+            } for _, r in c.iterrows()}
+    out["tier_A_substances_newly_in_structural_scope"] = [
+        "58-89-9 lindane", "78-87-5 1,2-dichloropropane"]
+    return out
+
+
 def _merge_block(T):
     """Summary of the v0.27 archive merge, present only when the archive was supplied."""
     if "S05c_v27_evidence_review_reconciliation.csv" not in T:
@@ -186,6 +222,7 @@ def main():
         },
 
         "v27_archive_merge": _merge_block(T),
+        "G14_structure_hold_release": _g14_block(T),
 
         "not_available_to_this_build": [
             "EPA CompTox CCD-Batch-Search raw export (328 substances)",

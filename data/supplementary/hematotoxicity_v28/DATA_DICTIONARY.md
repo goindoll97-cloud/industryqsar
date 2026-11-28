@@ -168,7 +168,7 @@ One row per (substance × STOT-SE/RE) blood-system classification record, with t
 | `type3_marrow_term_present` | 0/1 | A marrow/hematopoietic term occurs in a Type 3 unit |
 | `type3_direct_marrow_wording` | 0/1 | A marrow term occurs in a unit carrying **no** compensatory cue |
 | `type3_compensatory_wording` | 0/1 | A Type 3 unit carries compensatory wording |
-| `type3_resolution`, `type3_assignment_after_compensatory_review` | enum | See below |
+| `type3_resolution`, `type3_assignment_after_compensatory_review` | enum | See below. `type3_marrow_injury_supported` means marrow **wording** present with no compensatory cue in the same unit — **not** a confirmed finding of direct marrow damage |
 | `type2_hemolytic_wording` | 0/1 | Explicit hemolysis/hemolytic anemia wording |
 | `negation_in_endpoint_segments` | integer | Endpoint units that also carry a negation cue — read before use |
 | `has_noael_loael`, `has_quantified_exposure` | 0/1 | Dose-response context available |
@@ -195,9 +195,9 @@ Type 3 spans *both* peripheral blood-cell-count change *and* marrow/hematopoieti
 | Value | Meaning | Substances |
 |---|---|---|
 | `not_assigned_no_type3_wording` | No Type 3 term | 298 |
-| `type3_marrow_injury_supported` | Marrow term in a unit with no compensatory cue | 149 |
+| `type3_marrow_injury_supported` | Marrow **wording** in a unit with no compensatory cue; not confirmed direct damage | 149 |
 | `type3_peripheral_counts_only` | Count change only; no marrow/hematopoietic term | 96 |
-| `type3_marrow_signal_compensatory_only` | Marrow term appears **only** alongside compensatory wording → marrow injury withheld | 23 |
+| `type3_marrow_signal_compensatory_only` | Marrow term appears **only** alongside compensatory wording → marrow injury withheld | 23 (22 within the structure-ready subset) |
 
 ## 10. S06b_endpoint_type_summary.csv — 4 rows
 
@@ -296,11 +296,11 @@ Candidate primary references located in PubMed. Columns: `cas`, `substance_name`
 | `human_inhalation_candidate_pending_primary_verification` | 8 |
 | `coagulation_endpoint_outside_type1_3` | 5 |
 
-## 18. S11_gap_register.csv — 14 rows
+## 18. S11_gap_register.csv — 18 rows
 
-`gap_id` (G01–G14) · `protocol_step` · `item` · `status` · `consequence` · `resolution`.
+`gap_id` (G01–G18) · `protocol_step` · `item` · `status` · `consequence` · `resolution`.
 
-Every protocol step this build could not complete is recorded here with the reason. No step is reported complete on missing data. `G01`, `G02` and `G03` are closed by the verified v0.27 archive merge; `G06`, `G07` and `G08` are bounded or partly addressed; `G13` and `G14` record findings from the merge.
+Every protocol step this build could not complete is recorded here with the reason. No step is reported complete on missing data. `G01`, `G02` and `G03` are closed and `G14`'s standardisation question is settled; `G06`, `G07` and `G08` are bounded or partly addressed; `G15` documents why supervised QSAR classification is not supportable. `G13`, `G14`, `G10`, `G16`, `G17` and `G18` carry corrections arising from the independent v0.29 validation audit.
 
 ---
 
@@ -367,7 +367,74 @@ The v0.27 EPA-based audit beside the v0.28 PubChem-based audit, per CAS.
 
 > `connectivity_match_only` is an **InChI standardisation artefact**: EPA stored non-standard InChIKeys (`…UHFFFAOYNA-N`) against standard keys (`…UHFFFAOYSA-N`), with identical connectivity in all 44 cases. 23 of the 24 `key_conflict` cases are inorganic salts and oxides. Only 4 genuine organic conflicts exist. EPA CompTox remains the registry of record.
 
-## 22. S07c_dataset_B_provenance_resolution.csv — 32 rows
+## 22. S03d_G14_structure_hold_adjudication.csv — 40 rows
+
+Adjudication of the v0.27 `same_connectivity_only_hold` structure records (gap `G14`).
+
+| Column | Type | Description |
+|---|---|---|
+| `CAS`, `nite_chemical`, `EPA_name`, `EPA_DTXSID` | string | Identity |
+| `EPA_SMILES` | string | The SMILES the recomputation was run on |
+| `EPA_InChIKey` | string | Registry key as stored by EPA |
+| `v27_computed_InChIKey` | string | The v0.27 recomputation |
+| `v28_independent_standard_InChIKey` | string | Standard InChIKey recomputed here from `EPA_SMILES` with RDKit 2025.09.4 — the arbiter |
+| `epa_key_flag`, `computed_key_flag` | char | Position 9 of the second InChIKey block: `S` = standard InChI, `N` = non-standard. All 40 records are `N` → `S` |
+| `skeleton_blocks_identical` | 0/1 | First 14-character block agrees (connectivity) |
+| `layers_hash_identical` | 0/1 | 8-character remaining-layers hash agrees (stereo, isotope) |
+| `protonation_identical` | 0/1 | Final character agrees |
+| `v27_registry_status`, `v27_scope_status` | string | v0.27 assignment |
+| `n_fragments` | integer | Disconnected fragments in the SMILES. Rule R09 admits 1 only |
+| `has_carbon` | 0/1 | Contains a carbon atom |
+| `g14_decision` | enum | `release_hold_standardisation_artifact` (37) · `retain_hold_multicomponent_outside_structural_domain` (2) · `retain_hold_stereo_or_isotope_differs` (1) · also defined: `retain_hold_no_carbon_outside_structural_domain`, `retain_hold_connectivity_differs`, `retain_hold_protonation_differs`, `retain_hold_unresolved` |
+| `g14_reason` | string | The evidence for the decision |
+| `parse_note` | string | Any SMILES parsing or recomputation problem |
+| `review_state` | string | `adjudicated_in_v028_G14` |
+
+> A hold is released **only** when it passes both tests. The **scope test runs first**: a multicomponent SMILES (salt or hydrate) or an absence of carbon keeps the substance outside the structural domain under rule R09, however cleanly its keys reconcile. Then the **standardisation test**: the skeleton block, remaining-layers hash, version and protonation must all be identical, the flag must differ as `N` → `S`, and the independent standard recomputation must confirm it. A difference in the remaining-layers hash or in protonation is a genuine stereochemical, isotopic or protonation difference and the hold stands.
+>
+> **Correction.** The first v0.28 run released 39 because it applied only the standardisation test; the independent v0.29 audit caught two multicomponent substances wrongly admitted (chlorpheniramine maleate, cyclophosphamide monohydrate). Resolving a key reconciliation says two keys describe the same substance, not that the substance is in scope.
+
+## 23. S03e_structure_ready_reference_set.csv — 369 rows
+
+The EPA-based structure-ready reference set after the `G14` release, joined to the v0.28 endpoint-type and route/species classification. **This is the reference set the type-specific screening experiment draws on.**
+
+| Column | Type | Description |
+|---|---|---|
+| `CAS`, `nite_chemical`, `EPA_DTXSID` | string | Identity |
+| `EPA_SMILES`, `EPA_InChIKey`, `canonical_SMILES`, `computed_InChIKey` | string | Structure, from the EPA registry of record |
+| `structure_ready_v27` | 0/1 | Was already structure-ready in v0.27 (332 records) |
+| `g14_released` | 0/1 | Entered scope through the `G14` release (37 records) |
+| `g14_status` | string | `released_standardisation_artifact`, or empty |
+| `registry_status` | string | v0.27 registry status |
+| `substance_name`, `evidence_tier`, `all_tiers_present` | string | From S06 |
+| `nite_blood_target_terms`, `nite_coagulation_only` | string | Official classification |
+| `type1_hb_function` … `coagulation` | 0/1 | Endpoint types |
+| `<type>__human_inhalation`, `<type>__animal_inhalation` | 0/1 | Route/species backing per type |
+| `type3_assignment_after_compensatory_review` | enum | Type 3 resolution |
+| `dataset_A_role_v028` | string | Role assignment |
+| `final_label` | string | **Empty in all 371 rows** |
+| `verification_state` | string | `no_independent_primary_verification_in_v028` |
+
+## 24. S06c_endpoint_type_reference_counts.csv — 4 rows
+
+Reference counts per hematotoxicity type, before and after the `G14` release.
+
+| Column | Type | Description |
+|---|---|---|
+| `endpoint_type`, `endpoint_label` | string | The type |
+| `references_v27_structure_ready` | integer | Structure-ready references before the release |
+| `references_v28_after_G14_release` | integer | After the release |
+| `gained` | integer | Difference |
+| `human_inhalation_backed`, `animal_inhalation_backed` | integer | Substances whose assignment for that type is backed by a human or animal inhalation evidence unit |
+
+| Type | v0.27 | v0.28 | gained | human-inh | animal-inh |
+|---|---:|---:|---:|---:|---:|
+| Type 1 haemoglobin function | 115 | 116 | +1 | 4 | 22 |
+| Type 2 erythrocyte / anaemia | 255 | 282 | +27 | 5 | 48 |
+| Type 3 counts / marrow | 169 | 182 | +13 | 2 | 22 |
+| Coagulation | 61 | 69 | +8 | 0 | 6 |
+
+## 25. S07c_dataset_B_provenance_resolution.csv — 32 rows
 
 Bounding of the Dataset B provenance gaps: 28 TRI-only substances (`G06`) and 4 semiconductor-core records with a pending citation (`G07`).
 
@@ -385,6 +452,6 @@ Bounding of the Dataset B provenance gaps: 28 TRI-only substances (`G06`) and 4 
 | `analytical_impact` | string | Whether the gap affects the analysis set |
 | `resolution_required` | string | What would close it |
 
-## 19. output_manifest.json
+## 26. output_manifest.json
 
-`version` and `table_sha256` (SHA-256 of all 18 CSV outputs).
+`version` and `table_sha256` (SHA-256 of all 25 CSV outputs).

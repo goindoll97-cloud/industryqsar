@@ -1,0 +1,5 @@
+endpoint_type,endpoint_label,references_v27_structure_ready,references_v28_after_G14_release,gained,human_inhalation_backed,animal_inhalation_backed
+type1_hb_function,Type 1 haemoglobin functional impairment,115,116,1,4,22
+type2_rbc_anemia,Type 2 erythrocyte damage / anaemia,255,282,27,5,48
+type3_counts_marrow,Type 3 blood cell counts / marrow and haematopoietic injury,169,182,13,2,22
+coagulation,Coagulation (separate fourth class),61,69,8,0,6

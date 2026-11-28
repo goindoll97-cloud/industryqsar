@@ -57,7 +57,10 @@ def main():
         "S08b_manual_primary_literature_adjudication.csv": 5,
         "S09_inclusion_exclusion_hold_rules.csv": 11,
         "S10_dataset_A_v028_join_layer.csv": 566,
-        "S11_gap_register.csv": 14,
+        "S11_gap_register.csv": 18,
+        "S03d_G14_structure_hold_adjudication.csv": 40,
+        "S03e_structure_ready_reference_set.csv": 369,
+        "S06c_endpoint_type_reference_counts.csv": 4,
         # Produced only when the v0.27 local archive is supplied.
         "S05c_v27_evidence_review_reconciliation.csv": 417,
         "S04_Dataset_A_349_v028.csv": 349,
@@ -199,6 +202,72 @@ def main():
               len(bad) == 0, f"violations={len(bad)} of {len(cm)}")
         conf = (x.registry_agreement == "key_conflict").sum()
         check("cross-registry key conflicts enumerated", conf > 0, f"conflicts={conf}")
+
+    print("\n--- G14 structure-hold adjudication ---")
+    if "S03d_G14_structure_hold_adjudication.csv" in T:
+        g = T["S03d_G14_structure_hold_adjudication.csv"]
+        rel = g[g.g14_decision == "release_hold_standardisation_artifact"]
+        check("every released hold has an identical InChIKey skeleton block",
+              (rel.skeleton_blocks_identical == "1").all(), f"released={len(rel)}")
+        check("every released hold has an identical remaining-layers hash",
+              (rel.layers_hash_identical == "1").all())
+        check("every released hold has identical protonation",
+              (rel.protonation_identical == "1").all())
+        check("every released hold is EPA non-standard 'N' vs standard 'S'",
+              ((rel.epa_key_flag == "N") & (rel.computed_key_flag == "S")).all())
+        check("every released hold has an independent standard InChIKey recomputed",
+              (rel.v28_independent_standard_InChIKey.str.strip() != "").all())
+        # Rule R09 must be re-applied after any key reconciliation: a salt or
+        # hydrate stays outside the structural domain however cleanly its keys
+        # reconcile. Omitting this wrongly released 2 substances in the first run.
+        check("no released hold is multicomponent (rule R09 re-applied)",
+              (rel.n_fragments.astype(int) <= 1).all(),
+              f"multicomponent among released="
+              f"{(rel.n_fragments.astype(int) > 1).sum()}")
+        check("every released hold contains carbon",
+              (rel.has_carbon == "1").all())
+        mc = g[g.g14_decision == "retain_hold_multicomponent_outside_structural_domain"]
+        check("multicomponent holds retained == 2 (matches the v0.29 independent audit)",
+              len(mc) == 2, f"count={len(mc)}")
+        # A hold may be retained for either of two independent reasons: the keys
+        # differ on a layer that matters, or the substance is outside the
+        # structural domain even though its keys reconcile.
+        ret = g[g.g14_decision != "release_hold_standardisation_artifact"]
+        def retained_ok(r):
+            key_differs = ((r.layers_hash_identical != "1")
+                           or (r.protonation_identical != "1")
+                           or (r.skeleton_blocks_identical != "1"))
+            out_of_scope = (int(r.n_fragments or 0) > 1) or (r.has_carbon != "1")
+            return key_differs or out_of_scope
+        check("every retained hold differs on a meaningful key layer OR is out of scope",
+              all(retained_ok(r) for _, r in ret.iterrows()), f"retained={len(ret)}")
+        check("retained holds carry a reason naming the key layer or the scope rule",
+              ret.g14_reason.str.strip().ne("").all())
+
+    if "S03e_structure_ready_reference_set.csv" in T:
+        e = T["S03e_structure_ready_reference_set.csv"]
+        n_rel = int((e.g14_released == "1").sum())
+        n_prior = int((e.structure_ready_v27 == "1").sum())
+        check("structure-ready set == prior 332 plus the 37 released",
+              len(e) == 369 and n_prior == 332 and n_rel == 37,
+              f"total={len(e)}, prior={n_prior}, released={n_rel}")
+        check("no released substance was already structure-ready",
+              ((e.g14_released == "1") & (e.structure_ready_v27 == "1")).sum() == 0)
+        check("every structure-ready reference carries a SMILES",
+              (e.EPA_SMILES.str.strip() == "").sum() == 0,
+              f"missing={(e.EPA_SMILES.str.strip() == '').sum()}")
+        check("no confirmed positive label in the structure-ready reference set",
+              (e.final_label.str.strip() != "").sum() == 0)
+
+    if "S06c_endpoint_type_reference_counts.csv" in T:
+        c = T["S06c_endpoint_type_reference_counts.csv"].set_index("endpoint_type")
+        check("per-type reference counts increased only by the release",
+              all(int(c.loc[k, "references_v28_after_G14_release"])
+                  - int(c.loc[k, "references_v27_structure_ready"])
+                  == int(c.loc[k, "gained"]) for k in c.index))
+        check("Type 2 is the largest per-type reference set",
+              int(c.loc["type2_rbc_anemia", "references_v28_after_G14_release"]) == 282,
+              f"Type2={c.loc['type2_rbc_anemia', 'references_v28_after_G14_release']}")
 
     print("\n--- inputs that were NOT available (reported, never passed) ---")
     for item, path in [

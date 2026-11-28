@@ -209,12 +209,19 @@ split reproduced exactly (323 = 295 `automatic_cues_only` + 28
 | **Animal inhalation endpoint in a single evidence unit** | **2** |
 | **Human inhalation endpoint** | **0** |
 
-**Reading all 323 rows in full yields 2 new animal-inhalation rows and no new
-human-inhalation rows.** The prior prioritised review is vindicated: not one row
-bucketed `no_inhalation_text_cue` turned out to be an inhalation finding. The
-route-specific evidence in the official NITE blood-system rationales had already
-been captured by v0.25-v0.27, and no further bulk review of this corpus is
-warranted (`G13`).
+**Reading all 323 rows yields 2 animal-inhalation rows and no human-inhalation
+rows.** Not one row bucketed `no_inhalation_text_cue` turned out to be an
+inhalation finding.
+
+> **Correction (`G13`).** `read_in_v028` means the rationale text was
+> automatically segmented, extracted and matched — **not** that each row
+> received an individual toxicological judgement. An earlier draft concluded
+> that no further review of this corpus is warranted; that conclusion is not
+> justified by automated reading alone and is withdrawn. The two animal rows
+> (diazinon 333-41-5, bromomethane 74-83-9) were examined in the v0.29 audit and
+> are **not** admitted as analysis references: diazinon's inhalation finding is
+> AChE inhibition with the blood-cell decrease coming from the oral route, and
+> bromomethane's route-to-endpoint link awaits confirmation.
 
 ### Dataset A (349 records)
 
@@ -227,12 +234,13 @@ preserved unchanged and remains **empty in all 349 records**.
 Of the 390 single-component organic substances, 331 InChIKeys match exactly, 42
 match on connectivity only, 13 are not comparable and 4 conflict.
 
-The **42 connectivity-only cases are a systematic artefact, not a structural
-disagreement**: EPA stored *non-standard* InChIKeys (second block `...UHFFFAOYNA-N`)
-against standard keys (`...UHFFFAOYSA-N`), with identical connectivity in every
-case. This accounts for the v0.27 `same_connectivity_only_hold` category, and
-releasing those holds would materially increase the structure-ready reference
-count (`G14`).
+The connectivity-only cases arise from an **InChI standardisation difference**,
+not a structural disagreement: EPA stored *non-standard* InChIKeys (second block
+`...UHFFFAOYNA-N`) against standard keys (`...UHFFFAOYSA-N`), with identical
+connectivity in every case. These 42 comparison rows are **not** a single
+releasable block — the v0.29 audit decomposes them as 38 prior holds, 2 already
+structure-ready and 2 with a CAS mismatch. Only the 40 records actually carrying
+the v0.27 `same_connectivity_only_hold` status were adjudicated, under `G14`.
 
 Only **4 genuine organic identity conflicts** remain: vernolate (CAS 1929-77-7,
 where the PubChem hit `cid 25246088` is a charged species and wrong - EPA is
@@ -258,10 +266,92 @@ open-ended:
   and therefore excluded from organic structure-based screening. **Analytical
   impact: none.**
 
+## 7b. G14 — release of the v0.27 structure holds
+
+The 40 records the v0.27 EPA-based audit placed on `same_connectivity_only_hold`
+were adjudicated against the InChIKey structure. An InChIKey is
+`AAAAAAAAAAAAAA-BBBBBBBBFV-P`, where the 14-character first block is the
+connectivity hash, `BBBBBBBB` hashes the remaining layers (stereo, isotope), `F`
+is the standard/non-standard flag, `V` the version and `P` the protonation.
+
+**Every one of the 40 carries the EPA non-standard flag `N` where the standard
+key carries `S`.** For 39 the skeleton block, remaining-layers hash, version and
+protonation are all identical, and an independent standard InChIKey recomputed
+from the EPA SMILES with RDKit 2025.09.4 reproduces the standard key exactly.
+
+Resolving the key question, however, says only that two keys describe the same
+substance — not that the substance is inside the structural domain. **37** holds
+pass both the standardisation test and the scope test of rule R09 and were
+released. **3 are retained:**
+
+| CAS | Substance | Reason |
+|---|---|---|
+| 67375-30-8 | chiral pyrethroid | remaining-layers hash genuinely differs: a real stereochemical difference |
+| 113-92-8 | chlorpheniramine maleate | 2-fragment salt; rule R09 admits single-component organic molecules only |
+| 6055-19-2 | cyclophosphamide monohydrate | 2-fragment hydrate; same reason |
+
+> **Correction.** The first v0.28 run released 39, because it tested only the
+> InChI standardisation question and failed to re-apply rule R09 before
+> admitting a substance. The independent **v0.29 audit** caught this, and its
+> count of 37 released / 3 retained is correct. The scope test is now applied
+> before the standardisation test and asserted in `validate_v28.py`.
+> Cyclophosphamide is still represented by the single-component anhydride
+> (50-18-0).
+
+### Effect on the reference sets
+
+Structure-ready references rise from **332 to 369**. EPA CompTox is the registry
+of record; the PubChem audit remains a cross-check only. The 37 still require
+EPA-source, identity and industrial-scope confirmation before final admission.
+
+| Hematotoxicity type | v0.27 | v0.28 | gained | human-inh backed | animal-inh backed |
+|---|---:|---:|---:|---:|---:|
+| Type 1 haemoglobin functional impairment | 115 | **116** | +1 | 4 | 22 |
+| Type 2 erythrocyte damage / anaemia | 255 | **282** | +27 | 5 | 48 |
+| Type 3 cell counts / marrow injury | 169 | **182** | +13 | 2 | 22 |
+| Coagulation (separate fourth class) | 61 | **69** | +8 | 0 | 6 |
+
+Within Type 3 after the compensatory-response rule: 92 marrow-injury supported,
+68 peripheral counts only, 22 withheld as compensatory-only.
+`type3_marrow_injury_supported` means marrow **wording** present with no
+compensatory cue in the same evidence unit. It is not a confirmed finding of
+direct marrow damage.
+
+Two **tier-A human-inhalation** substances enter structural scope for the first
+time: **lindane** (58-89-9) and **1,2-dichloropropane** (78-87-5). Both carry
+reviewer caveats from the `S08b` adjudication — lindane's human route is
+predominantly dermal, and 1,2-dichloropropane's human evidence is from mixed
+consumer products — so their admission to structural scope does not promote
+either to an analysis-grade human inhalation reference.
+
+## 7c. Why supervised QSAR classification is not supportable here
+
+Recorded as `G15`. Three constraints, each independently decisive:
+
+1. **No negative class.** No substance is labelled non-hematotoxic, and the
+   protocol forbids treating absence of toxicity data as a negative. AUROC,
+   specificity and precision therefore cannot be computed or claimed.
+2. **No confirmed positive label.** `final_label` is empty in all 349 Dataset A
+   records and all 566 official-set records; `verification_state` is
+   `no_independent_primary_verification_in_v028` throughout. There is no
+   trainable target column.
+3. **Human inhalation backing is very thin** even among structure-ready
+   references: Type 1 four substances, Type 2 five, Type 3 two.
+
+The public repository additionally carries no SMILES or InChIKey in the v0.28
+index, so any structure-based work requires the local archive.
+
+The planned experiment is therefore **retrieval-based, not
+classification-based**: Recall@Top-1/5/10 per hematotoxicity type, with
+compound-out and structural-group-out splits against the same industrial
+background, using maximum Tanimoto similarity as the baseline. That design needs
+no negative class, and the per-type reference sets it requires now exist
+(`S06c`).
+
 ## 8. What remains open
 
-Recorded in full in `S11_gap_register.csv` (14 entries). `G01`, `G02` and `G03`
-are now closed. The principal remaining limits:
+Recorded in full in `S11_gap_register.csv` (18 entries). `G01`, `G02`, `G03` and
+`G14` are now closed. The principal remaining limits:
 
 - **No full-text primary verification was completed** for any substance. Five
   substances were adjudicated against located literature; that is a start, not
@@ -313,7 +403,7 @@ python3 -I code/merge_v27.py    <extracted v0.27 dir>  tables
 python3 -I code/provenance_v28.py <extracted v0.27 dir>  tables
 ```
 
-`validate_v28.py` runs 44 assertions, including the exact reproduction of the
+`validate_v28.py` runs 63 assertions, including the exact reproduction of the
 published 562-CAS set and the 60-substance marrow count, the Type 3 partition,
 the 94/323 review split, the requirement that every previously un-read row was
 actually read, and the requirement that no confirmed positive label is set

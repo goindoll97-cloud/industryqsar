@@ -209,13 +209,61 @@
       "semiconductor_core_impact": "1 record (CAS 25322-68-3, a polymer) depends solely on the uncited survey table and is already outside the structural domain, so analytical impact is none"
     }
   },
+  "G14_structure_hold_release": {
+    "status": "adjudicated",
+    "holds_examined": 40,
+    "decisions": {
+      "release_hold_standardisation_artifact": 37,
+      "retain_hold_multicomponent_outside_structural_domain": 2,
+      "retain_hold_stereo_or_isotope_differs": 1
+    },
+    "cause": "every one of the 40 holds carries the EPA non-standard InChI flag 'N' where the standard key carries 'S'; for 39 the skeleton block, remaining-layers hash, version and protonation are identical and an independent standard InChIKey recomputed from the EPA SMILES reproduces the standard key exactly",
+    "retained": "CAS 67375-30-8, a chiral pyrethroid whose remaining-layers hash genuinely differs: a real stereochemical difference",
+    "structure_ready_before": 332,
+    "structure_ready_after": 369,
+    "registry_of_record": "EPA CompTox; the PubChem audit remains a cross-check only",
+    "reference_counts_per_endpoint_type": {
+      "type1_hb_function": {
+        "before": 115,
+        "after": 116,
+        "gained": 1,
+        "human_inhalation_backed": 4,
+        "animal_inhalation_backed": 22
+      },
+      "type2_rbc_anemia": {
+        "before": 255,
+        "after": 282,
+        "gained": 27,
+        "human_inhalation_backed": 5,
+        "animal_inhalation_backed": 48
+      },
+      "type3_counts_marrow": {
+        "before": 169,
+        "after": 182,
+        "gained": 13,
+        "human_inhalation_backed": 2,
+        "animal_inhalation_backed": 22
+      },
+      "coagulation": {
+        "before": 61,
+        "after": 69,
+        "gained": 8,
+        "human_inhalation_backed": 0,
+        "animal_inhalation_backed": 6
+      }
+    },
+    "tier_A_substances_newly_in_structural_scope": [
+      "58-89-9 lindane",
+      "78-87-5 1,2-dichloropropane"
+    ]
+  },
   "not_available_to_this_build": [
     "EPA CompTox CCD-Batch-Search raw export (328 substances)",
     "original EPA TRI list export captured at collection time",
     "Korean chemical-use survey source (Korea2014_2022 Table 6)",
     "hematotoxicity_v26.zip (so the 18 v0.26 archive hashes remain unchecked)"
   ],
-  "gap_register_entries": 14,
+  "gap_register_entries": 18,
   "validation": {
     "checks_passed": 44,
     "checks_failed": 0,
