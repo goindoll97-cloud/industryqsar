@@ -7,6 +7,7 @@ import sklearn
 from sklearn.svm import OneClassSVM
 from rdkit import Chem, rdBase
 import generate_features as gf
+import diagnostics as diag
 
 ROOT=Path(__file__).resolve().parent
 MODELS=('max_tanimoto','ocsvm_morgan','ocsvm_ht','ocsvm_morgan_ht')
@@ -69,6 +70,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--a',type=Path);p.add_argument('--b',type=Path);p.add_argument('--a-evidence',type=Path);p.add_argument('--b-provenance',type=Path)
     p.add_argument('--acknowledge-curated',action='store_true',help='External inputs were manually curated; not verified by this script')
+    p.add_argument('--diagnostics',action='store_true',help='Compare resubstitution, compound-out and group-out using matched pools');
     p.add_argument('--out',type=Path);p.add_argument('--ht13',action='store_true',help='Exploratory sensitivity only')
     p.add_argument('--nu',type=float,default=.1);p.add_argument('--ht-weight',type=float,default=.5);p.add_argument('--group-threshold',type=float,default=.5)
     args=p.parse_args();custom=[args.a,args.b,args.a_evidence,args.b_provenance]
@@ -117,6 +119,9 @@ def main():
             r=br[j];ranking.append({'model':name,'CAS':get_cas(r),'chemical':r.get('chemical',''),'process':r.get('process',''),'score':float(v[j]),'HT_hits':int(h[n+j].sum()),'HT_all_zero':int(not h[n+j].any()),**rank_stats(v,j)})
     for filename,rows in [('fold_membership.csv',members),('holdout_predictions.csv',held_rows),('retrieval_metrics.csv',metrics),('candidate_ranking.csv',ranking)]:write(out/filename,rows)
     manifest={'status':'exploratory_retrieval_not_validated_toxicity','input_scope':'bundled_v031_pilot' if default else 'user_curated_external_unverified','A':n,'B':m,'groups':len(groups),'largest_group':max(map(len,groups)),'features':feature_ids,'nu':args.nu,'ht_weight':args.ht_weight,'ht_kernel':'exp(-Hamming_count)','morgan_kernel':'Tanimoto','group_threshold':args.group_threshold,'group_method':'single-linkage Morgan Tanimoto connected components; leave-one-group-out','ranking':'ties rounded to 10 decimals; fractional expected top-k recovery, ceil(p*N); pool held group + unlabeled B','A_all_zero':int(np.sum(h[:n].sum(1)==0)),'B_all_zero':int(np.sum(h[n:].sum(1)==0)),'input_sha256':{str(q):sha(q) for q in (a,b,ae,bp)},'code_sha256':{'run_pilot':sha(__file__),'generate_features':sha(gf.__file__)},'versions':{'python':platform.python_version(),'rdkit':rdBase.rdkitVersion,'numpy':np.__version__,'sklearn':sklearn.__version__},'limitations':['No confirmed negatives, no accuracy/specificity/PPV or probability','B is unlabeled, never fitted','Published feature derivation overlap not ruled out; exploratory only','Do not select final model using this pilot as an independent test','A/B source coverage checked, not independent source verification']}
+    if args.diagnostics:
+        manifest['diagnostics']=diag.run_diagnostics(km,kh,h,ar,groups,args.nu,args.ht_weight,out,scores,rank_stats,write,get_cas,MODELS)
+        manifest['code_sha256']['diagnostics']=sha(diag.__file__)
     (out/'run_manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding='utf-8')
     print(f'Completed: {out.resolve()} | A={n}, B={m}, groups={len(groups)}')
     for r in metrics:print(f"{r['model']:18s} R@5%={r['recall_credit_top5']:.4f} R@10%={r['recall_credit_top10']:.4f}")

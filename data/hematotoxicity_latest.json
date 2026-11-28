@@ -16,5 +16,8 @@
   "pilot_runner_version": "v0.32",
   "pilot_runner": "supplementary/hematotoxicity_v031/run_pilot.py",
   "pilot_runner_guide": "../docs/START_MODEL_ko.md",
-  "pilot_runner_status": "locally_tested_exploratory_33_102"
+  "pilot_runner_status": "locally_tested_exploratory_33_102",
+  "pilot_diagnostics_version": "v0.33",
+  "pilot_diagnostics_status": "locally_tested_HT10_HT13_exploratory",
+  "pilot_diagnostics": "supplementary/hematotoxicity_v031/diagnostics.py"
 }
