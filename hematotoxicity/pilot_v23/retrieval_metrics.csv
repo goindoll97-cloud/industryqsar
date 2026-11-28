@@ -1,0 +1,5 @@
+split,condition,human_tests,mean_similarity,median_rank_fraction,recall_top1pct,recall_top5pct,recall_top10pct
+compound_out,human_only,16,0.28624218238188825,0.2519113149847095,0.125,0.375,0.375
+compound_out,human_plus_animal,16,0.28624218238188825,0.26548165137614677,0.125,0.3125,0.375
+group_out,human_only,16,0.2554729516126575,0.2519113149847095,0,0.375,0.375
+group_out,human_plus_animal,16,0.2554729516126575,0.26548165137614677,0,0.3125,0.375

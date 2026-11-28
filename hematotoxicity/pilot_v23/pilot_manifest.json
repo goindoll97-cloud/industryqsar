@@ -1,0 +1,15 @@
+{
+  "version": "v0.23-pilot1",
+  "data_version": "v0.23",
+  "status": "local_run_completed",
+  "human_reference_count": 16,
+  "animal_reference_count": 4,
+  "union_count": 18,
+  "candidate_count": 2642,
+  "background_connectivity_groups": 2615,
+  "rdkit": "2025.09.4",
+  "script_git_blob": "b7d47419957b90fb4e98250704b254f7c3382da3",
+  "independent_validation": false,
+  "final_labels": 0,
+  "public_inputs": "not_uploaded_use_local_v23_archive"
+}

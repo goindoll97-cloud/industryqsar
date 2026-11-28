@@ -1,6 +1,6 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 작업 버전: v0.23 (로컬 인체·동물 흡입 근거 통합) | 최신 공개 CSV: v0.18 | 데이터 구축 단계 (provisional)**
+**최신 작업 버전: v0.23-pilot1 (예비실험 실행 완료) | 최신 데이터 작업본: v0.23 | 최신 공개 CSV: v0.18**
 
 ## 연구 목적
 
@@ -8,11 +8,17 @@
 
 *Prioritization of Potential Hematotoxicants in Semiconductor Manufacturing Based on Human Inhalation Evidence and Molecular Structural Characteristics*
 
-## 최신 작업 v0.23 — 인체·동물 흡입 근거 통합
+## 최신 작업 v0.23-pilot1 — 인체 중심 예비실험
+
+[실행 방법 및 분석 설계](hematotoxicity/pilot_v23/README.md) · [실행 코드](hematotoxicity/pilot_v23/run_pilot.py) · [예비실험 집계](hematotoxicity/pilot_v23/retrieval_metrics.csv)
+
+인체 단독(16종)과 인체+동물(18종, 중복 제거)을 동일 Morgan/Tanimoto 방식으로 비교. 미확인 산업 후보 2,642종 배경에서 compound-out 및 구조군 제외 인체 참조 회수 평가 실행 완료. 구조군 제외 상위 5% 회수율은 각각 37.5%, 31.25%; 개선 미확인. 9종 핵심 인체 참조 민감도 실행 완료. 독립 검증이나 독성 분류 모델은 아직 없다. 기존 A/B 및 라벨을 변경하지 않음. 로컬 v0.23 ZIP의 원본 CSV를 입력으로 사용한다.
+
+## 이전 데이터 작업 v0.23 — 인체·동물 흡입 근거 통합
 
 [작업 manifest](data/supplementary/hematotoxicity_v23/summary.json) · [작업 설명](data/supplementary/hematotoxicity_v23/README.md)
 
-A 39종(기존 인체 36종 유지, 신규 동물 전용 3종), B 8,110종 유지, 신규 후보 2,642종. 동물 잠정 근거 7종, 구조 기준 충족 4종. 인체 주 분석 잠정 참조 16종 유지. 종간 전이 검증 설계는 계획 단계이며 최종 라벨 및 모델 없음. 전체 로컬 파일은 hematotoxicity_v23.zip, 공개 저장소에는 manifest만 등록.
+A 39종(기존 인체 36종 유지, 신규 동물 전용 3종), B 8,110종 유지, 신규 후보 2,642종. 동물 잠정 근거 7종, 구조 기준 충족 4종. 인체 주 분석 잠정 참조 16종 유지. 최종 라벨 없음. 이후 v0.23-pilot1에서 탐색적 구조 유사성 실험을 실행했다. 전체 로컬 파일은 hematotoxicity_v23.zip, 공개 저장소에는 manifest만 등록.
 
 ## 이전 작업 v0.22 — 인체 혈액독성 문헌 근거 병합
 
