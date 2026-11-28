@@ -38,3 +38,22 @@ python -m venv .venv-hematotoxicity
 python data/supplementary/hematotoxicity_v031/run_pilot.py --a curated_A.csv --b curated_B.csv --a-evidence A_evidence.csv --b-provenance B_provenance.csv --acknowledge-curated --out results/full_exploratory
 ```
 현재 349종 전체 A와 2,519종 전체 스크리닝 원본은 저장소 미공개. 사용자 제공 자료도 이 실행기의 성능을 자동 확정하지 않는다.
+
+## v0.33 — 학습 및 일반화 진단 (선택 옵션)
+
+PowerShell: `.\start_model.bat --diagnostics --ht13` (13개) 또는 `.\start_model.bat --diagnostics` (10개).
+기존 실행 방법과 결과 파일을 유지하고 진단 파일 3개를 추가한다. 진단 옵션은 학습 알고리즘이나 설정을 변경하지 않는다.
+
+| 방법 | 학습 | 평가 |
+|---|---|---|
+| resubstitution | A 전체 33종 | 학습에 포함된 A를 다시 평가 (낙관적 학습 적합도 진단, 일반화 성능 아님) |
+| leave_one_compound_out | A 32종 | 제외된 A 1종 (33회) |
+| leave_one_group_out | A 31~32종 | 제외한 구조군의 A (30회) |
+
+공정한 비교를 위해 세 방법 모두 각 참조물질 1종 + 동일한 B102종의 103종 순위 풀을 사용한다. 기존 retrieval_metrics.csv의 구조군 검증은 그룹 전체 + B로 평가하므로 일부 순위가 달라질 수 있다. resubstitution에서 Maximum Tanimoto는 자기 자신과 비교하므로 100% 회수율이 당연하며 독립 검증이 아니다. OCSVM decision>=0 비율은 분류 민감도가 아니며 수치 오차로 경계 부근에서 변할 수 있다.
+
+- diagnostic_summary.csv: 3가지 평가 × 4개 모델의 12행 비교.
+- diagnostic_predictions.csv: 참조물질별 점수, 학습 포함 여부, 최대 학습 유사도, HT 검출, 동점 보정 순위 (396행).
+- diagnostic_by_ht.csv: 특화 구조 미검출/검출 집단별 진단.
+
+기본 10개 및 13개 옵션을 로컬 Python 환경에서 실행 확인했다. 13개 예비 결과에서 Recall@10%는 resubstitution / compound-out / group-out 순서로 Maximum Tanimoto 100/18.18/3.03%, Morgan OCSVM 100/12.12/6.06%, HT OCSVM 7.92/7.92/7.92%, Morgan+HT OCSVM 6.06/6.06/6.06%. 무작위 기대값 11/103(약 10.68%). 기존 group-out 성능 파일은 유지된다. 데이터가 잠정이고 B는 음성자료가 아니므로 결과는 학습 적합도 및 참조 회수율 진단에만 사용한다.
