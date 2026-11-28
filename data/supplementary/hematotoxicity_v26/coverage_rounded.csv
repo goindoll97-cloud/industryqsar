@@ -1,0 +1,9 @@
+condition,scope,n,fraction_ge_03,fraction_ge_05
+human_only,ALL,2519,0.109567,0.007543
+human_plus_legacy_animal,ALL,2519,0.114728,0.008337
+human_plus_NITE_all_routes,ALL,2519,0.587535,0.134180
+human_plus_animal_inhalation_summary,ALL,2519,0.285431,0.036522
+human_only,semiconductor_core,91,0.197802,0.043956
+human_plus_legacy_animal,semiconductor_core,91,0.241758,0.054945
+human_plus_NITE_all_routes,semiconductor_core,91,0.648352,0.285714
+human_plus_animal_inhalation_summary,semiconductor_core,91,0.406593,0.131868

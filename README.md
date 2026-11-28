@@ -1,14 +1,21 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 데이터 작업본: v0.24-nite (공식 유해성 후보 추출 완료, 판정 대기) | 최신 실험: v0.23-pilot1 | 공개 A/B CSV: v0.18**
+**최신 데이터 작업본: v0.26 | 최신 실험: v0.26-pilot2 (탐색 실행 완료) | 공개 A/B CSV: v0.18**
 
 ## 현행 연구 목적 및 방향
 
 일본 정부 NITE GHS의 공식 혈액계 특정표적장기 독성(STOT) 분류와 분자구조적 특성을 이용하여 산업화학물질의 혈액계 유해성 평가 우선순위를 도출하고, 반도체 제조공정 관련 물질에 적용한다. ATSDR·PubMed 인체 흡입/직업성 근거를 활용해 인체 관련성을 별도로 검토한다. 공식 유해성은 인체 흡입 양성 또는 실제 위해도를 의미하지 않는다. 인체·동물 및 노출경로별 근거를 구분한다. 백혈병 인과 규명, 독성 발생 확률, 안전성 판정은 목표가 아니다. 최종 참조집합 및 실험 계획은 근거 정제 후 확정한다.
 
-**[현행 연구 프로토콜 v0.24](docs/hematotoxicity_research_protocol_v24_ko.md)**
+**[현행 연구 프로토콜 v0.26](docs/hematotoxicity_research_protocol_v26_ko.md)**
 
-## 최신 작업 v0.24-nite — NITE 공식 분류 통합
+## 최신 작업 v0.26-pilot2 — NITE 구조 검증 및 참조 확대 실험
+
+[작업 설명](data/supplementary/hematotoxicity_v26/README.md) · [실험 집계](data/supplementary/hematotoxicity_v26/retrieval_metrics_rounded.csv) · [구조 포괄성](data/supplementary/hematotoxicity_v26/coverage_rounded.csv) · [manifest](data/supplementary/hematotoxicity_v26/manifest.json)
+
+NITE 562종 EPA 조회 완료, 구조 통과 332종(230종 보류). A 349종(기존 39 + 신규 310), B 8,110종 유지, 알려진 NITE 후보 123종 분리 후 미확인 2,519종. NITE 417 근거행 중 82행 요약 검토, 동물 흡입 보완 36종 잠정 선정; 인체 16종 및 최종 라벨 공란 유지. 네 조건(16/18/336/49종) 동일 배경 비교에서 구조군 제외 Top5% 회수율 18.75/18.75/0/0%. 후보 유사도 증가에도 인체 회수 개선 없음. 내부 탐색 검증, 독립 검증 및 원저 판정 미완료. 전체 코드와 A/B는 로컬 hematotoxicity_v26.zip 보존, GitHub는 공개 집계 및 manifest 게시. 다음은 잔여 335행 근거 검토 및 기전별 스크리닝 설계.
+
+
+## 이전 작업 v0.24-nite — NITE 공식 분류 통합
 
 [562종 공개 후보 색인](data/supplementary/hematotoxicity_v24_nite/nite_blood_public_index.csv) · [작업 설명](data/supplementary/hematotoxicity_v24_nite/README.md) · [실제 집계](data/supplementary/hematotoxicity_v24_nite/summary.json) · [재현 코드](data/supplementary/hematotoxicity_v24_nite/audit_nite.py) · [파일 manifest](data/supplementary/hematotoxicity_v24_nite/manifest.json)
 
@@ -83,11 +90,14 @@ v0.18 당시 독성 근거의 핵심 수집원은 ATSDR 및 PubMed 등재 원 �
 - [x] 기존 인체·동물 분리 참조 A 39종 구축
 - [x] v0.23-pilot1 기준선 및 내부 구조군 제외 평가
 - [x] NITE 공식 분류 562종 추출, 기존 A/B 플래그 병합
-- [ ] NITE 전체 후보의 구조·산업 적용범위 확인
-- [ ] 구조 확보 신규 123종 중 우선 검토 63종의 인체·동물 및 흡입/조혈계 근거 판정
+- [x] NITE 562종 EPA 전체 조회 및 구조 332종 정합성 확인
+- [ ] 공식 전 경로 참조의 산업 적용범위 확인
+- [x] NITE 인체 26행 및 동물 56행 요약 검토
+- [ ] 잔여 335행 및 원저 검증
 - [ ] NITE 공식 유해성 참조와 인체 흡입 검증 역할 확정, 구조/근거 누출 방지
-- [ ] A/B 재병합, 알려진 참조와 미확인 후보 분리
-- [ ] 동일 검증 조건에서 기준선 및 확대 참조 비교
+- [x] 잠정 A/B 재병합, NITE 확인 123종 분리
+- [x] 동일 검증 조건에서 4개 기준선/확대 참조 비교
+- [ ] 기전별 스크리닝 사전 정의 및 비교
 - [ ] 실제 반도체 관련성 검토 및 정밀평가 우선순위 도출
 
 ## 공개용 데이터 검증
@@ -107,6 +117,6 @@ python data/supplementary/hematotoxicity_v18/validate_release.py
 - [이전 v0.9 README 원문 보존](docs/archive/README_v09.md) (원문 상대 링크는 저장소 루트 기준)
 - [v0.9 4개 출처 예비 자료](data/supplementary/hematotoxicity_four_sources_v09/)
 - [v0.6](data/supplementary/human_inhalation_v06/), [v0.5](data/supplementary/human_inhalation_v05/), [v0.4](data/supplementary/human_inhalation_v04/), [v0.3](data/supplementary/human_inhalation_v03/), [v0.2](data/supplementary/human_inhalation_v02/)
-- [이전 연구 프로토콜](docs/hematotoxicity_research_protocol_ko.md) — 현행 방향은 v0.24 프로토콜이 우선한다.
+- [이전 연구 프로토콜](docs/hematotoxicity_research_protocol_ko.md) — 현행 방향은 v0.26 프로토콜이 우선한다.
 
-기존 루트 Python 코드와 테스트는 과거 LD50 예비 연구용이다. 현행 NITE 기반 실험은 아직 실행하지 않았으며 v0.23-pilot1만 탐색적 내부 평가를 완료했다.
+기존 루트 Python 코드와 테스트는 과거 LD50 예비 연구용이다. v0.23-pilot1 및 v0.26-pilot2 탐색적 내부 평가 완료. 최종 검증은 미완료.

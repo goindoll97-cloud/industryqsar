@@ -1,0 +1,21 @@
+{
+  "version": "v0.26-pilot2",
+  "local_archive": "hematotoxicity_v26.zip",
+  "archive_sha256": "515569264bc83ad365e6766896724acb6111862262f90eec34a09f3b18e0d119",
+  "public_AB_version": "v0.18",
+  "local_file_sha256": {
+    "run_v26.py": "f37af5eab8cf03c7f30747ddb8971d4a5776de69eff67a64531d625e6bc05f1a",
+    "animal_summary_review.tsv": "408b4d297a656aa7de2d91890b2a0eb845058e76ee975fbbd19ac5917655b741",
+    "input_hashes.json": "84c256093c6795486595c073df1df170c258484d09a098782160e9b2cd646ca8",
+    "results/dataset_A_v26.csv": "513312d5097086ac3ec3934c5847dffcf7565d2a3b4da6a8e568a7b430e8f6d7",
+    "results/dataset_B_v26.csv": "7cfcf82811c15bad0fc72ac246d9019c3fb7191aa45e3e1de64c687cf16fa26e",
+    "results/screening_candidate_index_v26.csv": "72cd2d9e34f8ec32fafe9ad03e0c0d014317487e99e735b469b13ec166705f6a",
+    "results/known_NITE_separated_123.csv": "064875d363b28022b7d5e325355c9f88a3c3f9224649f7f3046d750ace3f47fa",
+    "results/evidence_review_status_417.csv": "95733cb96116cdf10819e7611eec09027707299eb7a492828d887d806147fb71",
+    "results/animal_summary_review_56.csv": "67d2e1839c99391a85cf73025765d7f45258762cc7893c704f4093914d4f0cc1",
+    "results/retrieval_metrics.csv": "dfc8b001fd9d2f86c9d2e50e12183d792c7a18ad19c6326af8c30397ee6edfe0",
+    "results/similarity_coverage.csv": "00a4f78e3379aa2ad6c223e22a958ff4a0bdd3305ba39b553c3f0be5d29d8c6e",
+    "results/summary.json": "20fa2f77053ac041c148337493b85c6aadc764096356c38f38d03df09aeb671b"
+  },
+  "note": "Public rounded metrics and summary only. Full code, A/B, individual evidence decisions and results are in local ZIP. Do not use v0.18 public CSV as v0.26 input."
+}

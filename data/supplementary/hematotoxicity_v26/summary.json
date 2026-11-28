@@ -1,0 +1,39 @@
+{
+  "version": "v0.26-pilot2",
+  "rdkit": "2025.09.4",
+  "input_sha256": {
+    "A": "201aa34c73125fce62b23207a9eda9c819b13b5b5641b7225b343b36920f8161",
+    "B": "3c2ee6ab58706c4ded2bf20eaff5c36503ec56f2974b6ba94595cd3516aaa1df",
+    "index": "9ec1a0c730819228f1214ded2947d8d7614b13cb8572fdc8b0a0def0b23a24bf",
+    "NITE": "58b9b6c5e84b2a388ad7701822412fe31bc96e072356aed7b398234e198fde6b",
+    "queue": "d468178e8fdc9329d3507919ef679f6c8747bc7161456d59b2ca86fdaa41b172",
+    "human_review": "c113ad27cb340fabb304e83cc2d2d1be4d17f1fc5c0017bf9679b822da80a563",
+    "animal_review": "408b4d297a656aa7de2d91890b2a0eb845058e76ee975fbbd19ac5917655b741",
+    "NITE_full": "8977e805e8db4ed57edcdae6f7e3900a5d4146abf30ae5bdf290dee5832fdb22"
+  },
+  "A_records": 349,
+  "B_records": 8110,
+  "NITE_official": 332,
+  "NITE_new": 310,
+  "animal_review_rows": 56,
+  "animal_include_rows": 40,
+  "animal_summary_CAS": 36,
+  "human_summary_CAS": 7,
+  "unique_reviewed_rows": 82,
+  "new_final_labels": 0,
+  "reference_pool_sizes": {
+    "human_only": 16,
+    "human_plus_legacy_animal": 18,
+    "human_plus_NITE_all_routes": 336,
+    "human_plus_animal_inhalation_summary": 49
+  },
+  "reference_union": 336,
+  "group_count": 209,
+  "largest_group": 71,
+  "candidate_count": 2519,
+  "background_connectivity_groups": 2492,
+  "separated_NITE": 123,
+  "group_cutoff": 0.5,
+  "core9_note": "Evaluation subset only; reference pools unchanged from all16",
+  "note": "Internal exploratory retrieval; NITE all-route official hazards not human inhalation labels; human test sources may overlap NITE; no external validation, probabilities or negative labels. Fixed updated background, not directly comparable with v0.23 original background."
+}

@@ -1,0 +1,17 @@
+subset,split,condition,human_tests,reference_n,mean_similarity,median_rank_fraction,recall_top1pct,recall_top5pct,recall_top10pct
+all16,compound_out,human_only,16,16,0.286242,0.234858,0.125000,0.375000,0.375000
+all16,compound_out,human_plus_legacy_animal,16,18,0.286242,0.248696,0.125000,0.375000,0.375000
+all16,compound_out,human_plus_NITE_all_routes,16,336,0.474728,0.169876,0.000000,0.312500,0.437500
+all16,compound_out,human_plus_animal_inhalation_summary,16,49,0.375264,0.185720,0.125000,0.250000,0.437500
+all16,group_out,human_only,16,16,0.214045,0.395268,0.000000,0.187500,0.187500
+all16,group_out,human_plus_legacy_animal,16,18,0.214045,0.413708,0.000000,0.187500,0.187500
+all16,group_out,human_plus_NITE_all_routes,16,336,0.354469,0.461238,0.000000,0.000000,0.000000
+all16,group_out,human_plus_animal_inhalation_summary,16,49,0.284605,0.393702,0.000000,0.000000,0.187500
+core9,compound_out,human_only,9,16,0.273380,0.188528,0.111111,0.333333,0.333333
+core9,compound_out,human_plus_legacy_animal,9,18,0.273380,0.198155,0.111111,0.333333,0.333333
+core9,compound_out,human_plus_NITE_all_routes,9,336,0.441552,0.359807,0.000000,0.222222,0.333333
+core9,compound_out,human_plus_animal_inhalation_summary,9,49,0.342313,0.371440,0.111111,0.222222,0.222222
+core9,group_out,human_only,9,16,0.230397,0.188528,0.000000,0.222222,0.222222
+core9,group_out,human_plus_legacy_animal,9,18,0.230397,0.198155,0.000000,0.222222,0.222222
+core9,group_out,human_plus_NITE_all_routes,9,336,0.340477,0.499799,0.000000,0.000000,0.000000
+core9,group_out,human_plus_animal_inhalation_summary,9,49,0.291179,0.371440,0.000000,0.000000,0.111111
