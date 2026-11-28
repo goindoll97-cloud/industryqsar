@@ -1,10 +1,11 @@
 # v0.28 — Official hazard-classification evidence re-derivation
 
 **Status: not a final submission version.** The official NITE blood-system
-classification layer is reproduced and frozen. The route-specific, species-specific
-and endpoint-specific research dataset is **not** frozen. New confirmed positive
+classification layer is reproduced and frozen, and the v0.27 local archive has
+been verified and merged. The route-specific, species-specific and
+endpoint-specific research dataset is **not** frozen. New confirmed positive
 hematotoxicity labels in this release: **0**. Independent primary-source
-verifications completed: **0**.
+full-text verifications completed: **0**.
 
 Study: *Official Hazard Classification-Based Screening of Potential Hematotoxicants
 Using Molecular Structural Characteristics: Application to Semiconductor
@@ -186,32 +187,101 @@ o-toluidine, m-aminophenol, p-nitrochlorobenzene and lindane. Several are
 industrially significant; nitrogen monoxide and nitrous oxide are semiconductor
 process gases. None is promoted to a confirmed label here.
 
-## 7. What this build could not do
+## 7. Merge with the v0.27 local archive
 
-Recorded in full in `S11_gap_register.csv` (12 entries). The principal limits:
+`hematotoxicity_v27_supplement.zip` was supplied and verified. Its SHA-256
+matches the value recorded in the public v0.27 manifest, and **all 31 recorded
+internal file hashes match** - no mismatch, no missing file, no unrecorded extra
+file.
 
-- **`hematotoxicity_v27_supplement.zip` was not available.** Dataset A (349
-  records), Dataset B (8,110) and the screening candidate set (2,519) therefore
-  **could not be regenerated or updated in place**. v0.28 supplies a CAS-keyed
-  join layer (`S10`) instead of a replacement Dataset A, so the new evidence can
-  be merged into the local tables without guessing their contents.
-- **The 94-reviewed / 323-pending row mapping could not be recovered**, as it lives
-  in that ZIP. v0.28 read all 749 records instead, which supersedes the subset but
-  leaves the row-level mapping to the prior flags open.
-- **No full-text primary verification was completed** for any substance.
-- **The PubChem structure audit is not a substitute** for the frozen EPA-based S03.
-  It queries a different registry, so the counts differ (390 single-component
-  organic of 570 CAS here, versus 332 of 562 in v0.27) and must not be conflated.
-- **STEP 6 remains open**: the EPA TRI listing version and per-substance listing
-  basis (28 substances), exact citations for 4 of the 249 semiconductor-core
-  records, and the EPA CompTox CCD-Batch-Search raw export.
+### What the 323 previously un-read evidence rows actually contain
 
-## 8. Files to supply to close the gaps
+The 417 structure-ready rows were recovered and the 94-reviewed / 323-pending
+split reproduced exactly (323 = 295 `automatic_cues_only` + 28
+`excerpt_screen`). All 323 were matched to the v0.28 full-text reading:
 
-1. `hematotoxicity_v27_supplement.zip` — closes `G01`, `G02`, `G03`
-2. EPA CompTox **CCD-Batch-Search** raw CSV for the 328 newly queried substances — `G08`
-3. The original **EPA TRI** list export captured at collection time — `G06`
-4. The **chemical-use survey** source document for the 4 semiconductor-core records — `G07`
+| Finding in the previously un-read rows | Rows |
+|---|---:|
+| Animal endpoint, other or unresolved route | 169 |
+| Human endpoint, route not isolated | 89 |
+| Endpoint without a resolved species | 44 |
+| No endpoint term in the rationale text | 19 |
+| **Animal inhalation endpoint in a single evidence unit** | **2** |
+| **Human inhalation endpoint** | **0** |
+
+**Reading all 323 rows in full yields 2 new animal-inhalation rows and no new
+human-inhalation rows.** The prior prioritised review is vindicated: not one row
+bucketed `no_inhalation_text_cue` turned out to be an inhalation finding. The
+route-specific evidence in the official NITE blood-system rationales had already
+been captured by v0.25-v0.27, and no further bulk review of this corpus is
+warranted (`G13`).
+
+### Dataset A (349 records)
+
+Merged on CAS as `S04_Dataset_A_349_v028.csv`: 335 of 349 records matched an
+official NITE blood-system entry, 14 did not. The v0.27 `final_label` column is
+preserved unchanged and remains **empty in all 349 records**.
+
+### Cross-registry structure comparison (EPA versus PubChem)
+
+Of the 390 single-component organic substances, 331 InChIKeys match exactly, 42
+match on connectivity only, 13 are not comparable and 4 conflict.
+
+The **42 connectivity-only cases are a systematic artefact, not a structural
+disagreement**: EPA stored *non-standard* InChIKeys (second block `...UHFFFAOYNA-N`)
+against standard keys (`...UHFFFAOYSA-N`), with identical connectivity in every
+case. This accounts for the v0.27 `same_connectivity_only_hold` category, and
+releasing those holds would materially increase the structure-ready reference
+count (`G14`).
+
+Only **4 genuine organic identity conflicts** remain: vernolate (CAS 1929-77-7,
+where the PubChem hit `cid 25246088` is a charged species and wrong - EPA is
+correct), chlorozotocin (54749-90-5), a tris(2-methoxyethoxy)silane derivative
+(5700-39-0) and oxytetracycline (79-57-2, likely a tautomer or protonation
+difference). 23 of the 24 conflicts across all CAS are inorganic salts and
+oxides, where InChI conventions differ between registries and which lie outside
+the structural domain regardless.
+
+### STEP 6 gaps, now bounded
+
+Neither gap can be closed outright, but both are now quantified instead of
+open-ended:
+
+- **TRI-only substances (`G06`)** - of the 28, only **9** are in the 2,519
+  screening candidate set, i.e. 0.36 % of it. All 9 are agricultural pesticides
+  or herbicides, none is flagged as a TRI inhalation candidate, none carries a
+  human flag, and none is semiconductor-related.
+- **Semiconductor-core citations (`G07`)** - of the 4 records with a pending
+  survey citation, 3 also carry an independent peer-reviewed source (Lim 2021,
+  `doi:10.1007/s13273-021-00139-4`). Only **one** record depends solely on the
+  uncited table: CAS 25322-68-3, a polymer already classified `outside_domain`
+  and therefore excluded from organic structure-based screening. **Analytical
+  impact: none.**
+
+## 8. What remains open
+
+Recorded in full in `S11_gap_register.csv` (14 entries). `G01`, `G02` and `G03`
+are now closed. The principal remaining limits:
+
+- **No full-text primary verification was completed** for any substance. Five
+  substances were adjudicated against located literature; that is a start, not
+  STEP 5.
+- **Secondary compilations are not retrieved** (`G05`): ACGIH 7th edition, the
+  relevant DFGOT volumes, CICAD 67. These are the bottleneck for primary
+  verification.
+- **The PubChem structure audit is not a substitute** for the EPA-based S03
+  (`G08`). EPA CompTox remains the registry of record.
+- **Two scope decisions are outstanding**: whether coagulation becomes a fourth
+  endpoint class or the 5 coagulation-only substances are excluded (`G12`), and
+  whether the two recovered multi-CAS substances - Thiouracil in particular - are
+  admitted (`G11`).
+
+### Files that would close the remaining gaps
+
+1. EPA CompTox **CCD-Batch-Search** raw CSV for the 328 newly queried substances - `G08`
+2. The original **EPA TRI** list export captured at collection time - `G06` (optional; impact bounded)
+3. The **Korean chemical-use survey** source for Table 6 - `G07` (optional; impact none)
+4. `hematotoxicity_v26.zip`, if the 18 v0.26 archive hashes must also be re-verified - `G02`
 
 ## 9. Reproduction
 
@@ -236,10 +306,18 @@ python3 -I code/manual_review_v28.py
 python3 -I code/validate_v28.py
 ```
 
-`validate_v28.py` runs 31 assertions, including the exact reproduction of the
-published 562-CAS set and the 60-substance marrow count, the Type 3 partition, and
-the requirement that no confirmed positive label is set anywhere. Unavailable
-inputs are reported as `SKIP`, never as `PASS`.
+To merge the v0.27 local archive, extract it and additionally run:
+
+```bash
+python3 -I code/merge_v27.py    <extracted v0.27 dir>  tables
+python3 -I code/provenance_v28.py <extracted v0.27 dir>  tables
+```
+
+`validate_v28.py` runs 44 assertions, including the exact reproduction of the
+published 562-CAS set and the 60-substance marrow count, the Type 3 partition,
+the 94/323 review split, the requirement that every previously un-read row was
+actually read, and the requirement that no confirmed positive label is set
+anywhere. Unavailable inputs are reported as `SKIP`, never as `PASS`.
 
 PubChem and PubMed responses are cached verbatim under `work/pubchem_cache/` and
 `work/pubmed_cache/`, so the run is repeatable without re-querying.

@@ -296,11 +296,94 @@ Candidate primary references located in PubMed. Columns: `cas`, `substance_name`
 | `human_inhalation_candidate_pending_primary_verification` | 8 |
 | `coagulation_endpoint_outside_type1_3` | 5 |
 
-## 18. S11_gap_register.csv — 12 rows
+## 18. S11_gap_register.csv — 14 rows
 
-`gap_id` (G01–G12) · `protocol_step` · `item` · `status` · `consequence` · `resolution`.
+`gap_id` (G01–G14) · `protocol_step` · `item` · `status` · `consequence` · `resolution`.
 
-Every protocol step this build could not complete is recorded here with the reason. No step is reported complete on missing data.
+Every protocol step this build could not complete is recorded here with the reason. No step is reported complete on missing data. `G01`, `G02` and `G03` are closed by the verified v0.27 archive merge; `G06`, `G07` and `G08` are bounded or partly addressed; `G13` and `G14` record findings from the merge.
+
+---
+
+# Tables produced only when the v0.27 local archive is supplied
+
+## 19. S05c_v27_evidence_review_reconciliation.csv — 417 rows
+
+The archive's structure-ready evidence rows, each carrying the v0.27 review depth beside the v0.28 full-text reading. **This is the direct answer to "what is in the 323 rows v0.27 had not read".**
+
+| Column | Type | Description |
+|---|---|---|
+| `evidence_id`, `CAS`, `chemical`, `source_id` | string | v0.27 identity |
+| `classification_year`, `hazard_class`, `stot_class`, `blood_category` | string | Official classification |
+| `auto_review_bucket` | enum | v0.27 automatic bucket: `other_route_sentence_cue` (183) · `no_inhalation_text_cue` (112) · `animal_inhalation_sentence_cue` (66) · `inhalation_context_only` (29) · `human_inhalation_sentence_cue` (26) · `human_cue_with_no_human_information_warning` (1) |
+| `review_depth` | enum | `automatic_cues_only` (295) · `NITE_summary_review_v26` (56) · `NITE_excerpt_screen_v27` (28) · `NITE_summary_review_v25` (26) · `NITE_full_summary_v27` (12) |
+| `v27_full_summary_reviewed` | 0/1 | 1 for the 94 rows read in full before v0.28; 0 for the 323 that were not |
+| `review_decision`, `species_reviewed`, `route_reviewed`, `endpoint_reviewed`, `observed_effect` | string | v0.27 judgements where recorded |
+| `primary_study_verified` | string | `no` in all 417 rows |
+| `final_inhalation_label` | string | Empty in all 417 rows |
+| `v028_read_status` | enum | `read_in_v028` · `not_matched_in_v028` |
+| `v028_finding` | enum | What the full text contains — see below |
+| `v028_evidence_units`, `v028_units_with_endpoint` | integer | Unit counts for this record |
+| `v028_endpoint_types`, `v028_species_observed`, `v028_routes_observed`, `v028_animal_species` | string | Unioned over endpoint-bearing units |
+| `v028_human_inhalation_endpoint_unit` | 0/1 | A human + inhalation + endpoint unit exists |
+| `v028_animal_inhalation_endpoint_unit` | 0/1 | An animal + inhalation + endpoint unit exists |
+| `v028_negation_in_endpoint_units`, `v028_compensatory_units` | integer | Caution counts |
+| `v028_has_noael_loael`, `v028_has_quantified_exposure` | 0/1 | Dose-response context |
+
+### `v028_finding` in the 323 previously un-read rows
+
+| Value | Rows |
+|---|---:|
+| `animal_endpoint_other_or_unresolved_route` | 169 |
+| `human_endpoint_route_not_isolated` | 89 |
+| `endpoint_without_resolved_species` | 44 |
+| `no_endpoint_term_in_rationale_text` | 19 |
+| `animal_inhalation_endpoint_in_one_unit` | 2 |
+| `human_inhalation_endpoint_in_one_unit` | 0 |
+
+## 20. S04_Dataset_A_349_v028.csv — 349 rows, 76 columns
+
+The v0.27 Dataset A with the v0.28 evidence layer merged on CAS. All 60 original v0.27 columns are preserved unchanged, including `final_label`, which remains empty in all 349 records.
+
+Added columns: `dataset_A_role_v028`, `evidence_tier`, `all_tiers_present`, `type1_hb_function`, `type2_rbc_anemia`, `type3_counts_marrow`, `coagulation`, `type3_assignment_after_compensatory_review`, `nite_coagulation_only`, `v028_structure_status`, `v028_structural_scope`, `v028_pubchem_smiles`, `v028_pubchem_inchikey`, `v028_recomputed_inchikey`, `v028_verification_state`, and:
+
+| Column | Type | Description |
+|---|---|---|
+| `v028_merge_status` | enum | `matched_to_v028_official_set` (335) · `no_v028_official_blood_system_entry` (14) |
+
+## 21. S03c_structure_audit_cross_registry.csv — 570 rows
+
+The v0.27 EPA-based audit beside the v0.28 PubChem-based audit, per CAS.
+
+| Column | Type | Description |
+|---|---|---|
+| `CAS`, `nite_chemical` | string | Identity |
+| `registry_status`, `scope_status`, `prior_status`, `reference_admission` | string | v0.27 EPA-based assignments |
+| `EPA_CASRN`, `EPA_DTXSID`, `EPA_name`, `EPA_SMILES`, `EPA_InChIKey` | string | EPA CompTox record |
+| `canonical_SMILES`, `computed_InChIKey`, `key_agreement` | string | v0.27 recomputation |
+| `registry_source_file`, `registry_source_sha256` | string | v0.27 provenance |
+| `v028_pubchem_cid`, `v028_smiles`, `v028_pubchem_inchikey`, `v028_recomputed_inchikey` | string | v0.28 PubChem record |
+| `v028_structure_status`, `v028_structural_scope` | string | v0.28 assignment |
+| `registry_agreement` | enum | `exact_key_match` (464) · `connectivity_match_only` (44) · `key_conflict` (24) · empty = not comparable (38) |
+
+> `connectivity_match_only` is an **InChI standardisation artefact**: EPA stored non-standard InChIKeys (`…UHFFFAOYNA-N`) against standard keys (`…UHFFFAOYSA-N`), with identical connectivity in all 44 cases. 23 of the 24 `key_conflict` cases are inorganic salts and oxides. Only 4 genuine organic conflicts exist. EPA CompTox remains the registry of record.
+
+## 22. S07c_dataset_B_provenance_resolution.csv — 32 rows
+
+Bounding of the Dataset B provenance gaps: 28 TRI-only substances (`G06`) and 4 semiconductor-core records with a pending citation (`G07`).
+
+| Column | Type | Description |
+|---|---|---|
+| `gap_id` | enum | `G06` or `G07` |
+| `cas`, `chemical` | string | Identity |
+| `population_role` | enum | `TRI_only_population_entry` · `semiconductor_core_scope_entry` |
+| `in_screening_candidate_set` | 0/1 | Whether the record is in the 2,519 analysis candidates |
+| `analysis_status` | string | v0.26 analysis status |
+| `inhalation_candidate`, `human_flag`, `official_evidence_status` | string | TRI flags where applicable |
+| `missing_provenance` | string | What is missing |
+| `recorded_source_file`, `recorded_source_sha256`, `official_programme_url` | string | What provenance *is* recorded |
+| `independent_source_available` | string | `no`, or the independent source IDs |
+| `analytical_impact` | string | Whether the gap affects the analysis set |
+| `resolution_required` | string | What would close it |
 
 ## 19. output_manifest.json
 

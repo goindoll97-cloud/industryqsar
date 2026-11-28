@@ -148,32 +148,40 @@ ADJUDICATIONS = [
 GAPS = [
     dict(gap_id="G01", protocol_step="STEP 1",
          item="hematotoxicity_v27_supplement.zip",
-         status="not_available_to_this_build",
-         consequence="S04 (Dataset A, 349 records), S07 (Dataset B, 8,110 records) and S08 "
-                     "(screening candidates, 2,519 records) could not be regenerated or updated "
-                     "in place. v0.28 therefore supplies a CAS-keyed join layer "
-                     "(S10_dataset_A_v028_join_layer.csv) instead of a replacement Dataset A.",
-         resolution="upload hematotoxicity_v27_supplement.zip, then merge the join layer on CAS"),
+         status="RESOLVED_archive_supplied_and_verified",
+         consequence="The archive was supplied and verified: its SHA-256 matches the value "
+                     "recorded in the public v0.27 manifest, and all 31 recorded internal file "
+                     "hashes match. Dataset A (349 records) has been merged with the v0.28 "
+                     "evidence layer as S04_Dataset_A_349_v028.csv; 335 of 349 records matched an "
+                     "official NITE blood-system entry and 14 did not. The v0.27 final_label "
+                     "column is preserved unchanged and remains empty in all 349 records.",
+         resolution="closed"),
     dict(gap_id="G02", protocol_step="STEP 1",
-         item="v0.27 file hashes (S01_input_manifest.csv from the local ZIP)",
-         status="not_verifiable",
-         consequence="The 22 v0.27 output hashes and 18 v0.26 archive hashes recorded in the "
-                     "public manifest could not be re-checked, because the files they describe "
-                     "are in the un-uploaded ZIP. v0.28 records hashes only for the inputs it "
-                     "actually read.",
-         resolution="run validate_v28.py against the local ZIP once uploaded"),
+         item="v0.27 file hashes (archive and internal files)",
+         status="RESOLVED_all_hashes_match",
+         consequence="Archive SHA-256 "
+                     "52b329610a4e7448aefcd78f3e1f5ec282c01963fd6dc566539a9c172eb57d28 matches "
+                     "the public manifest. All 31 recorded internal file hashes match, with no "
+                     "mismatch, no missing file and no unrecorded extra file. The 18 v0.26 "
+                     "archive hashes remain unchecked because hematotoxicity_v26.zip itself was "
+                     "not supplied.",
+         resolution="supply hematotoxicity_v26.zip if the v0.26 archive hashes must also be "
+                    "re-verified"),
     dict(gap_id="G03", protocol_step="STEP 2",
-         item="identification of the specific 323 un-reviewed evidence rows",
-         status="superseded_by_full_re_derivation",
-         consequence="The 94-reviewed / 323-pending split lives in "
-                     "S05_NITE_evidence_review_417.csv inside the local ZIP and could not be "
-                     "read. Instead of reviewing a subset, v0.28 re-derived and segmented the "
-                     "rationale text for ALL 749 blood-system classification records (3,634 "
-                     "evidence units), which covers the 417 structure-ready rows and the "
-                     "remainder. The row-level mapping to the previous 94/323 labels is still "
-                     "open.",
-         resolution="join S04/S05 to the local S05_NITE_evidence_review_417.csv on "
-                    "(substance_id, stot_class) to recover the prior review-depth flags"),
+         item="the 323 evidence rows v0.27 had not read in full",
+         status="RESOLVED_all_323_read",
+         consequence="The 417 structure-ready rows were recovered from the archive and the "
+                     "94-reviewed / 323-pending split reproduced exactly (323 = 295 "
+                     "automatic_cues_only + 28 excerpt_screen). All 323 were matched to the "
+                     "v0.28 full-text reading and read. The result: 169 animal endpoint with "
+                     "other or unresolved route, 89 human endpoint with route not isolated, 44 "
+                     "endpoint without resolved species, 19 with no endpoint term at all, and "
+                     "only 2 with an animal inhalation endpoint in a single evidence unit. ZERO "
+                     "new human inhalation evidence rows. The prior automatic bucketing is "
+                     "vindicated: no row bucketed no_inhalation_text_cue became an inhalation "
+                     "finding. Recorded in S05c_v27_evidence_review_reconciliation.csv.",
+         resolution="closed; the 2 new animal inhalation rows are candidates for the animal "
+                    "inhalation support set and need summary-level confirmation"),
     dict(gap_id="G04", protocol_step="STEP 5",
          item="independent primary-source verification of analysis-grade references",
          status="partially_started_not_complete",
@@ -197,26 +205,56 @@ GAPS = [
                     "as analysis references"),
     dict(gap_id="G06", protocol_step="STEP 6",
          item="EPA TRI listing version and per-substance listing basis for 28 TRI-only substances",
-         status="not_addressed",
-         consequence="Requires the local TRI source list captured at collection time; the "
-                     "published repository holds only the programme URL.",
-         resolution="upload the original TRI list export used at collection time"),
+         status="BOUNDED_negligible_analytical_impact",
+         consequence="The historical TRI list export is still missing, and EPA's current "
+                     "machine-readable chemical list is served from guideme.epa.gov, which this "
+                     "environment does not reach. The gap is now bounded instead: of the 28 "
+                     "TRI-only substances only 9 are in the 2,519 screening candidate set, i.e. "
+                     "0.36 per cent of it. All 9 are agricultural pesticides or herbicides "
+                     "(alachlor, benfluralin, oryzalin, triallate, methyl parathion, dichlorvos, "
+                     "propanil, 2,4,6-trichlorophenol, chlorimuron ethyl), none is flagged as a "
+                     "TRI inhalation candidate, none carries a human flag, and none is "
+                     "semiconductor-related. Recorded in "
+                     "S07c_dataset_B_provenance_resolution.csv.",
+         resolution="optional: upload the original TRI list export. The residual uncertainty can "
+                    "instead be stated quantitatively as affecting 9 of 2,519 candidates, all "
+                    "outside the semiconductor-relevant scope"),
     dict(gap_id="G07", protocol_step="STEP 6",
          item="exact citation for 4 of the 249 semiconductor-core records",
-         status="not_addressed",
-         consequence="Requires the original chemical-use survey document and page references, "
-                     "which are not in the public repository.",
-         resolution="upload the chemical-use survey source"),
+         status="BOUNDED_one_record_affected_outside_structural_domain",
+         consequence="Of the 4 records whose process evidence is 'usage_survey_citation_pending', "
+                     "3 also carry an independent peer-reviewed source (Lim2021, "
+                     "doi:10.1007/s13273-021-00139-4; methanol additionally Taiwan2024), so for "
+                     "those the pending citation is supplementary rather than load-bearing. Only "
+                     "ONE record depends solely on the uncited survey table: CAS 25322-68-3 "
+                     "(alpha-hydro-omega-hydroxy polymer), which is already classified "
+                     "outside_domain and is therefore excluded from organic structure-based "
+                     "screening in any case. Analytical impact: none.",
+         resolution="optional: supply the Korean chemical-use survey document and its Table 6 "
+                    "page reference, needed only for completeness of the population source "
+                    "register"),
     dict(gap_id="G08", protocol_step="STEP 6",
          item="EPA CompTox CCD-Batch-Search raw export for the 328 newly queried substances",
-         status="still_missing",
-         consequence="v0.28 resolved structures independently from PubChem PUG-REST rather than "
-                     "from the EPA export. The PubChem-based audit is NOT a substitute for the "
-                     "frozen EPA-based S03: it uses a different registry, so counts differ "
-                     "(390 single-component organic of 570 CAS here, versus 332 of 562 in the "
-                     "EPA-based v0.27 snapshot). The two must not be conflated.",
-         resolution="upload the original CCD-Batch-Search CSV; keep the EPA-based S03 as the "
-                    "frozen structural audit of record"),
+         status="PARTLY_ADDRESSED_cross_registry_comparison_performed",
+         consequence="The raw EPA export is still missing, but the archive's EPA-based audit "
+                     "(S03_structure_audit_562.csv, carrying EPA_DTXSID, EPA_SMILES and "
+                     "EPA_InChIKey) was compared per CAS against the independent PubChem audit in "
+                     "S03c_structure_audit_cross_registry.csv. Of 390 single-component organic "
+                     "substances, 331 keys match exactly, 42 match on connectivity only, 13 are "
+                     "not comparable and 4 conflict. The 42 connectivity-only cases are a "
+                     "SYSTEMATIC ARTEFACT, not a structural disagreement: EPA stored "
+                     "NON-STANDARD InChIKeys (second block ...NA-N) against standard keys "
+                     "(...SA-N), with identical connectivity in every case. Only 4 genuine "
+                     "organic identity conflicts remain: CAS 1929-77-7 (vernolate; the PubChem "
+                     "hit cid 25246088 is a charged species and is wrong, EPA is correct), "
+                     "54749-90-5 (chlorozotocin), 5700-39-0 (tris(2-methoxyethoxy)silane "
+                     "derivative) and 79-57-2 (oxytetracycline, likely a tautomer or protonation "
+                     "difference). 23 of the 24 overall conflicts are inorganic salts and oxides, "
+                     "where InChI conventions differ between registries and which are outside the "
+                     "structural domain regardless.",
+         resolution="the 42 non-standard-InChI holds can likely be released after confirming the "
+                    "InChI standardisation flag; the 4 organic conflicts need manual identity "
+                    "confirmation with EPA CompTox as the registry of record"),
     dict(gap_id="G09", protocol_step="STEP 3",
          item="sentence-level segmentation of narrative (pre-FY2018) rationales",
          status="known_limitation",
@@ -254,6 +292,32 @@ GAPS = [
          resolution="decide whether to adopt the two recovered multi-CAS substances; Thiouracil is "
                     "a blood-system STOT-RE Category 1 entry and thiouracils are an established "
                     "cause of agranulocytosis, so its omission is material"),
+    dict(gap_id="G13", protocol_step="STEP 2 / STEP 3 outcome",
+         item="what the 323 previously un-read evidence rows actually contain",
+         status="answered",
+         consequence="Reading all 323 in full yields only 2 rows with an animal inhalation "
+                     "endpoint in a single evidence unit and ZERO new human inhalation rows. The "
+                     "remainder is 169 animal findings by another or unresolved route, 89 human "
+                     "findings whose route cannot be isolated, 44 endpoints without a resolved "
+                     "species and 19 rows with no endpoint term at all. The practical conclusion "
+                     "is that the route-specific evidence in the official NITE blood-system "
+                     "rationales was already captured by the v0.25-v0.27 prioritised review; the "
+                     "residual 323 rows do not change the route-specific reference sets.",
+         resolution="summary-level confirmation of the 2 new animal inhalation rows; no further "
+                    "bulk review of this corpus is warranted"),
+    dict(gap_id="G14", protocol_step="structural audit",
+         item="40 'same_connectivity_only_hold' structure records in the v0.27 audit",
+         status="probable_cause_identified",
+         consequence="The cross-registry comparison shows 42 organic substances whose EPA "
+                     "InChIKey differs from the recomputed standard key only in the second "
+                     "block, EPA carrying the NON-STANDARD InChI flag (...UHFFFAOYNA-N) against "
+                     "the standard (...UHFFFAOYSA-N), with identical connectivity. This is an "
+                     "InChI standardisation difference, not structural or stereochemical "
+                     "ambiguity, and it accounts for the v0.27 same_connectivity_only_hold "
+                     "category. Releasing these holds would materially increase the "
+                     "structure-ready reference count.",
+         resolution="confirm the InChI standardisation flag on the EPA export and release the "
+                    "affected holds; recompute with a single InChI standard throughout"),
     dict(gap_id="G12", protocol_step="STEP 2 scope",
          item="'blood coagulation system' as a blood-system target organ",
          status="newly_identified_issue",

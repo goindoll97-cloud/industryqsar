@@ -10,7 +10,7 @@
 
 ## 최신 작업 v0.28 — 공식 분류 근거 전수 재도출 및 노출경로·독성유형 분류
 
-[작업 설명](data/supplementary/hematotoxicity_v28/README.md) · [영문 설명](data/supplementary/hematotoxicity_v28/README_EN.md) · [데이터 사전](data/supplementary/hematotoxicity_v28/DATA_DICTIONARY.md) · [물질별 공개 색인](data/supplementary/hematotoxicity_v28/nite_evidence_public_index.csv) · [실행 집계](data/supplementary/hematotoxicity_v28/summary.json) · [미해결 공백 등록부](data/supplementary/hematotoxicity_v28/S11_gap_register.csv) · [재현 코드](data/supplementary/hematotoxicity_v28/code) · [manifest](data/supplementary/hematotoxicity_v28/manifest.json)
+[작업 설명](data/supplementary/hematotoxicity_v28/README.md) · [영문 설명](data/supplementary/hematotoxicity_v28/README_EN.md) · [데이터 사전](data/supplementary/hematotoxicity_v28/DATA_DICTIONARY.md) · [물질별 공개 색인](data/supplementary/hematotoxicity_v28/nite_evidence_public_index.csv) · [417행 판독 결과](data/supplementary/hematotoxicity_v28/S05c_v27_evidence_review_reconciliation.csv) · [실행 집계](data/supplementary/hematotoxicity_v28/summary.json) · [공백 등록부](data/supplementary/hematotoxicity_v28/S11_gap_register.csv) · [재현 코드](data/supplementary/hematotoxicity_v28/code) · [manifest](data/supplementary/hematotoxicity_v28/manifest.json)
 
 NITE 공식 다운로드 페이지에 분류 근거 전문 일괄 파일 `list_rational_e.xlsx`(117,026행)가 있음을 확인했다. v0.24~v0.27 입력 목록에 없던 파일이다. 따라서 v0.27에 남아 있던 323행 부분 검토 대신 **혈액계 분류 749행 전체**의 근거 원문을 재도출하여 **3,634개 근거 단위**로 분할하고 각 단위 원문을 보존했다.
 
@@ -26,7 +26,17 @@ NITE 공식 다운로드 페이지에 분류 근거 전문 일괄 파일 `list_r
 
 공개 v0.18 인체 참조 28건을 공식 분류와 대조했다. Naphthalene·Methanethiol은 tier A, Benzene·2-Bromopropane은 tier B로 교차 확인된다. 반면 **4건은 공식 NITE 혈액계 분류가 전혀 없으며 그중 3건이 최상위 `1_core`** 이다(4-Bromo-2-fluoroaniline, 5-Amino-2-(trifluoromethyl)pyridine, Dichloromethane, 그리고 2-Ethoxyethyl acetate). tier A 5종은 PubMed 원저를 탐색·열독해 수동 판정했고 **5건 중 3건에서 원저가 NITE 요약의 주장을 제한**했다(2-Ethoxyethanol은 장갑 중재로 경피 기여 시사, 1,2-Dichloropropane은 혼합제품·경구, Lindane은 경피 주류).
 
-**신규 확정 양성 라벨 0건, 독립 원저 전문 검증 완료 0건, 신규 모델·실험 없음.** `hematotoxicity_v27_supplement.zip` 미확보로 Dataset A 349종·B 8,110종·후보 2,519종은 직접 갱신하지 못했고, 대체본이 아닌 CAS 기준 결합 계층을 제공한다. PubChem 구조감사(570 CAS 중 단일성분 유기 390)는 고정된 EPA 기반 S03을 대체하지 않는다. 검증 31건 통과·0건 실패·미확보 입력 2건은 `SKIP`으로 보고. 미해결 사항 12건은 공백 등록부에 전부 기록했다. 전체 보충자료는 로컬 `hematotoxicity_v28.zip`, 공개 저장소는 관례대로 근거 원문을 재게시하지 않고 집계·문서·해시·물질별 색인·코드만 게시한다.
+### v0.27 로컬 아카이브 병합 결과
+
+`hematotoxicity_v27_supplement.zip` 를 확보·검증했다. 아카이브 SHA-256이 공개 manifest 기록값과 일치하고 **기록된 내부 파일 해시 31개 전부 일치**(불일치·누락·미기록 0).
+
+구조 확보 417행을 복원해 94검토 / 323대기 분할을 정확히 재현하고, **323행 전부를 전문 판독**했다. 결과: 동물 소견 다른·미해결 경로 169, 인체 소견 경로 분리 불가 89, 근거종 미해결 44, 독성지표 없음 19, **동일 단위 내 동물 흡입 2, 인체 흡입 0**. 즉 **전수 판독으로 신규 동물 흡입 2행, 신규 인체 흡입 0행**이며, `no_inhalation_text_cue` 분류 행이 흡입 소견으로 전환된 사례는 없다. 기존 우선순위 검토가 타당했고 이 자료에 대한 추가 전수 검토는 불필요하다.
+
+Dataset A 349종을 CAS 기준 병합(335종 매칭, 14종 미매칭)했고 `final_label` 은 **349종 전부 공란 유지**. 구조 교차검증에서 단일성분 유기 390종 중 완전일치 331, 연결성만 일치 42, 충돌 4. **연결성만 일치 42건은 EPA가 비표준 InChIKey(`...NA-N`)를 저장한 계통적 인공산물**이며 연결성은 전부 동일하다. v0.27 `same_connectivity_only_hold` 의 원인으로, 해제 시 구조 확보 참조가 실질 증가한다. 실제 유기물 신원 충돌은 4건(Vernolate는 PubChem 오매칭, EPA 정확)이고 전체 24건 중 23건은 무기물이다.
+
+STEP 6 공백은 해소 대신 **영향 범위를 확정**했다. TRI 전용 28종 중 스크리닝 후보에 포함된 것은 9종(0.36%)으로 전부 농약·제초제이며 흡입 후보·인체 플래그·반도체 관련 없음. 반도체 핵심 인용 대기 4건 중 3건은 독립 심사논문 출처를 보유하고, 미인용 표 단독 의존은 1건(CAS 25322-68-3 중합체)이며 이미 `outside_domain` 이므로 **분석 영향 없음**.
+
+**신규 확정 양성 라벨 0건, 독립 원저 전문 검증 완료 0건, 신규 모델·실험 없음.** PubChem 구조감사(570 CAS 중 단일성분 유기 390)는 EPA 기반 S03을 대체하지 않으며 EPA CompTox가 기준 등록 체계다. 검증 44건 통과·0건 실패·미확보 입력 1건은 `SKIP`으로 보고. 사항 14건을 공백 등록부에 기록했고 `G01`·`G02`·`G03` 은 해소, `G06`·`G07`·`G08` 은 범위 확정 또는 부분 해소다. 전체 보충자료는 로컬 `hematotoxicity_v28.zip`(632 파일), 공개 저장소는 관례대로 근거 원문과 Dataset A/B 전체를 재게시하지 않고 집계·문서·해시·물질별 색인·판독 결과·코드만 게시한다.
 
 
 ## 이전 작업 v0.27 — 보충자료 정제 및 근거 검토

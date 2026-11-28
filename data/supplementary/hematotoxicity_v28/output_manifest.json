@@ -6,18 +6,22 @@
     "S02_NITE_official_blood_system_set.csv": "b1349f7b636502d7cca7a777269b2686d897ca1cf80ce3d754936c8d1ec08ba9",
     "S02b_NITE_v024_index_reconciliation.csv": "2329abed21f9ff26cf77692a7cb435b518db5b6525b66aad58f9f8a0e6257f9a",
     "S03_structure_audit.csv": "14c5d759a0c26368112f4ebe789e0af8a4ed67ee1f62ba79cb611d347d1ab9f2",
+    "S03c_structure_audit_cross_registry.csv": "5ad528118c147ed8f717a2568b08fcef4541e76e1442fb11df68f50a680ac802",
+    "S04_Dataset_A_349_v028.csv": "29f436365002233d15b7254380bd1e4e55382f7681174c69aff69a11b3c3a181",
     "S04_NITE_classification_records_with_rationale.csv": "e530042a3eb0f4fd6e8cb5b629432129cf1a3dd447ddfa7bb614f5dc5689a23d",
     "S05_evidence_units_species_route.csv": "4b5f4a52e54fd884e2115837a4004b37c0f383001b04838fdab7ca229857fcd2",
     "S05b_species_route_crosstab.csv": "7e2618e35ecff2a7508948c764d01019cd82af80365d944957382018388626e6",
+    "S05c_v27_evidence_review_reconciliation.csv": "cb3bd2da9d5754d5c58872f6f5dbefe73ddacd21c89443f9b6d8bd3ade66dc20",
     "S06_hematotoxicity_endpoint_types.csv": "4876e0ae4c41f08a66b17516fb36d260eb62b4685d08703445890e4d5ce1d226",
     "S06b_endpoint_type_summary.csv": "922bb57de118497b4113220a6377594f8b9c353901cc6a3cab6d21fa8632cf7c",
     "S07_source_citations_per_evidence_unit.csv": "074f00dafd3f1a81636ce07b850e48eb014da914eb45e51368b231d336be837b",
     "S07b_cited_source_register.csv": "f27f0bf0f628a17aad787ba88c92ca74123acbaf9a9f80d7e052a0805217d730",
+    "S07c_dataset_B_provenance_resolution.csv": "ae7a4333b4e588c7ab342c5138f2de6b816474d3aea61636dbbfb3fa4a4ca923",
     "S08_published_human_reference_audit.csv": "c6676cf8f1b26d31d01d07b862c19d36c0346d591422aae0cf30f8f0f16cbce6",
     "S08b_manual_primary_literature_adjudication.csv": "8e861675f5b28e042b9f7ee528b9ffc490ebe7b6de0d2147452e39bbf62c33e2",
     "S08c_pubmed_primary_locators.csv": "79210c27c983d5d8a27f61dad0907c7f83ee4d2d2831602ad29f1e6b5b54d284",
     "S09_inclusion_exclusion_hold_rules.csv": "923838980782c28684574e574f4156fe5a9b57b97b42bed50c4698240ebf1487",
     "S10_dataset_A_v028_join_layer.csv": "38cc3a617e2cde5604778db80674799b7be2f36a1e2b440e2dd57746595c71ec",
-    "S11_gap_register.csv": "d188cf2506e98c6cb778792d15afa5b0306f8dab7f7f55f62e32fe13c0cff82e"
+    "S11_gap_register.csv": "d9d3c37bac705ae9c7884cd5bf6e08b286fbf57d298d094f4f13b17dce2576c0"
   }
 }

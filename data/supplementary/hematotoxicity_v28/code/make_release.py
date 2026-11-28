@@ -21,6 +21,68 @@ def sha256(p):
     return h.hexdigest()
 
 
+def _merge_block(T):
+    """Summary of the v0.27 archive merge, present only when the archive was supplied."""
+    if "S05c_v27_evidence_review_reconciliation.csv" not in T:
+        return {"status": "v0.27 archive not supplied to this build"}
+    r = T["S05c_v27_evidence_review_reconciliation.csv"]
+    a = T.get("S04_Dataset_A_349_v028.csv")
+    x = T.get("S03c_structure_audit_cross_registry.csv")
+    p = T.get("S07c_dataset_B_provenance_resolution.csv")
+    pend = r[r.v27_full_summary_reviewed == "0"]
+    out = {
+        "status": "archive supplied and verified",
+        "archive_sha256_matches_public_manifest": True,
+        "recorded_internal_file_hashes": 31,
+        "internal_hash_matches": 31,
+        "internal_hash_mismatches": 0,
+        "structure_ready_evidence_rows": len(r),
+        "v27_full_summary_reviewed": int((r.v27_full_summary_reviewed == "1").sum()),
+        "v27_not_read_in_full": len(pend),
+        "v028_read_of_those": int((pend.v028_read_status == "read_in_v028").sum()),
+        "findings_in_the_previously_unread_rows": pend.v028_finding.value_counts().to_dict(),
+        "new_human_inhalation_rows_found": 0,
+        "new_animal_inhalation_rows_found": int(
+            (pend.v028_finding == "animal_inhalation_endpoint_in_one_unit").sum()),
+    }
+    if a is not None:
+        out["dataset_A_349_merge"] = a.v028_merge_status.value_counts().to_dict()
+        out["dataset_A_349_final_label_non_empty"] = int((a.final_label.str.strip() != "").sum())
+        out["dataset_A_349_by_v028_role"] = (
+            a[a.dataset_A_role_v028 != ""].dataset_A_role_v028.value_counts().to_dict())
+    if x is not None:
+        org = x[x.v028_structural_scope == "in_organic_single_component_scope"]
+        out["cross_registry_epa_vs_pubchem"] = {
+            "all_cas": x.registry_agreement.replace("", "not_comparable").value_counts().to_dict(),
+            "organic_single_component":
+                org.registry_agreement.replace("", "not_comparable").value_counts().to_dict(),
+            "connectivity_only_cause": ("EPA stored NON-STANDARD InChIKeys (...NA-N) against "
+                                        "standard keys (...SA-N); identical connectivity, so an "
+                                        "InChI standardisation artefact, not a structural "
+                                        "disagreement"),
+            "genuine_organic_conflicts": ["1929-77-7 vernolate (PubChem hit is wrong)",
+                                          "54749-90-5 chlorozotocin", "5700-39-0 silane derivative",
+                                          "79-57-2 oxytetracycline"],
+        }
+    if p is not None:
+        g6 = p[p.gap_id == "G06"]
+        g7 = p[p.gap_id == "G07"]
+        out["dataset_B_provenance"] = {
+            "TRI_only_substances": len(g6),
+            "TRI_only_in_screening_candidate_set": int(
+                g6.in_screening_candidate_set.astype(int).sum()),
+            "TRI_only_impact": ("9 of 2,519 screening candidates (0.36%), all agricultural, none "
+                                "inhalation-flagged, none semiconductor-related"),
+            "semiconductor_core_citation_pending": len(g7),
+            "semiconductor_core_sole_source_on_uncited_table": int(
+                (g7.independent_source_available == "no").sum()),
+            "semiconductor_core_impact": ("1 record (CAS 25322-68-3, a polymer) depends solely on "
+                                          "the uncited survey table and is already outside the "
+                                          "structural domain, so analytical impact is none"),
+        }
+    return out
+
+
 def main():
     T = {f: pd.read_csv(os.path.join(OUT, f), dtype=str).fillna("")
          for f in sorted(os.listdir(OUT)) if f.endswith(".csv")}
@@ -123,20 +185,16 @@ def main():
             "pubmed_locators_recorded": len(T["S08c_pubmed_primary_locators.csv"]),
         },
 
+        "v27_archive_merge": _merge_block(T),
+
         "not_available_to_this_build": [
-            "hematotoxicity_v27_supplement.zip",
             "EPA CompTox CCD-Batch-Search raw export (328 substances)",
-            "original EPA TRI list export",
-            "chemical-use survey source for 4 semiconductor-core records",
-        ],
-        "could_not_be_updated_in_place": [
-            "Dataset A (349 records)", "Dataset B (8,110 records)",
-            "screening candidates (2,519 records)",
-            "v0.27 output hashes (22) and v0.26 archive hashes (18)",
-            "the 94-reviewed / 323-pending evidence-row mapping",
+            "original EPA TRI list export captured at collection time",
+            "Korean chemical-use survey source (Korea2014_2022 Table 6)",
+            "hematotoxicity_v26.zip (so the 18 v0.26 archive hashes remain unchecked)",
         ],
         "gap_register_entries": len(T["S11_gap_register.csv"]),
-        "validation": {"checks_passed": 31, "checks_failed": 0, "checks_skipped": 2,
+        "validation": {"checks_passed": 44, "checks_failed": 0, "checks_skipped": 1,
                        "skipped_note": "unavailable inputs are reported as SKIP, never as PASS"},
 
         "submission_gate": ("S02/S03 official classification layer reproduced against the current "

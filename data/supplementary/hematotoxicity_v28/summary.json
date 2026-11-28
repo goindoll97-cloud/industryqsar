@@ -145,24 +145,81 @@
     "primary_literature_qualifies_nite_assertion": 3,
     "pubmed_locators_recorded": 48
   },
+  "v27_archive_merge": {
+    "status": "archive supplied and verified",
+    "archive_sha256_matches_public_manifest": true,
+    "recorded_internal_file_hashes": 31,
+    "internal_hash_matches": 31,
+    "internal_hash_mismatches": 0,
+    "structure_ready_evidence_rows": 417,
+    "v27_full_summary_reviewed": 94,
+    "v27_not_read_in_full": 323,
+    "v028_read_of_those": 323,
+    "findings_in_the_previously_unread_rows": {
+      "animal_endpoint_other_or_unresolved_route": 169,
+      "human_endpoint_route_not_isolated": 89,
+      "endpoint_without_resolved_species": 44,
+      "no_endpoint_term_in_rationale_text": 19,
+      "animal_inhalation_endpoint_in_one_unit": 2
+    },
+    "new_human_inhalation_rows_found": 0,
+    "new_animal_inhalation_rows_found": 2,
+    "dataset_A_349_merge": {
+      "matched_to_v028_official_set": 335,
+      "no_v028_official_blood_system_entry": 14
+    },
+    "dataset_A_349_final_label_non_empty": 0,
+    "dataset_A_349_by_v028_role": {
+      "official_hazard_reference_animal_non_inhalation": 120,
+      "hold_human_evidence_route_unclear": 65,
+      "official_hazard_reference_species_route_unresolved": 63,
+      "animal_inhalation_support_provisional": 39,
+      "human_occupational_extended_candidate_pending_verification": 21,
+      "official_hazard_reference_no_endpoint_in_text": 17,
+      "human_inhalation_candidate_pending_primary_verification": 7,
+      "coagulation_endpoint_outside_type1_3": 3
+    },
+    "cross_registry_epa_vs_pubchem": {
+      "all_cas": {
+        "exact_key_match": 464,
+        "connectivity_match_only": 44,
+        "not_comparable": 38,
+        "key_conflict": 24
+      },
+      "organic_single_component": {
+        "exact_key_match": 331,
+        "connectivity_match_only": 42,
+        "not_comparable": 13,
+        "key_conflict": 4
+      },
+      "connectivity_only_cause": "EPA stored NON-STANDARD InChIKeys (...NA-N) against standard keys (...SA-N); identical connectivity, so an InChI standardisation artefact, not a structural disagreement",
+      "genuine_organic_conflicts": [
+        "1929-77-7 vernolate (PubChem hit is wrong)",
+        "54749-90-5 chlorozotocin",
+        "5700-39-0 silane derivative",
+        "79-57-2 oxytetracycline"
+      ]
+    },
+    "dataset_B_provenance": {
+      "TRI_only_substances": 28,
+      "TRI_only_in_screening_candidate_set": 9,
+      "TRI_only_impact": "9 of 2,519 screening candidates (0.36%), all agricultural, none inhalation-flagged, none semiconductor-related",
+      "semiconductor_core_citation_pending": 4,
+      "semiconductor_core_sole_source_on_uncited_table": 1,
+      "semiconductor_core_impact": "1 record (CAS 25322-68-3, a polymer) depends solely on the uncited survey table and is already outside the structural domain, so analytical impact is none"
+    }
+  },
   "not_available_to_this_build": [
-    "hematotoxicity_v27_supplement.zip",
     "EPA CompTox CCD-Batch-Search raw export (328 substances)",
-    "original EPA TRI list export",
-    "chemical-use survey source for 4 semiconductor-core records"
+    "original EPA TRI list export captured at collection time",
+    "Korean chemical-use survey source (Korea2014_2022 Table 6)",
+    "hematotoxicity_v26.zip (so the 18 v0.26 archive hashes remain unchecked)"
   ],
-  "could_not_be_updated_in_place": [
-    "Dataset A (349 records)",
-    "Dataset B (8,110 records)",
-    "screening candidates (2,519 records)",
-    "v0.27 output hashes (22) and v0.26 archive hashes (18)",
-    "the 94-reviewed / 323-pending evidence-row mapping"
-  ],
-  "gap_register_entries": 12,
+  "gap_register_entries": 14,
   "validation": {
-    "checks_passed": 31,
+    "checks_passed": 44,
     "checks_failed": 0,
-    "checks_skipped": 2,
+    "checks_skipped": 1,
     "skipped_note": "unavailable inputs are reported as SKIP, never as PASS"
   },
   "submission_gate": "S02/S03 official classification layer reproduced against the current official source and ready for internal freeze. S05/S06 route-, species- and endpoint-specific layers are review-ready but require expert confirmation and independent primary verification. Dataset A and B remain un-updated pending the local archive. Do NOT label publication-ready final."

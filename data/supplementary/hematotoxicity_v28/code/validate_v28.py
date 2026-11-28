@@ -57,7 +57,12 @@ def main():
         "S08b_manual_primary_literature_adjudication.csv": 5,
         "S09_inclusion_exclusion_hold_rules.csv": 11,
         "S10_dataset_A_v028_join_layer.csv": 566,
-        "S11_gap_register.csv": 12,
+        "S11_gap_register.csv": 14,
+        # Produced only when the v0.27 local archive is supplied.
+        "S05c_v27_evidence_review_reconciliation.csv": 417,
+        "S04_Dataset_A_349_v028.csv": 349,
+        "S03c_structure_audit_cross_registry.csv": 570,
+        "S07c_dataset_B_provenance_resolution.csv": 32,
     }
     for f, n in expected.items():
         if f not in T:
@@ -156,9 +161,48 @@ def main():
         check("recomputed InChIKey agrees with registry key for ok_single_organic rows",
               mism == 0, f"mismatches={mism} of {len(ok)}")
 
+    print("\n--- v0.27 archive merge (only when the archive is supplied) ---")
+    if "S05c_v27_evidence_review_reconciliation.csv" in T:
+        r = T["S05c_v27_evidence_review_reconciliation.csv"]
+        full = (r.v27_full_summary_reviewed == "1").sum()
+        check("v0.27 full-summary-reviewed row count reproduced == 94", full == 94,
+              f"count={full}")
+        pend = r[r.v27_full_summary_reviewed == "0"]
+        check("previously un-read row count reproduced == 323", len(pend) == 323,
+              f"count={len(pend)}")
+        read = (pend.v028_read_status == "read_in_v028").sum()
+        check("every previously un-read row was matched and read by v0.28",
+              read == len(pend), f"read={read} of {len(pend)}")
+        check("no previously un-read row yields a human inhalation endpoint unit",
+              (pend.v028_finding == "human_inhalation_endpoint_in_one_unit").sum() == 0,
+              f"count={(pend.v028_finding == 'human_inhalation_endpoint_in_one_unit').sum()}")
+    else:
+        skip("v0.27 evidence review reconciliation", "v0.27 archive not supplied")
+
+    if "S04_Dataset_A_349_v028.csv" in T:
+        a = T["S04_Dataset_A_349_v028.csv"]
+        check("merged Dataset A preserves the v0.27 empty final_label",
+              (a.final_label.str.strip() != "").sum() == 0,
+              f"non-empty={(a.final_label.str.strip() != '').sum()}")
+        matched = (a.v028_merge_status == "matched_to_v028_official_set").sum()
+        check("Dataset A merge coverage recorded for every record",
+              (a.v028_merge_status.str.strip() == "").sum() == 0,
+              f"matched={matched} of {len(a)}")
+
+    if "S03c_structure_audit_cross_registry.csv" in T:
+        x = T["S03c_structure_audit_cross_registry.csv"]
+        # Every connectivity-only case must agree on the first InChIKey block.
+        cm = x[x.registry_agreement == "connectivity_match_only"]
+        bad = cm[cm.apply(lambda r: r.EPA_InChIKey.split("-")[0]
+                          != r.v028_recomputed_inchikey.split("-")[0], axis=1)]
+        check("connectivity-only cases agree on the InChIKey connectivity block",
+              len(bad) == 0, f"violations={len(bad)} of {len(cm)}")
+        conf = (x.registry_agreement == "key_conflict").sum()
+        check("cross-registry key conflicts enumerated", conf > 0, f"conflicts={conf}")
+
     print("\n--- inputs that were NOT available (reported, never passed) ---")
     for item, path in [
-        ("hematotoxicity_v27_supplement.zip", "/home/user/hematotoxicity_v27_supplement.zip"),
+        ("hematotoxicity_v27_supplement.zip", "/root/.claude/uploads/b34344cd-b845-515b-afd5-81a94c1c489e/a9dae0f1-hematotoxicity_v27_supplement.zip"),
         ("EPA CompTox CCD-Batch-Search raw export", "/home/user/CCD-Batch-Search.csv"),
     ]:
         if os.path.exists(path):
