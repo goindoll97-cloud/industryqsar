@@ -1,0 +1,40 @@
+{
+  "version": "v0.24-nite",
+  "base_data_version": "v0.23",
+  "latest_experiment": "v0.23-pilot1",
+  "status": "official_hazard_candidate_staging",
+  "public_AB_version": "v0.18",
+  "public_NITE_index_version": "v0.24-nite",
+  "local_archive": "hematotoxicity_v24_nite.zip",
+  "local_archive_sha256": "c96a388e0c9508d1881c2831f3c1cf46c9f2ad7757a25a5b3e31b75710d11319",
+  "public_index": {
+    "rows": 562,
+    "columns": 11,
+    "sha256": "3314d1d88faf2e2d607b4562b47249036a074e12dfeddce3fbbbe2473271ad9d",
+    "git_blob": "c89a9efc79973561dd992ca3aebcbf1521abca8a",
+    "status": "review_only_no_new_label"
+  },
+  "A": 39,
+  "human_primary_provisional": 16,
+  "B": 8110,
+  "B_current_screening": 2642,
+  "NITE_known_in_current_B_screening": 123,
+  "new_labels": 0,
+  "model_run": false,
+  "local_sha256": {
+    "README_ko.md": "e0f5c9ba48781e0cd3b769c0b21ad0238c1d04d2ef501d2a9411d5905002fc47",
+    "audit_nite.py": "824c7046082ba698e46c789068cef03ba0eb06c34dcb68da2c4444c2a6eba465",
+    "dataset_A_v23_with_NITE_flags.csv": "4d00a4a725fffadb52c2c93e9814af13ca95cb9c521e07f6db81ddb7578449fc",
+    "dataset_B_v23_with_NITE_flags.csv": "d4f1a5a03ebd4baf64ae5ae4e14ea5bedc51640b6bba2e503a355be8be3330aa",
+    "excel_html_discrepancies.csv": "879c09e5122da047acb8582735db5431929200ef6fe6b7604fb3edcd44a51671",
+    "new_NITE_candidates_for_A_review.csv": "e28aed052b9f5905c0a541aaaa2f6312f87a01b6a442e45fda37619708fe7e1e",
+    "new_NITE_candidates_structure_ready.csv": "67d0180818ea0c6ce30d498b8072008fddab1ac5cab4b5eefea6132f6ae3ebd2",
+    "nite_blood_candidates_merged.csv": "8977e805e8db4ed57edcdae6f7e3900a5d4146abf30ae5bdf290dee5832fdb22",
+    "nite_blood_evidence_rows.csv": "dba9520bff99305cb9d3d3090284266fc257982bfdbc30f064a059526e45313b",
+    "priority_human_inhalation_cues.csv": "ecef010245642e2232db2a795d19ab9806bcdf3f7b087d57051739691c4fa160",
+    "priority_structure_ready_review.csv": "c69bea70f711fb2b776d6fc63810d068580dce04ed8f10a26de405ed9a0c3a11",
+    "screening_candidate_index_v23_with_NITE_flags.csv": "b44d542b4e630526bf79d9572a855cff9a3dd55bf081c809f1255f98a144173d",
+    "summary.json": "e8a2499e72877c9ecac94360dade6e9ca8e5c1aa85dcf4614bd6a795f812d93c",
+    "unresolved_NITE_CAS.csv": "5d0de9c71dab5abb7f13152407feb91b056a5216267f8a007e6e6bb8f8f744b9"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "excel_rows": 3476,
+  "detail_pages": 3476,
+  "detail_STOT_rows": 6952,
+  "excel_html_discrepancies": 2,
+  "excel_blood_rows": 747,
+  "html_original_blood_rows": 747,
+  "blood_unique_source_ids": 568,
+  "valid_single_CAS": 562,
+  "unresolved_rows": 6,
+  "A_overlap": 25,
+  "B_overlap": 234,
+  "new_A_review": 537,
+  "new_not_in_B": 323,
+  "new_in_B": 214,
+  "new_B_status": {
+    "EPA_checked_novel_candidate": 123,
+    "not_in_B": 323,
+    "identity_review": 9,
+    "outside_domain": 78,
+    "structure_unresolved": 4
+  },
+  "new_structure_ready": 123,
+  "SE_only": 73,
+  "RE_only": 310,
+  "SE_and_RE": 179,
+  "marrow_or_hematopoietic": 60,
+  "new_marrow": 57,
+  "new_ready_marrow": 10,
+  "same_row_human_inhalation": 152,
+  "new_same_row_cues": 134,
+  "ready_same_row_cues": 54,
+  "ready_scope": {
+    "semiconductor_core": 14,
+    "process_function_candidate": 28,
+    "other_industrial_candidate": 70,
+    "electronics_sector_candidate": 3,
+    "TRI_only_candidate": 8
+  },
+  "A_overlap_levels": {
+    "1_core": 6,
+    "3_uncertain": 10,
+    "not_reviewed_human": 3,
+    "2_extended": 6
+  },
+  "source_hashes": {
+    "list_nite_all_e.xlsx": "79e5cba0a79af3e60da39d9bbcc0e13c2581ab90b11dba90582b7e7cb720777c",
+    "official_nite_results.zip": "72c43d71cc310e24e64efe211859fe433beec5b4c50d5a5281ade467046e7eb3"
+  },
+  "human_primary_count": 16,
+  "A_count": 39,
+  "B_count": 8110,
+  "B_screening_count": 2642,
+  "new_labels": 0,
+  "model_run": false,
+  "priority_structure_ready_union": 63,
+  "category_1_any": 377,
+  "category_2_only": 185,
+  "blood_classification_year_range": [
+    2006,
+    2025
+  ],
+  "scope": "official hazard candidate staging; no new human label"
+}

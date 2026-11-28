@@ -1,14 +1,34 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 작업 버전: v0.23-pilot1 (예비실험 실행 완료) | 최신 데이터 작업본: v0.23 | 최신 공개 CSV: v0.18**
+**최신 데이터 작업본: v0.24-nite (공식 유해성 후보 추출 완료, 판정 대기) | 최신 실험: v0.23-pilot1 | 공개 A/B CSV: v0.18**
 
-## 연구 목적
+## 현행 연구 목적 및 방향
 
-인체 흡입 혈액독성 근거와 분자구조적 특성을 활용하여 반도체 제조공정 관련 화학물질 중 정밀 독성평가가 필요한 물질의 우선순위를 제시한다. 한 가지 근거 기반 구조 유사성 스크리닝 방법에 집중한다. 독성 발생 확률, 만성 저농도 독성의 정량 예측, 백혈병 원인 규명 또는 안전성 판정은 연구 목표가 아니다.
+일본 정부 NITE GHS의 공식 혈액계 특정표적장기 독성(STOT) 분류와 분자구조적 특성을 이용하여 산업화학물질의 혈액계 유해성 평가 우선순위를 도출하고, 반도체 제조공정 관련 물질에 적용한다. ATSDR·PubMed 인체 흡입/직업성 근거를 활용해 인체 관련성을 별도로 검토한다. 공식 유해성은 인체 흡입 양성 또는 실제 위해도를 의미하지 않는다. 인체·동물 및 노출경로별 근거를 구분한다. 백혈병 인과 규명, 독성 발생 확률, 안전성 판정은 목표가 아니다. 최종 참조집합 및 실험 계획은 근거 정제 후 확정한다.
 
-*Prioritization of Potential Hematotoxicants in Semiconductor Manufacturing Based on Human Inhalation Evidence and Molecular Structural Characteristics*
+**[현행 연구 프로토콜 v0.24](docs/hematotoxicity_research_protocol_v24_ko.md)**
 
-## 최신 작업 v0.23-pilot1 — 인체 중심 예비실험
+## 최신 작업 v0.24-nite — NITE 공식 분류 통합
+
+[562종 공개 후보 색인](data/supplementary/hematotoxicity_v24_nite/nite_blood_public_index.csv) · [작업 설명](data/supplementary/hematotoxicity_v24_nite/README.md) · [실제 집계](data/supplementary/hematotoxicity_v24_nite/summary.json) · [재현 코드](data/supplementary/hematotoxicity_v24_nite/audit_nite.py) · [파일 manifest](data/supplementary/hematotoxicity_v24_nite/manifest.json)
+
+| 자료 | 수량 및 상태 |
+|---|---|
+| NITE 전체 분류 항목 | 3,476 (Excel/상세 페이지 대조 완료) |
+| 혈액계 STOT 분류 | 747행, 고유 단일 CAS 562종 |
+| 기존 A에 없는 신규 검토 후보 | 537종 |
+| 기존 B 구조 기준 충족 신규 후보 | 123종 (우선 검토 63종) |
+| 골수·조혈계 표적 | 60종 |
+| Dataset A | 기존 39종, 인체 주 분석 잠정 16종 유지 |
+| Dataset B | 기존 8,110종, 현행 스크리닝 후보 2,642종 유지 |
+
+NITE 분류 플래그만 기존 A/B에 병합했다. 신규 양성 라벨 0, 신규 모델 실행 없음. NITE에서 확인된 B 후보 123종은 향후 신규 미평가 우선순위와 분리하여 다룬다. 원본과 전체 상세 작업본은 로컬 hematotoxicity_v24_nite.zip에 보존. 공개 저장소에는 562종 후보 투영, 실제 추출 코드, 집계와 해시를 게시한다. 전체 A/B 공개 CSV는 v0.18 유지.
+
+## 데이터 출처 원칙
+
+NITE 공식 분류를 신규 참조 발굴의 핵심으로, ATSDR과 PubMed 원저를 인체/동물·경로·독성 근거 검토 및 인체 관련성 평가에 사용한다. EPA CompTox/PubChem은 화학물질 식별 및 구조 확인용. Hua/Long 1,127종은 문헌 검색 시드만. NIOSH 및 기타 기관은 당분간 보류한다. 동일 원저는 독립 증거로 중복 계산하지 않는다. 미등재 또는 자료 부족을 음성으로 해석하지 않는다.
+
+## 이전 실험 v0.23-pilot1 — 인체 중심 예비실험
 
 [실행 방법 및 분석 설계](hematotoxicity/pilot_v23/README.md) · [실행 코드](hematotoxicity/pilot_v23/run_pilot.py) · [예비실험 집계](hematotoxicity/pilot_v23/retrieval_metrics.csv)
 
@@ -52,20 +72,23 @@ A 29종(주 분석 잠정 참조 16종, 민감도 13종), B 8,110종(반도체 �
 | [Dataset B — 반도체 관련 후보 모집단](data/supplementary/hematotoxicity_v18/dataset_B_semiconductor_249.csv) | 249 | 잠정 유기 단일성분 134, 신원 미해결 1, 범위 외 114 |
 | B의 신규 검토 후보 | 123 | 134종에서 A 중복 11종 제외. 독성 미평가 여부와 공정 사용 근거 추가 확인 필요 |
 
-[데이터 설명 및 공개 범위](data/supplementary/hematotoxicity_v18/README.md) · [공정 출처 등록부](data/supplementary/hematotoxicity_v17/source_register.csv) · [집계/메타데이터](data/supplementary/hematotoxicity_v18/summary.json) · [최신 연구 프로토콜](docs/hematotoxicity_research_protocol_v17_ko.md)
+[데이터 설명 및 공개 범위](data/supplementary/hematotoxicity_v18/README.md) · [공정 출처 등록부](data/supplementary/hematotoxicity_v17/source_register.csv) · [집계/메타데이터](data/supplementary/hematotoxicity_v18/summary.json) · [당시 연구 프로토콜 v0.17](docs/hematotoxicity_research_protocol_v17_ko.md)
 
-독성 근거의 핵심 수집원은 ATSDR 및 PubMed 등재 원 연구 두 곳이다. PubMed 색인은 연구의 신뢰도를 보증하지 않으며, ATSDR의 인용 연구와 원 연구는 독립 증거로 중복 계산하지 않는다. 기존 Hua/Long 일반 혈액독성 자료 1,127종과 v0.9 이전 실험은 이력 보존용으로 두고 현행 핵심 분석에는 사용하지 않는다.
+v0.18 당시 독성 근거의 핵심 수집원은 ATSDR 및 PubMed 등재 원 연구 두 곳이었다. PubMed 색인은 연구의 신뢰도를 보증하지 않으며, ATSDR의 인용 연구와 원 연구는 독립 증거로 중복 계산하지 않는다. 기존 Hua/Long 일반 혈액독성 자료 1,127종과 v0.9 이전 실험은 이력 보존용으로 두고 현행 핵심 분석에는 사용하지 않는다.
 
-## 연구 진행
+## 연구 진행 및 다음 단계
 
-- [x] 반도체 관련 후보 모집단 249종 복원 및 CAS 목록 대조
-- [x] 잠정 참조 28종과 대상 목록 통합 및 공개용 스냅샷 무결성 검사
-- [ ] 참조 근거의 독립 재검증 및 추가 인체 혈액·골수독성 물질 확보
-- [x] 기존 미해결 55종 분류: 구조 후보 26종 복원, 범위 외 28종, 신원 충돌 1종; 기존 적격 2종 범위 재분류
-- [ ] 신규 복원 구조의 registry InChIKey 전수 교차검증 및 남은 CAS–명칭 충돌 확인
-- [ ] 공정·흡입 노출 및 기존 독성평가 여부 검증
-- [ ] 구조 유사성 스크리닝 방법 사전 정의와 구조군 제외 검증
-- [ ] 정밀평가 우선순위 및 불확실성 제시
+- [x] 반도체 후보 249종 보존 및 산업 모집단 8,110종 통합
+- [x] EPA 전체 CAS 조회 및 잠정 구조 검증
+- [x] 기존 인체·동물 분리 참조 A 39종 구축
+- [x] v0.23-pilot1 기준선 및 내부 구조군 제외 평가
+- [x] NITE 공식 분류 562종 추출, 기존 A/B 플래그 병합
+- [ ] NITE 전체 후보의 구조·산업 적용범위 확인
+- [ ] 구조 확보 신규 123종 중 우선 검토 63종의 인체·동물 및 흡입/조혈계 근거 판정
+- [ ] NITE 공식 유해성 참조와 인체 흡입 검증 역할 확정, 구조/근거 누출 방지
+- [ ] A/B 재병합, 알려진 참조와 미확인 후보 분리
+- [ ] 동일 검증 조건에서 기준선 및 확대 참조 비교
+- [ ] 실제 반도체 관련성 검토 및 정밀평가 우선순위 도출
 
 ## 공개용 데이터 검증
 
@@ -79,11 +102,11 @@ python data/supplementary/hematotoxicity_v18/validate_release.py
 
 ## 이전 버전 및 코드
 
-- [v0.17 이전 통합 데이터](data/supplementary/hematotoxicity_v17/); 현행 방법은 v0.17 프로토콜 그대로 유지.
+- [v0.17 이전 통합 데이터](data/supplementary/hematotoxicity_v17/); 당시 방법은 v0.17 프로토콜 참조.
 
 - [이전 v0.9 README 원문 보존](docs/archive/README_v09.md) (원문 상대 링크는 저장소 루트 기준)
 - [v0.9 4개 출처 예비 자료](data/supplementary/hematotoxicity_four_sources_v09/)
 - [v0.6](data/supplementary/human_inhalation_v06/), [v0.5](data/supplementary/human_inhalation_v05/), [v0.4](data/supplementary/human_inhalation_v04/), [v0.3](data/supplementary/human_inhalation_v03/), [v0.2](data/supplementary/human_inhalation_v02/)
-- [이전 연구 프로토콜](docs/hematotoxicity_research_protocol_ko.md) — 현행 설계는 v0.17 프로토콜이 우선한다.
+- [이전 연구 프로토콜](docs/hematotoxicity_research_protocol_ko.md) — 현행 방향은 v0.24 프로토콜이 우선한다.
 
-기존 루트 Python 코드와 테스트는 과거 LD50 예비 연구용이다. v0.18 스크리닝 모델은 아직 구현 또는 실행하지 않았다.
+기존 루트 Python 코드와 테스트는 과거 LD50 예비 연구용이다. 현행 NITE 기반 실험은 아직 실행하지 않았으며 v0.23-pilot1만 탐색적 내부 평가를 완료했다.
