@@ -1,14 +1,35 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 데이터 작업본: v0.27-supplement-draft (제출 전 정제) | 최신 실험: v0.26-pilot2 | 공개 A/B CSV: v0.18**
+**최신 데이터 작업본: v0.28-evidence-rederivation (근거 재도출·경로/유형 분류) | 최신 실험: v0.26-pilot2 | 공개 A/B CSV: v0.18**
 
 ## 현행 연구 목적 및 방향
 
 일본 정부 NITE GHS의 공식 혈액계 특정표적장기 독성(STOT) 분류와 분자구조적 특성을 이용하여 산업화학물질의 혈액계 유해성 평가 우선순위를 도출하고, 반도체 제조공정 관련 물질에 적용한다. ATSDR·PubMed 인체 흡입/직업성 근거를 활용해 인체 관련성을 별도로 검토한다. 공식 유해성은 인체 흡입 양성 또는 실제 위해도를 의미하지 않는다. 인체·동물 및 노출경로별 근거를 구분한다. 백혈병 인과 규명, 독성 발생 확률, 안전성 판정은 목표가 아니다. 최종 참조집합 및 실험 계획은 근거 정제 후 확정한다.
 
-**[현행 연구 프로토콜 v0.27](docs/hematotoxicity_research_protocol_v27_ko.md)** · **[다음 대화/작업 인수인계](docs/hematotoxicity_handoff_v27_ko.md)**
+**[현행 연구 프로토콜 v0.27](docs/hematotoxicity_research_protocol_v27_ko.md)** · **[다음 대화/작업 인수인계 v0.28](docs/hematotoxicity_handoff_v28_ko.md)**
 
-## 최신 작업 v0.27 — 보충자료 정제 및 근거 검토
+## 최신 작업 v0.28 — 공식 분류 근거 전수 재도출 및 노출경로·독성유형 분류
+
+[작업 설명](data/supplementary/hematotoxicity_v28/README.md) · [영문 설명](data/supplementary/hematotoxicity_v28/README_EN.md) · [데이터 사전](data/supplementary/hematotoxicity_v28/DATA_DICTIONARY.md) · [물질별 공개 색인](data/supplementary/hematotoxicity_v28/nite_evidence_public_index.csv) · [실행 집계](data/supplementary/hematotoxicity_v28/summary.json) · [미해결 공백 등록부](data/supplementary/hematotoxicity_v28/S11_gap_register.csv) · [재현 코드](data/supplementary/hematotoxicity_v28/code) · [manifest](data/supplementary/hematotoxicity_v28/manifest.json)
+
+NITE 공식 다운로드 페이지에 분류 근거 전문 일괄 파일 `list_rational_e.xlsx`(117,026행)가 있음을 확인했다. v0.24~v0.27 입력 목록에 없던 파일이다. 따라서 v0.27에 남아 있던 323행 부분 검토 대신 **혈액계 분류 749행 전체**의 근거 원문을 재도출하여 **3,634개 근거 단위**로 분할하고 각 단위 원문을 보존했다.
+
+| 재현 검증 | v0.24~v0.27 기록 | v0.28 재도출 |
+|---|---:|---:|
+| 혈액계 STOT 근거행 | 747 | 747 (완전일치) |
+| 단일 CAS | 562 | 562 전부 회수, 누락 0 |
+| 골수·조혈계 표적 | 60 | 60 (완전일치) |
+
+근거종·노출경로·독성유형을 **전체 셀이 아닌 개별 근거 단위 단위로** 판정했다. 하나의 NITE 근거 셀에 인체 직업성·동물 흡입·동물 경구 자료가 연속 문장으로 함께 기술되므로, 전체 셀 키워드로는 "흡입 언급"과 "흡입시험에서 확인된 혈액독성"을 구분할 수 없다. 근거 수준은 tier A 인체 흡입 11종, B 29, C 143, D 동물 흡입 47, E 168, F 99, G 69. 독성유형은 Type 1 163종, Type 2 376종, Type 3 268종, 응고계 88종. Type 3은 보상성 조혈 반응을 분리해 골수손상 지지 149종, 말초 혈구수 변화만 96종, 보상성 단독으로 **골수손상 판정 보류 23종**으로 구분했다.
+
+확인된 주요 사항. 562종 중 **5종은 혈액응고계 단독 분류**로 Type 1~3 틀 밖이며 규칙 R02로 분리했다(Estrone, Chlormadinone acetate 등 두 스테로이드는 혈전 경향으로 기전상 반대 방향). NITE가 한 셀에 CAS를 두 개 기재해 **v0.24에서 2종이 누락**되었고, 그중 Thiouracil은 혈액계 STOT-RE Category 1이며 thiouracil계는 무과립백혈구증의 확립된 원인물질이다. 혈액계 근거 인용 3,007건 중 원저 시험보고서 직접 인용은 249건뿐이고 **tier A 인체 흡입 11종 중 원저 학술논문을 인용한 물질은 없다**. 즉 NITE 분류는 공식 유해성과 그 근거를 확립하지만 인체 흡입 혈액독성의 원저 검증을 대체하지 않는다.
+
+공개 v0.18 인체 참조 28건을 공식 분류와 대조했다. Naphthalene·Methanethiol은 tier A, Benzene·2-Bromopropane은 tier B로 교차 확인된다. 반면 **4건은 공식 NITE 혈액계 분류가 전혀 없으며 그중 3건이 최상위 `1_core`** 이다(4-Bromo-2-fluoroaniline, 5-Amino-2-(trifluoromethyl)pyridine, Dichloromethane, 그리고 2-Ethoxyethyl acetate). tier A 5종은 PubMed 원저를 탐색·열독해 수동 판정했고 **5건 중 3건에서 원저가 NITE 요약의 주장을 제한**했다(2-Ethoxyethanol은 장갑 중재로 경피 기여 시사, 1,2-Dichloropropane은 혼합제품·경구, Lindane은 경피 주류).
+
+**신규 확정 양성 라벨 0건, 독립 원저 전문 검증 완료 0건, 신규 모델·실험 없음.** `hematotoxicity_v27_supplement.zip` 미확보로 Dataset A 349종·B 8,110종·후보 2,519종은 직접 갱신하지 못했고, 대체본이 아닌 CAS 기준 결합 계층을 제공한다. PubChem 구조감사(570 CAS 중 단일성분 유기 390)는 고정된 EPA 기반 S03을 대체하지 않는다. 검증 31건 통과·0건 실패·미확보 입력 2건은 `SKIP`으로 보고. 미해결 사항 12건은 공백 등록부에 전부 기록했다. 전체 보충자료는 로컬 `hematotoxicity_v28.zip`, 공개 저장소는 관례대로 근거 원문을 재게시하지 않고 집계·문서·해시·물질별 색인·코드만 게시한다.
+
+
+## 이전 작업 v0.27 — 보충자료 정제 및 근거 검토
 
 [작업 설명](data/supplementary/hematotoxicity_v27/README.md) · [실행 집계](data/supplementary/hematotoxicity_v27/summary.json) · [로컬 파일 해시](data/supplementary/hematotoxicity_v27/manifest.json)
 

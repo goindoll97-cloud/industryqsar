@@ -1,0 +1,169 @@
+{
+  "version": "v0.28-evidence-rederivation",
+  "build_date": "2026-11-28",
+  "release_status": "official_blood_system_classification_layer_reproduced_and_frozen; route_species_endpoint_research_dataset_not_frozen",
+  "rdkit": "2025.09.4",
+  "new_final_labels": 0,
+  "independent_primary_fulltext_verifications_completed": 0,
+  "new_experiment": false,
+  "new_model": false,
+  "new_toxicity_database_added": false,
+  "nite_source": {
+    "download_page": "https://www.chem-info.nite.go.jp/chem/english/ghs/ghs_nite_download_e.html",
+    "access_date": "2026-11-28",
+    "classification_workbook": "list_nite_all_e.xlsx",
+    "rationale_workbook": "list_rational_e.xlsx",
+    "rationale_workbook_new_in_v028": true,
+    "rationale_total_rows": 117026,
+    "classification_list_substances": 3476,
+    "substances_with_stot_entries": 3452,
+    "stot_rows": 6904,
+    "substances_without_rationale_stot_rows": 24,
+    "substances_without_rationale_stot_rows_note": "all 24 carry '-' in both STOT columns, so none can affect blood-system selection"
+  },
+  "blood_system_selection": {
+    "evidence_rows_unsplit_cas": 747,
+    "evidence_rows_split_cas": 749,
+    "unique_cas_reproduced": 562,
+    "published_v024_cas_recovered": 562,
+    "published_v024_cas_missing": 0,
+    "additional_cas_from_multi_cas_cells": 8,
+    "substance_entries": 566,
+    "marrow_or_hematopoietic_target": 60,
+    "coagulation_only_target": 5
+  },
+  "evidence_extraction": {
+    "classification_records_read": 745,
+    "evidence_units": 3634,
+    "units_by_section": {
+      "narrative": 2684,
+      "evidence": 778,
+      "rationale": 172
+    },
+    "units_with_endpoint_term": 1297,
+    "units_with_species_route_endpoint_cooccurrence": 623,
+    "species_basis_counts": {
+      "not_specified": 1593,
+      "animal": 1236,
+      "human": 643,
+      "mixed_human_and_animal_in_segment": 162
+    },
+    "route_basis_counts": {
+      "route_not_specified": 2222,
+      "oral": 892,
+      "inhalation": 263,
+      "mixed_route_in_segment": 120,
+      "route_not_specified_air_unit_only": 55,
+      "dermal": 51,
+      "injection": 22,
+      "read_across": 6,
+      "in_vitro": 2,
+      "oral_dietary_concentration_inferred": 1
+    }
+  },
+  "evidence_tiers": {
+    "E_animal_other_route": 168,
+    "C_human_route_unclear": 143,
+    "F_endpoint_only": 99,
+    "G_no_endpoint_text": 69,
+    "D_animal_inhalation": 47,
+    "B_human_inhalation_likely": 29,
+    "A_human_inhalation": 11
+  },
+  "endpoint_types": {
+    "type1_hb_function": {
+      "substances": 163,
+      "human_inhalation_backed": 7,
+      "animal_inhalation_backed": 27
+    },
+    "type2_rbc_anemia": {
+      "substances": 376,
+      "human_inhalation_backed": 6,
+      "animal_inhalation_backed": 52
+    },
+    "type3_counts_marrow": {
+      "substances": 268,
+      "human_inhalation_backed": 2,
+      "animal_inhalation_backed": 30
+    },
+    "coagulation": {
+      "substances": 88,
+      "human_inhalation_backed": 1,
+      "animal_inhalation_backed": 8
+    }
+  },
+  "type3_resolution": {
+    "not_assigned_no_type3_wording": 298,
+    "type3_marrow_injury_supported": 149,
+    "type3_peripheral_counts_only": 96,
+    "type3_marrow_signal_compensatory_only": 23
+  },
+  "citation_evidence_layers": {
+    "authoritative_review": 1375,
+    "national_assessment": 691,
+    "other_unclassified": 531,
+    "primary_test_report": 249,
+    "secondary_database": 161
+  },
+  "tier_A_substances_citing_a_primary_journal_article": 0,
+  "citation_note": "citation instances are NOT counts of independent studies; the same underlying study is frequently cited by several compilations",
+  "structure_audit_pubchem": {
+    "ok_single_organic": 390,
+    "inorganic_or_no_carbon": 118,
+    "multicomponent": 52,
+    "not_found": 9,
+    "unparsable": 1,
+    "structural_scope": {
+      "in_organic_single_component_scope": 390,
+      "outside_organic_structural_domain": 170,
+      "structure_unresolved_hold": 10
+    },
+    "note": "independent PubChem+RDKit audit; NOT a substitute for the frozen EPA-based v0.27 S03, which queries a different registry (390 of 570 single-component organic here vs 332 of 562 in v0.27)"
+  },
+  "dataset_A_role_v028": {
+    "official_hazard_reference_outside_structural_domain": 170,
+    "official_hazard_reference_animal_non_inhalation": 140,
+    "official_hazard_reference_species_route_unresolved": 73,
+    "hold_human_evidence_route_unclear": 72,
+    "animal_inhalation_support_provisional": 39,
+    "official_hazard_reference_no_endpoint_in_text": 27,
+    "human_occupational_extended_candidate_pending_verification": 22,
+    "hold_structure_unresolved": 10,
+    "human_inhalation_candidate_pending_primary_verification": 8,
+    "coagulation_endpoint_outside_type1_3": 5
+  },
+  "published_human_reference_audit": {
+    "references_checked": 28,
+    "not_in_NITE_blood_system_set": 12,
+    "corroborated_human_route_unclear": 6,
+    "official_blood_classification_animal_or_unresolved_basis": 4,
+    "corroborated_human_inhalation_likely": 3,
+    "corroborated_human_inhalation": 3
+  },
+  "manual_adjudication": {
+    "substances_adjudicated": 5,
+    "primary_literature_qualifies_nite_assertion": 3,
+    "pubmed_locators_recorded": 48
+  },
+  "not_available_to_this_build": [
+    "hematotoxicity_v27_supplement.zip",
+    "EPA CompTox CCD-Batch-Search raw export (328 substances)",
+    "original EPA TRI list export",
+    "chemical-use survey source for 4 semiconductor-core records"
+  ],
+  "could_not_be_updated_in_place": [
+    "Dataset A (349 records)",
+    "Dataset B (8,110 records)",
+    "screening candidates (2,519 records)",
+    "v0.27 output hashes (22) and v0.26 archive hashes (18)",
+    "the 94-reviewed / 323-pending evidence-row mapping"
+  ],
+  "gap_register_entries": 12,
+  "validation": {
+    "checks_passed": 31,
+    "checks_failed": 0,
+    "checks_skipped": 2,
+    "skipped_note": "unavailable inputs are reported as SKIP, never as PASS"
+  },
+  "submission_gate": "S02/S03 official classification layer reproduced against the current official source and ready for internal freeze. S05/S06 route-, species- and endpoint-specific layers are review-ready but require expert confirmation and independent primary verification. Dataset A and B remain un-updated pending the local archive. Do NOT label publication-ready final."
+}

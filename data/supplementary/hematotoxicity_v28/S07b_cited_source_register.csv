@@ -1,0 +1,30 @@
+source_name,evidence_layer,citation_instances,substances
+unclassified_citation,other_unclassified,531,264
+Food Safety Commission of Japan,national_assessment,244,57
+ACGIH documentation,authoritative_review,244,139
+Japan Ministry of the Environment,national_assessment,211,78
+ATSDR toxicological profile,authoritative_review,198,79
+NITE/CERI/NEDO initial risk assessment,national_assessment,169,53
+DFG MAK / DFGOT,authoritative_review,157,69
+HSDB,secondary_database,132,80
+OECD SIDS / SIAR,authoritative_review,113,52
+NTP (other),primary_test_report,110,57
+IPCS CICAD,authoritative_review,106,42
+PATTY,authoritative_review,104,68
+IARC monograph,authoritative_review,98,68
+NTP technical report,primary_test_report,93,48
+EU risk assessment report,authoritative_review,85,32
+IPCS EHC,authoritative_review,84,63
+WHO / JECFA / JMPR,authoritative_review,67,22
+OECD test guideline study,primary_test_report,46,31
+AICIS / NICNAS (Australia),authoritative_review,45,23
+Japan Society for Occupational Health,national_assessment,39,24
+US EPA assessment,authoritative_review,25,20
+CERI/NITE hazard assessment,national_assessment,23,7
+IPCS PIM,authoritative_review,18,12
+GESTIS,secondary_database,18,14
+ECHA,authoritative_review,15,5
+IPCS (other),authoritative_review,15,9
+ChemIDplus / other database,secondary_database,11,10
+Japanese government GHS result,national_assessment,5,3
+EU CLH / CLP,authoritative_review,1,1

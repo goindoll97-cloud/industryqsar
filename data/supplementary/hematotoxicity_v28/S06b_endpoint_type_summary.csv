@@ -1,0 +1,5 @@
+endpoint_type,substances_with_endpoint_text,human_inhalation_backed,animal_inhalation_backed
+type1_hb_function,163,7,27
+type2_rbc_anemia,376,6,52
+type3_counts_marrow,268,2,30
+coagulation,88,1,8

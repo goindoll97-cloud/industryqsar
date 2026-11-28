@@ -1,0 +1,5 @@
+file,location,bytes,sha256,access_date,source_id
+list_nite_all_e.xlsx,official download (NITE),793037,79e5cba0a79af3e60da39d9bbcc0e13c2581ab90b11dba90582b7e7cb720777c,2026-11-28,NITE-GHS-CLASS
+list_rational_e.xlsx,official download (NITE),10154021,efc51e5e923ebd25fd83346504e6490f1eb0857fc74077be31ee7b29cf718890,2026-11-28,NITE-GHS-RATIONALE
+nite_blood_public_index.csv,public repository (v0.24),37485,3314d1d88faf2e2d607b4562b47249036a074e12dfeddce3fbbbe2473271ad9d,2026-11-28,REPO-NITE-V024-INDEX
+dataset_A_human_inhalation_references.csv,public repository (v0.18),16830,ee8c95a5a552263d5ba3cd8ef43e24f1b512f8aa85bad882b3c14acbcfcc7d8f,2026-11-28,REPO-DATASET-A-V018
