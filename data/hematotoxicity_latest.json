@@ -2,10 +2,10 @@
   "version": "v0.18",
   "status": "provisional",
   "path": "supplementary/hematotoxicity_v18",
-  "protocol": "../docs/hematotoxicity_research_protocol_v26_ko.md",
-  "working_version": "v0.26",
-  "working_status": "provisional_AB_updated_exploratory_pilot_complete",
-  "working_manifest": "supplementary/hematotoxicity_v26/manifest.json",
+  "protocol": "../docs/hematotoxicity_research_protocol_v27_ko.md",
+  "working_version": "v0.27-supplement-draft",
+  "working_status": "official_snapshot_frozen_route_specific_adjudication_pending",
+  "working_manifest": "supplementary/hematotoxicity_v27/manifest.json",
   "public_candidate_index": "supplementary/hematotoxicity_v24_nite/nite_blood_public_index.csv",
   "latest_experiment": "v0.26-pilot2"
 }

@@ -1,14 +1,21 @@
 # IndustryQSAR — 반도체 제조공정 화학물질의 혈액독성 우선평가
 
-**최신 데이터 작업본: v0.26 | 최신 실험: v0.26-pilot2 (탐색 실행 완료) | 공개 A/B CSV: v0.18**
+**최신 데이터 작업본: v0.27-supplement-draft (제출 전 정제) | 최신 실험: v0.26-pilot2 | 공개 A/B CSV: v0.18**
 
 ## 현행 연구 목적 및 방향
 
 일본 정부 NITE GHS의 공식 혈액계 특정표적장기 독성(STOT) 분류와 분자구조적 특성을 이용하여 산업화학물질의 혈액계 유해성 평가 우선순위를 도출하고, 반도체 제조공정 관련 물질에 적용한다. ATSDR·PubMed 인체 흡입/직업성 근거를 활용해 인체 관련성을 별도로 검토한다. 공식 유해성은 인체 흡입 양성 또는 실제 위해도를 의미하지 않는다. 인체·동물 및 노출경로별 근거를 구분한다. 백혈병 인과 규명, 독성 발생 확률, 안전성 판정은 목표가 아니다. 최종 참조집합 및 실험 계획은 근거 정제 후 확정한다.
 
-**[현행 연구 프로토콜 v0.26](docs/hematotoxicity_research_protocol_v26_ko.md)**
+**[현행 연구 프로토콜 v0.27](docs/hematotoxicity_research_protocol_v27_ko.md)**
 
-## 최신 작업 v0.26-pilot2 — NITE 구조 검증 및 참조 확대 실험
+## 최신 작업 v0.27 — 보충자료 정제 및 근거 검토
+
+[작업 설명](data/supplementary/hematotoxicity_v27/README.md) · [실행 집계](data/supplementary/hematotoxicity_v27/summary.json) · [로컬 파일 해시](data/supplementary/hematotoxicity_v27/manifest.json)
+
+NITE 562종/747행과 구조 332종, B 후보 2,519종 재검증. 기존 A 349/B 8,110 유지. 구조 통과 근거 417행 중 요약문 검토 94행(신규 12), 추가 발췌문 선별 28, 자동 단서만 295; 전체 요약문 검토 대기 323행. 인체 16종 재점검(원저 관련 절 2건) 및 동물 원보고서 관련 절 1건 확인; NITE 동물 흡입 보완 39종 잠정. TRI 28종 기관 URL 보완(원래 등재 목록 버전 독립 확인 대기). S1~S10 제출 전 작업본 생성, S11 미생성. 공식 분류/구조 스냅샷만 고정; 원저 및 경로/endpoint 최종 판정 미완료, 신규 라벨/모델 없음. 전체 보충자료 및 코드 로컬 hematotoxicity_v27_supplement.zip, GitHub는 집계와 문서/해시만 공개.
+
+
+## 이전 작업 v0.26-pilot2 — NITE 구조 검증 및 참조 확대 실험
 
 [작업 설명](data/supplementary/hematotoxicity_v26/README.md) · [실험 집계](data/supplementary/hematotoxicity_v26/retrieval_metrics_rounded.csv) · [구조 포괄성](data/supplementary/hematotoxicity_v26/coverage_rounded.csv) · [manifest](data/supplementary/hematotoxicity_v26/manifest.json)
 
@@ -117,6 +124,6 @@ python data/supplementary/hematotoxicity_v18/validate_release.py
 - [이전 v0.9 README 원문 보존](docs/archive/README_v09.md) (원문 상대 링크는 저장소 루트 기준)
 - [v0.9 4개 출처 예비 자료](data/supplementary/hematotoxicity_four_sources_v09/)
 - [v0.6](data/supplementary/human_inhalation_v06/), [v0.5](data/supplementary/human_inhalation_v05/), [v0.4](data/supplementary/human_inhalation_v04/), [v0.3](data/supplementary/human_inhalation_v03/), [v0.2](data/supplementary/human_inhalation_v02/)
-- [이전 연구 프로토콜](docs/hematotoxicity_research_protocol_ko.md) — 현행 방향은 v0.26 프로토콜이 우선한다.
+- [이전 연구 프로토콜](docs/hematotoxicity_research_protocol_ko.md) — 현행 방향은 v0.27 프로토콜이 우선한다.
 
 기존 루트 Python 코드와 테스트는 과거 LD50 예비 연구용이다. v0.23-pilot1 및 v0.26-pilot2 탐색적 내부 평가 완료. 최종 검증은 미완료.
