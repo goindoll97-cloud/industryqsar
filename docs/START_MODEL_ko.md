@@ -57,3 +57,20 @@ PowerShell: `.\start_model.bat --diagnostics --ht13` (13개) 또는 `.\start_mod
 - diagnostic_by_ht.csv: 특화 구조 미검출/검출 집단별 진단.
 
 기본 10개 및 13개 옵션을 로컬 Python 환경에서 실행 확인했다. 13개 예비 결과에서 Recall@10%는 resubstitution / compound-out / group-out 순서로 Maximum Tanimoto 100/18.18/3.03%, Morgan OCSVM 100/12.12/6.06%, HT OCSVM 7.92/7.92/7.92%, Morgan+HT OCSVM 6.06/6.06/6.06%. 무작위 기대값 11/103(약 10.68%). 기존 group-out 성능 파일은 유지된다. 데이터가 잠정이고 B는 음성자료가 아니므로 결과는 학습 적합도 및 참조 회수율 진단에만 사용한다.
+
+## v0.34 — 독성학적 구조 추가 점수 예비실험
+
+PowerShell (13개 특화 변수): `.\start_model.bat --mechanism-bonus --ht13`. 기본 10개는 `.\start_model.bat --mechanism-bonus`. 기존 진단 파일도 원하면 `--diagnostics`를 추가한다.
+
+새 방식은 S = Maximum Tanimoto + b × I(HT 중 하나라도 검출)로, b=0.10을 주 탐색 설정, 0.25를 민감도 분석 설정으로 사전에 고정한다. 경험적 가정이며 최적 가중치가 아니다. 두 방식 모두 학습 참조물질과의 최대 Tanimoto를 기반으로 하고, alert 미검출 시 원점수가 변하지 않는다(상대 순위는 달라질 수 있음). 여러 alert를 중복 가산하지 않는다. 점수는 1을 초과할 수 있고 독성 확률이 아니다. HT alert 자체의 이진 점수도 통제 기준선으로 포함한다. 신규 세 방식은 규칙 기반이며 학습형 독성 예측 모델이 아니다.
+
+기존 네 모델과 신규 세 방식 총 7개를 v0.33의 동일한 세 평가 방식(참조물질 1개 + 동일 B 전부)으로 비교한다. 데이터, 기본 커널, nu, 그룹화 조건, 기존 결과 파일은 변경하지 않는다. 독성학적 구조의 근거는 v0.30/31 문헌 및 SMARTS를 그대로 사용한다. 신규 연속형 descriptor의 문헌 근거 보완과 전체 원본 확보는 이번 범위 밖이다.
+
+신규 결과 파일:
+- bonus_summary.csv: 21행, 세 평가 × 7개 방식의 Recall/EF/순위
+- bonus_predictions.csv: 693행, 물질별 검증 점수 및 Tanimoto 대비 순위 변화
+- bonus_by_ht.csv: 특화 구조 검출/미검출 집단별 성능
+- bonus_candidate_ranking.csv: 714행, B 전체 물질의 7개 방식 순위 및 검출 HT ID
+- bonus_feature_coverage.csv: HT10 또는 HT13 전체 검출빈도 및 any_alert
+
+로컬 Python 실행 결과 (A33/B102, 13개 HT, matched-pool Group-Out): Maximum Tanimoto 3.03%, Morgan OCSVM 6.06%, HT OCSVM 7.92%, Morgan+HT OCSVM 6.06%, alert 단독 33.75%, b=0.10 23.23%, b=0.25 29.29% (Recall@10%). 10개 HT에서 신규 세 방식은 각각 30.99%, 20.20%, 26.26%. 두 조건 모두 점수 불변성, 출력 행수 검증 완료. 단독 alert 기준선이 결합 방식보다 높으므로 결합 기여 입증 불가. 문헌 유래 구조와 참조물질의 근거 중복을 배제하지 못했고 B가 음성이 아니므로 독립적인 독성 예측 성능은 아니다. HT 미검출 참조물질의 회수율도 별도로 확인해야 한다. Windows 배치 자체 및 GitHub CI는 이번에 실행하지 않았다.

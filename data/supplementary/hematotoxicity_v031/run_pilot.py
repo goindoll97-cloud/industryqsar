@@ -8,6 +8,7 @@ from sklearn.svm import OneClassSVM
 from rdkit import Chem, rdBase
 import generate_features as gf
 import diagnostics as diag
+import mechanism_bonus as mb
 
 ROOT=Path(__file__).resolve().parent
 MODELS=('max_tanimoto','ocsvm_morgan','ocsvm_ht','ocsvm_morgan_ht')
@@ -71,6 +72,7 @@ def main():
     p.add_argument('--a',type=Path);p.add_argument('--b',type=Path);p.add_argument('--a-evidence',type=Path);p.add_argument('--b-provenance',type=Path)
     p.add_argument('--acknowledge-curated',action='store_true',help='External inputs were manually curated; not verified by this script')
     p.add_argument('--diagnostics',action='store_true',help='Compare resubstitution, compound-out and group-out using matched pools');
+    p.add_argument('--mechanism-bonus',action='store_true',help='Compare fixed positive alert bonuses and alert-only control');
     p.add_argument('--out',type=Path);p.add_argument('--ht13',action='store_true',help='Exploratory sensitivity only')
     p.add_argument('--nu',type=float,default=.1);p.add_argument('--ht-weight',type=float,default=.5);p.add_argument('--group-threshold',type=float,default=.5)
     args=p.parse_args();custom=[args.a,args.b,args.a_evidence,args.b_provenance]
@@ -122,6 +124,9 @@ def main():
     if args.diagnostics:
         manifest['diagnostics']=diag.run_diagnostics(km,kh,h,ar,groups,args.nu,args.ht_weight,out,scores,rank_stats,write,get_cas,MODELS)
         manifest['code_sha256']['diagnostics']=sha(diag.__file__)
+    if args.mechanism_bonus:
+        manifest['mechanism_bonus']=mb.run_bonus(km,kh,h,ar,br,groups,args.nu,args.ht_weight,out,scores,rank_stats,write,get_cas,MODELS,feature_ids)
+        manifest['code_sha256']['mechanism_bonus']=sha(mb.__file__)
     (out/'run_manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding='utf-8')
     print(f'Completed: {out.resolve()} | A={n}, B={m}, groups={len(groups)}')
     for r in metrics:print(f"{r['model']:18s} R@5%={r['recall_credit_top5']:.4f} R@10%={r['recall_credit_top10']:.4f}")

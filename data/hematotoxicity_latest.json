@@ -19,5 +19,8 @@
   "pilot_runner_status": "locally_tested_exploratory_33_102",
   "pilot_diagnostics_version": "v0.33",
   "pilot_diagnostics_status": "locally_tested_HT10_HT13_exploratory",
-  "pilot_diagnostics": "supplementary/hematotoxicity_v031/diagnostics.py"
+  "pilot_diagnostics": "supplementary/hematotoxicity_v031/diagnostics.py",
+  "pilot_mechanism_bonus_version": "v0.34",
+  "pilot_mechanism_bonus": "supplementary/hematotoxicity_v031/mechanism_bonus.py",
+  "pilot_mechanism_bonus_status": "locally_tested_HT10_HT13_exploratory"
 }
