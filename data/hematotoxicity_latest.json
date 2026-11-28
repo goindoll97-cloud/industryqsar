@@ -7,5 +7,6 @@
   "working_status": "official_snapshot_frozen_route_specific_adjudication_pending",
   "working_manifest": "supplementary/hematotoxicity_v27/manifest.json",
   "public_candidate_index": "supplementary/hematotoxicity_v24_nite/nite_blood_public_index.csv",
-  "latest_experiment": "v0.26-pilot2"
+  "latest_experiment": "v0.26-pilot2",
+  "handoff": "../docs/hematotoxicity_handoff_v27_ko.md"
 }
