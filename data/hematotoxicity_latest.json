@@ -8,5 +8,9 @@
   "working_manifest": "supplementary/hematotoxicity_v29/manifest.json",
   "public_candidate_index": "supplementary/hematotoxicity_v28/nite_evidence_public_index.csv",
   "latest_experiment": "v0.26-pilot2",
-  "handoff": "../docs/hematotoxicity_research_protocol_v29_ko.md"
+  "handoff": "../docs/hematotoxicity_research_protocol_v29_ko.md",
+  "pilot_feature_version": "v0.31-marrow-pilot",
+  "pilot_feature_status": "exploratory_public_subset_not_frozen",
+  "pilot_feature_manifest": "supplementary/hematotoxicity_v031/manifest.json",
+  "pilot_feature_readme": "supplementary/hematotoxicity_v031/README.md"
 }

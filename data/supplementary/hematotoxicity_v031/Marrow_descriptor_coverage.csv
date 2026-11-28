@@ -1,0 +1,7 @@
+dataset,feature,n,hits
+A,HT11,33,1
+A,HT12,33,0
+A,HT13,33,0
+B,HT11,102,0
+B,HT12,102,0
+B,HT13,102,0

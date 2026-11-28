@@ -1,0 +1,32 @@
+chemical,SMILES,feature,expected,actual,pass_check
+Aniline,Nc1ccccc1,HT01,1,1,1
+Acetanilide,CC(=O)Nc1ccccc1,HT01,0,0,1
+N-methylaniline,CNc1ccccc1,HT01,1,1,1
+Pyridin-2-amine,Nc1ccccn1,HT01,0,0,1
+Nitrobenzene,O=[N+]([O-])c1ccccc1,HT02,1,1,1
+Nitropropane,CCC[N+](=O)[O-],HT02,0,0,1
+4-Nitroaniline,Nc1ccc([N+](=O)[O-])cc1,HT03,1,1,1
+4-Nitroaniline,Nc1ccc([N+](=O)[O-])cc1,HT01,0,0,1
+"2,4-Dinitroaniline",Nc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1,HT04,1,1,1
+"2,4-Dinitroaniline",Nc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1,HT03,0,0,1
+2-Butoxyethanol,CCCCOCCO,HT05,1,1,1
+2-Isopropoxyethanol,CC(C)OCCO,HT05,1,1,1
+2-Ethoxyethanol,CCOCCO,HT05,0,0,1
+2-Hexoxyethanol,CCCCCCOCCO,HT05,0,0,1
+2-Butoxyethyl acetate,CCCCOCCOC(C)=O,HT05,1,1,1
+Propylene glycol methyl ether,COCC(C)O,HT05,0,0,1
+Diethylene glycol monobutyl ether,CCCCOCCOCCO,HT05,1,1,1
+Hydroquinone,Oc1ccc(O)cc1,HT06,0,0,1
+tert-Butylhydroquinone,CC(C)(C)c1cc(O)ccc1O,HT06,1,1,1
+4-Methylcatechol,Cc1ccc(O)c(O)c1,HT06,1,1,1
+5-Methylresorcinol,Cc1cc(O)cc(O)c1,HT06,0,0,1
+Butanone oxime,CCC(C)=NO,HT07,1,1,1
+Butanone,CCC(C)=O,HT07,0,0,1
+Methylhydrazine,CNN,HT08,1,1,1
+Azobenzene,c1ccccc1N=Nc1ccccc1,HT08,0,0,1
+Acetohydrazide,CC(=O)NN,HT08,0,0,1
+Isobutyl nitrite,CC(C)CON=O,HT09,1,1,1
+Nitrobenzene,O=[N+]([O-])c1ccccc1,HT09,0,0,1
+"1,4-Benzoquinone",O=C1C=CC(=O)C=C1,HT10,1,1,1
+Hydroquinone,Oc1ccc(O)cc1,HT10,0,0,1
+Benzene,c1ccccc1,HT10,0,0,1

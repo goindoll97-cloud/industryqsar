@@ -1,0 +1,94 @@
+{
+  "version": "v0.31-marrow-pilot",
+  "status": "exploratory_public_subset_not_frozen",
+  "A": 33,
+  "B": 102,
+  "full_A": 349,
+  "full_B": 8110,
+  "full_screening": 2519,
+  "main_features": 10,
+  "candidate_features": 3,
+  "new_final_labels": 0,
+  "model_experiment": false,
+  "local_archive": "hematotoxicity_marrow_v031.zip",
+  "local_archive_sha256": "47fa95c1bc782e28bb059357952c4ef11a36e03bde3e251679d7b8a125d0fb7d",
+  "csv_integrity": "FNV-1a 32-bit on JSON string of parsed rows (all cells strings), UTF-16 code units; verifies content not raw bytes",
+  "files": {
+    "Dataset_A_pilot_v031.csv": {
+      "rows": 33,
+      "parsed_content_fnv1a32": "24065b3d"
+    },
+    "Dataset_B_pilot_v031.csv": {
+      "rows": 102,
+      "parsed_content_fnv1a32": "2e351c29"
+    },
+    "A_evidence_v031.csv": {
+      "rows": 70,
+      "parsed_content_fnv1a32": "4163a383"
+    },
+    "B_provenance_legacy.csv": {
+      "rows": 131,
+      "parsed_content_fnv1a32": "23397ed"
+    },
+    "B_new_holds.csv": {
+      "rows": 3,
+      "parsed_content_fnv1a32": "b9bb8395"
+    },
+    "Marrow_Literature.csv": {
+      "rows": 16,
+      "parsed_content_fnv1a32": "c7bc9a65"
+    },
+    "Marrow_Evidence.csv": {
+      "rows": 18,
+      "parsed_content_fnv1a32": "ffab40af"
+    },
+    "Marrow_Descriptor_candidates.csv": {
+      "rows": 3,
+      "parsed_content_fnv1a32": "79591164"
+    },
+    "Marrow_SMARTS_tests.csv": {
+      "rows": 11,
+      "parsed_content_fnv1a32": "1f5e5aaf"
+    },
+    "Marrow_descriptor_coverage.csv": {
+      "rows": 6,
+      "parsed_content_fnv1a32": "2c1ac37a"
+    },
+    "Dataset_A_Features.csv": {
+      "rows": 33,
+      "parsed_content_fnv1a32": "f9a1b118"
+    },
+    "Dataset_B_Features.csv": {
+      "rows": 102,
+      "parsed_content_fnv1a32": "738296f7"
+    },
+    "Dataset_A_Features_13_candidate.csv": {
+      "rows": 33,
+      "parsed_content_fnv1a32": "2a625b16"
+    },
+    "Dataset_B_Features_13_candidate.csv": {
+      "rows": 102,
+      "parsed_content_fnv1a32": "fe9ed340"
+    },
+    "feature_coverage.csv": {
+      "rows": 22,
+      "parsed_content_fnv1a32": "31867d65"
+    },
+    "Hematotoxicity_Literature.csv": {
+      "rows": 7,
+      "parsed_content_fnv1a32": "8f718c6c"
+    },
+    "Hematotoxicity_Descriptor_Master.csv": {
+      "rows": 10,
+      "parsed_content_fnv1a32": "97f3678e"
+    },
+    "Hematotoxicity_SMARTS.csv": {
+      "rows": 11,
+      "parsed_content_fnv1a32": "57bfbf7b"
+    },
+    "Descriptor_Validation.csv": {
+      "rows": 31,
+      "parsed_content_fnv1a32": "8b31c4b5"
+    }
+  }
+}

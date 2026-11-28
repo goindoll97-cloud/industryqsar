@@ -8,6 +8,10 @@
 
 **[현행 연구 프로토콜 및 인수인계 v0.29](docs/hematotoxicity_research_protocol_v29_ko.md)** · **[v0.28 역사적 인수인계](docs/hematotoxicity_handoff_v28_ko.md)**
 
+## 병행 예비 작업 v0.31 — 골수·조혈계 근거 및 문헌 기반 descriptor
+
+[예비 데이터 및 재현 설명](data/supplementary/hematotoxicity_v031/README.md) · [파일 내용 검증 및 집계](data/supplementary/hematotoxicity_v031/manifest.json). 공개자료 기반 A33/B102, 골수 근거 18행/12 CAS, 문헌 16건(철회 1건 제외), 기본 HT01–HT10 및 추가 후보 HT11–HT13. 모델 성능 실험 미실행. 전체 데이터 검증 작업 v0.29 및 기존 실험 v0.26-pilot2는 그대로 유지한다.
+
 ## 최신 작업 v0.29 — 데이터 검증 후속
 
 [실행 결과 및 v0.28 감사 정정](data/supplementary/hematotoxicity_v29/README.md) · [실행 집계](data/supplementary/hematotoxicity_v29/summary.json) · [파일 해시](data/supplementary/hematotoxicity_v29/manifest.json)

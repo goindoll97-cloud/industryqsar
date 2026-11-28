@@ -1,0 +1,4 @@
+feature_id,name,smarts,source_ids,rationale,limitation
+HT11,Terminal methoxyethanol motif,[CH3]-[O;X2]-[CH2]-[CH2]-[OH],M03;M04;M13;M15,Methyl glycol ether and metabolic activation to methoxyacetaldehyde/methoxyacetic acid; contrasts C3–C4 hemolysis feature.,"Very narrow, effectively identifies EGME; may not generalize; exclude from final model unless justified independently."
+HT12,Para benzenediol motif,[OH]-c1ccc([OH])cc1,M10;M11;M12,Hydroquinone / quinone conversion and marrow cell toxicity.,Broad proxy for substituted analogues; overlaps HT06 for some alkyl-substituted molecules; not validated hazard rule.
+HT13,Ortho benzenediol motif,[OH]-c1c([OH])cccc1,M10,Catechol toxicity in marrow progenitor/stromal cell assays.,Broad proxy; in vitro mechanism evidence; not an in vivo predictor; overlaps HT06 for some alkyl-substituted molecules.

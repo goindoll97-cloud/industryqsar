@@ -1,0 +1,12 @@
+smarts_id,SMARTS,note
+aniline_anchor,[c:1]-[N;X3;+0;!$(N-C=O);!$(N-S(=O)=O):2],Used with graph conditions in generate_features.py; motif alone may not define feature
+nitro_anchor,[c:1]-[N+](=O)[O-],Used with graph conditions in generate_features.py; motif alone may not define feature
+egae_alcohol,[C;X4;!R]-[O;X2]-[CH2]-[CH2]-[OH],Used with graph conditions in generate_features.py; motif alone may not define feature
+egae_acetate,[C;X4;!R]-[O;X2]-[CH2]-[CH2]-[O;X2]-[C;X3](=O)-[CH3],Used with graph conditions in generate_features.py; motif alone may not define feature
+degae_alcohol,[C;X4;!R]-[O;X2]-[CH2]-[CH2]-[O;X2]-[CH2]-[CH2]-[OH],Used with graph conditions in generate_features.py; motif alone may not define feature
+phenol_anchor,[c]-[OH],Used with graph conditions in generate_features.py; motif alone may not define feature
+alkyl_anchor,[c]-[C;X4;!R;!$(C-[!#6;!#1])],Used with graph conditions in generate_features.py; motif alone may not define feature
+oxime,[C;!a]=[N;!a]-[O;X2],Used with graph conditions in generate_features.py; motif alone may not define feature
+hydrazine,[N;X3;+0;!$(N-C=O);!$(N-S(=O)=O)]-[N;X3;+0;!$(N-C=O);!$(N-S(=O)=O)],Used with graph conditions in generate_features.py; motif alone may not define feature
+alkyl_nitrite,[C;X4]-[O;X2]-[N;X2]=[O],Used with graph conditions in generate_features.py; motif alone may not define feature
+p_benzoquinone,O=[C;R]1-[C;R]=[C;R]-[C;R](=O)-[C;R]=[C;R]-1,Used with graph conditions in generate_features.py; motif alone may not define feature
